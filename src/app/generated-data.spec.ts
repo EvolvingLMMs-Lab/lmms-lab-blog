@@ -16,7 +16,8 @@ describe('generated content data', () => {
       expect(post.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(post.description.trim()).not.toBe('');
       expect(post.contentHtml.trim()).not.toBe('');
-      expect(post.contentHtml).not.toContain('<web-embed');
+      expect(post.contentHtml).not.toContain('<html-fragment');
+      expect(post.contentHtml).not.toContain('<iframe');
       if (post.coverImage) {
         expect(post.coverImage).toMatch(/^\//);
       }

@@ -30,15 +30,15 @@ Project guidance for agents working in this repository.
 ## Content
 
 - Blog posts live under `content/posts`.
-- Each post has matching metadata at `content/config/<slug>.json` and Markdown
-  at `content/posts/<slug>.md`.
+- Each post has matching metadata at `content/config/<slug>.json` and exactly
+  one source at `content/posts/<slug>.md` or `content/posts/<slug>.html`.
 - Post-local assets live under `content/posts/<slug>/` and use relative paths
   from the Markdown file.
 - Add an AI summary image button beside a heading with
   `<ai-img>relative-image.avif</ai-img>`.
-- Embed interactive pages with `<web-embed src="https://..." title="..."
-  caption="..." height="680" wide></web-embed>`; use HTTPS or a root-relative
-  URL, and reserve `wide` for experiences that need more than the text column.
+- Add native interactive content with a post-local `<html-fragment>` and a local
+  `data-blog-controller` module. Scope fragment CSS to the component, return a
+  cleanup function from `mount(host)`, and never use iframes or inline scripts.
 - Convert post images to AVIF before committing them.
 - The `prebuild`, `prestart`, and `pretest` hooks regenerate post data.
 - Files under `src/app/data` are generated and ignored by Git. Edit source

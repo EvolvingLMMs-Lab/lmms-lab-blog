@@ -5,9 +5,13 @@ import { Marked } from 'marked';
 import { basename, join } from 'path';
 import { createHighlighter } from 'shiki';
 import { createCodeRenderer } from './lib/code-renderer.mjs';
+import {
+  htmlFragmentBlock,
+  normalizeHtmlAssets,
+  renderHtmlFragments,
+} from './lib/html-fragment-renderer.mjs';
 import { mathBlock, mathInline } from './lib/math-extensions.mjs';
 import { tableRenderer } from './lib/table-renderer.mjs';
-import { renderWebEmbeds, webEmbedBlock } from './lib/web-embed-renderer.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const CONFIG_DIR = join(ROOT, 'content/config');
@@ -59,8 +63,7 @@ function resolvePostAssetPath(href, slug) {
   return join(POSTS_DIR, slug, localHref);
 }
 
-function getImageDimensions(href, slug) {
-  const file = resolvePostAssetPath(href, slug);
+function getImageDimensionsForFile(file) {
   if (!file || !existsSync(file)) {
     return null;
   }
@@ -91,6 +94,10 @@ function getImageDimensions(href, slug) {
 
   imageDimensions.set(file, null);
   return null;
+}
+
+function getImageDimensions(href, slug) {
+  return getImageDimensionsForFile(resolvePostAssetPath(href, slug));
 }
 
 function escapeAttribute(value) {
@@ -173,7 +180,17 @@ function renderCustomElements(html, slug) {
     }
   }
 
-  renderWebEmbeds(document);
+  renderHtmlFragments(document, {
+    postsDir: POSTS_DIR,
+    slug,
+    getImageDimensions: getImageDimensionsForFile,
+  });
+  normalizeHtmlAssets(document, {
+    baseDir: join(POSTS_DIR, slug),
+    postDir: join(POSTS_DIR, slug),
+    slug,
+    getImageDimensions: getImageDimensionsForFile,
+  });
 
   return document.body.innerHTML;
 }
@@ -192,7 +209,7 @@ function renderMarkdown(md, slug, highlighter) {
   };
 
   const renderer = new Marked({
-    extensions: [webEmbedBlock, mathBlock, mathInline],
+    extensions: [htmlFragmentBlock, mathBlock, mathInline],
     renderer: {
       code: createCodeRenderer(highlighter),
       table: tableRenderer,
@@ -201,6 +218,10 @@ function renderMarkdown(md, slug, highlighter) {
   });
 
   const html = renderer.parse(md, { async: false });
+  return renderCustomElements(html, slug);
+}
+
+function renderHtml(html, slug) {
   return renderCustomElements(html, slug);
 }
 
@@ -214,19 +235,32 @@ async function main() {
   const rawPosts = configFiles.map((file) => {
     const slug = basename(file, '.json');
     const meta = JSON.parse(readFileSync(join(CONFIG_DIR, file), 'utf-8'));
-    const md = readFileSync(join(POSTS_DIR, `${slug}.md`), 'utf-8');
-    return { slug, meta, md };
+    const markdownPath = join(POSTS_DIR, `${slug}.md`);
+    const htmlPath = join(POSTS_DIR, `${slug}.html`);
+    const hasMarkdown = existsSync(markdownPath);
+    const hasHtml = existsSync(htmlPath);
+
+    if (hasMarkdown === hasHtml) {
+      throw new Error(
+        `Post "${slug}" must have exactly one source file: ${slug}.md or ${slug}.html`,
+      );
+    }
+
+    const format = hasHtml ? 'html' : 'markdown';
+    const source = readFileSync(hasHtml ? htmlPath : markdownPath, 'utf-8');
+    return { slug, meta, format, source };
   });
 
   // Create Shiki highlighter with all needed languages
-  const langs = collectLangs(rawPosts.map((p) => p.md));
+  const langs = collectLangs(rawPosts.map((post) => post.source));
   const highlighter = await createHighlighter({
     themes: ['catppuccin-latte', 'catppuccin-mocha'],
     langs: langs.length ? langs : ['text'],
   });
 
-  const posts = rawPosts.map(({ slug, meta, md }) => {
-    const contentHtml = renderMarkdown(md, slug, highlighter);
+  const posts = rawPosts.map(({ slug, meta, format, source }) => {
+    const contentHtml =
+      format === 'html' ? renderHtml(source, slug) : renderMarkdown(source, slug, highlighter);
     return { slug, ...meta, contentHtml };
   });
 

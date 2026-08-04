@@ -27,7 +27,7 @@ import {
   initAiSummaryFigures,
   initCodeCopyButtons,
   initContentImageZoom,
-  initWebEmbeds,
+  initHtmlControllers,
   optimizeContentImages,
 } from '../../utils/post-content-hooks';
 import { smoothScrollTo, SmoothScrollHandle } from '../../utils/smooth-scroll';
@@ -54,7 +54,7 @@ const HEADING_SCROLL_OFFSET_PX = 20;
     './styles/code-blocks.css',
     './styles/tables.css',
     './styles/media.css',
-    './styles/web-embeds.css',
+    './styles/native-html.css',
     './styles/layout.css',
   ],
   encapsulation: ViewEncapsulation.None,
@@ -104,7 +104,7 @@ export class PostComponent implements OnDestroy {
       let cleanupAiSummaryFigures: (() => void) | null = null;
       let cleanupContentImageZoom: (() => void) | null = null;
       let cleanupContentImages: (() => void) | null = null;
-      let cleanupWebEmbeds: (() => void) | null = null;
+      let cleanupHtmlControllers: (() => void) | null = null;
       let setupTimer: number | null = null;
       let isDisposed = false;
 
@@ -129,7 +129,7 @@ export class PostComponent implements OnDestroy {
           cleanupContentImages = this.hydrateContentImages(postBody);
           cleanupAiSummaryFigures = initAiSummaryFigures(postBody);
           cleanupContentImageZoom = initContentImageZoom(postBody);
-          cleanupWebEmbeds = initWebEmbeds(postBody);
+          cleanupHtmlControllers = initHtmlControllers(postBody);
           this.setupHeadingObserver();
           this.giscus()?.load();
         }, attempt === 0 ? 0 : 25);
@@ -145,7 +145,7 @@ export class PostComponent implements OnDestroy {
         cleanupAiSummaryFigures?.();
         cleanupContentImageZoom?.();
         cleanupContentImages?.();
-        cleanupWebEmbeds?.();
+        cleanupHtmlControllers?.();
         this.headingObserver.disconnect();
       });
     });

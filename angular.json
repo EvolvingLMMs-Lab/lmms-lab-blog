@@ -29,6 +29,7 @@
                 "output": "posts",
                 "ignore": [
                   "**/*.md",
+                  "**/*.html",
                   "**/.gitkeep"
                 ]
               }

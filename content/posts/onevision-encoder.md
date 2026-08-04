@@ -72,13 +72,7 @@ Traditional sampling selects a small number of frames and processes every patch
 from each. Static backgrounds, repeated textures, and unchanging regions are
 therefore processed multiple times even though they add no new information.
 
-<web-embed
-  src="/embeds/onevision-encoder/index.html#image-grid-codec"
-  title="OneVision Encoder interactive codec visualization"
-  caption="Explore the original codec-style patch selection and video pipeline. Scroll inside the frame to continue through the interactive experience."
-  height="760"
-  wide
-></web-embed>
+<html-fragment src="./interactive.html" wide></html-fragment>
 
 ## Video Processing Pipeline
 

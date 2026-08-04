@@ -27,7 +27,7 @@ pnpm build
 Create matching files for the post slug:
 
 - `content/config/<slug>.json`
-- `content/posts/<slug>.md`
+- `content/posts/<slug>.md` or `content/posts/<slug>.html`
 
 Metadata uses this shape:
 
@@ -43,24 +43,38 @@ Optional post assets belong in `content/posts/<slug>/` and can be referenced
 with relative Markdown paths. Generated TypeScript under `src/app/data` should
 not be edited or committed.
 
-### Embedded web experiences
+### Native HTML experiences
 
-Use the blog's `web-embed` element for interactive demos and external pages:
+Posts can be authored directly as HTML, or a Markdown post can include a local
+HTML fragment. Fragments are inserted into the article DOM at build time, so
+they inherit the blog theme and never use an iframe:
 
 ```html
-<web-embed
-  src="https://example.com/demo/"
-  title="Interactive demo"
-  caption="Explore the full interactive result without leaving the article."
-  height="680"
-  wide
-></web-embed>
+<html-fragment src="./interactive.html" wide></html-fragment>
 ```
 
-The generated embed includes lazy loading, a sandbox, reload and fullscreen
-controls, an external-page fallback, and responsive/print styles. `src` must be
-HTTPS or root-relative. `height` is clamped between 360 and 1200 pixels; add
-`wide` when the experience benefits from extending beyond the text column.
+Keep fragment styles scoped to a unique component class. For interactivity,
+point `data-blog-controller` to a post-local JavaScript module:
+
+```html
+<section class="demo" data-blog-controller="./interactive/controller.mjs">
+  <!-- Native semantic HTML remains useful before the module loads. -->
+</section>
+```
+
+```js
+export function mount(host) {
+  const handleClick = () => {};
+  host.addEventListener('click', handleClick);
+  return () => host.removeEventListener('click', handleClick);
+}
+```
+
+The module is mounted after the article renders and its cleanup function runs
+when navigation replaces the post. Fragment sources, assets, and controllers
+must stay inside `content/posts/<slug>/`. Inline scripts and iframes are rejected
+during content generation. Add `wide` only when a visualization benefits from
+extending beyond the reading column.
 
 ## Deployment
 

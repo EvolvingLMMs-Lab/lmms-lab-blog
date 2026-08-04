@@ -1,0 +1,45 @@
+.post-body .html-fragment {
+  position: relative;
+  margin: 2rem 0;
+  text-align: left;
+  hyphens: none;
+}
+
+.post-body .html-fragment--wide {
+  width: min(1080px, calc(100vw - 3rem));
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.post-body [data-blog-controller][data-blog-controller-state="loading"] {
+  cursor: progress;
+}
+
+.post-body [data-blog-controller][data-blog-controller-state="error"]::after {
+  content: "The interactive view could not be loaded. The article remains available below.";
+  display: block;
+  margin: 1rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--ctp-red) 38%, var(--ctp-transparent));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ctp-red) 8%, var(--paper-bg));
+  color: var(--ctp-red);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 720px) {
+  .post-body .html-fragment--wide {
+    width: calc(100vw - 1.25rem);
+  }
+}
+
+@media print {
+  .post-body .html-fragment,
+  .post-body .html-fragment--wide {
+    width: auto;
+    margin: 1.5rem 0;
+    transform: none;
+  }
+}
