@@ -45,3 +45,15 @@ Project guidance for agents working in this repository.
 - The `prebuild`, `prestart`, and `pretest` hooks regenerate post data.
 - Files under `src/app/data` are generated and ignored by Git. Edit source
   content rather than generated TypeScript files.
+
+## Documentation
+
+- `docs/authoring.md` is the canonical author-facing reference for the blog's
+  publishing API. Keep the README concise and link to that guide instead of
+  duplicating authoring instructions.
+- Update `docs/authoring.md` in the same change whenever behavior affecting
+  metadata, Markdown or HTML rendering, fragments, asset paths, interactive
+  controllers, the table of contents, typography, media, math, code, tables,
+  comments, themes, or validation commands changes.
+- A publishing feature is not complete until its guide text, executable
+  examples, and relevant tests agree with the implementation.
