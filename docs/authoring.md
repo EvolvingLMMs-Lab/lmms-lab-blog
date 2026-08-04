@@ -402,7 +402,10 @@ independently embedded application.
 
 ## Styling native content
 
-Native content participates in both Catppuccin themes. Prefer the semantic site
+Native content participates in both LMMs-Lab blue themes. The default theme uses
+the `#03639a` brand blue for the paper surface and warm cream text; dark mode
+deepens the blue shell and paper while keeping the same visual identity. Print
+output switches back to an ink-friendly white surface. Prefer the semantic site
 variables:
 
 ```css
@@ -428,8 +431,8 @@ Frequently useful variables include:
 - `--text-color` and `--text-secondary`;
 - `--link-color` and `--border-color`;
 - `--font-body`, `--font-heading`, and `--font-mono`; and
-- Catppuccin accents such as `--ctp-blue`, `--ctp-teal`, `--ctp-mauve`,
-  `--ctp-peach`, `--ctp-green`, and `--ctp-red`.
+- adapted Catppuccin accent tokens such as `--ctp-blue`, `--ctp-teal`,
+  `--ctp-mauve`, `--ctp-peach`, `--ctp-green`, and `--ctp-red`.
 
 The font variables use self-hosted Roboto, Space Grotesk, and Google Sans Code.
 Fragments should inherit them instead of loading remote web fonts.
