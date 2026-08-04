@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lmms-lab-blog",
+  "compatibility_date": "2026-08-04",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "blog.lmms-lab.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./dist/lmms-lab-blog/browser",
+    "not_found_handling": "single-page-application"
+  }
+}

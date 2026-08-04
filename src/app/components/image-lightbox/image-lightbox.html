@@ -1,0 +1,13 @@
+<img
+  #img
+  [ngSrc]="src()"
+  [alt]="alt()"
+  [width]="width()"
+  [height]="height()"
+  [class]="imgClass()"
+  [loading]="priority() ? undefined : loading()"
+  [priority]="priority()"
+  [sizes]="sizes()"
+  [attr.data-zoom-src]="src()"
+  (click)="onImageClick($event)"
+/>

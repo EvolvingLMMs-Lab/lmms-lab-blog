@@ -1,0 +1,70 @@
+@if (post(); as post) {
+  @if (tocItems().length) {
+    <button
+      class="toc-toggle"
+      type="button"
+      (click)="toggleToc()"
+      [attr.aria-expanded]="tocOpen()"
+      aria-controls="post-toc"
+      aria-label="Toggle table of contents"
+      title="Table of Contents"
+    >
+      @if (tocOpen()) {
+        <i class="ph ph-x" aria-hidden="true" style="font-size: 20px"></i>
+      } @else {
+        <i class="ph ph-list" aria-hidden="true" style="font-size: 20px"></i>
+      }
+    </button>
+
+    <nav
+      class="post-toc"
+      [class.toc-visible]="tocOpen()"
+      id="post-toc"
+      aria-label="Table of contents"
+      (keydown.escape)="closeToc()"
+      tabindex="-1"
+    >
+      <div class="toc-title">
+        <i class="ph ph-list-numbers toc-title-icon" aria-hidden="true"></i>
+        <span>Contents</span>
+      </div>
+      <div class="toc-nav" appAutoAnimate [appAutoAnimateOptions]="{ duration: 150, easing: 'ease-out' }">
+        @for (item of tocItems(); track item.id) {
+          <a
+            class="toc-link"
+            [class.level-3]="item.level === 3"
+            [class.is-active]="activeHeadingId() === item.id"
+            [href]="'#' + item.id"
+            (click)="onTocClick($event, item.id)"
+          >
+            {{ item.text }}
+          </a>
+        }
+      </div>
+    </nav>
+
+    <div
+      class="toc-backdrop"
+      [class.toc-backdrop-visible]="tocOpen() && !isWide()"
+      (click)="closeToc()"
+      tabindex="-1"
+      role="button"
+      aria-label="Close table of contents"
+    ></div>
+  }
+
+  <app-post-header [title]="post.title" [date]="post.date" [coverImage]="post.coverImage" />
+
+  <article class="post-body" [innerHTML]="safeHtml()"></article>
+
+  <section class="giscus-wrapper">
+    <app-giscus-comments />
+  </section>
+
+  <app-back-to-top />
+} @else {
+  <div class="not-found">
+    <h1>Post not found</h1>
+    <a routerLink="/"><i class="ph ph-arrow-left" aria-hidden="true"></i> Back to all posts</a>
+  </div>
+}

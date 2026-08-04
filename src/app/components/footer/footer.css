@@ -1,0 +1,34 @@
+.footer {
+  font-family: var(--font-heading);
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: var(--text-secondary);
+}
+
+.footer-line {
+  margin: 0;
+}
+
+.footer-icon-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-icon-link i {
+  vertical-align: -0.15em;
+  font-size: 1.05em;
+}
+
+.footer-icon-link:hover {
+  color: var(--link-color);
+}
+
+@media print {
+  .footer {
+    display: none;
+  }
+}
