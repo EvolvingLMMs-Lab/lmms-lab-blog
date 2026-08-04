@@ -1,529 +1,499 @@
 <style>
-  .ov-explorer {
+  .ov-native {
     --ov-codec: var(--ctp-teal);
-    --ov-sampling: var(--ctp-mauve);
+    --ov-uniform: var(--ctp-mauve);
     position: relative;
-    isolation: isolate;
     overflow: hidden;
-    padding: clamp(1.15rem, 2.8vw, 2rem);
+    padding: clamp(1rem, 2.5vw, 1.55rem);
     border: 1px solid color-mix(in srgb, var(--ctp-sapphire) 24%, var(--border-color));
-    border-radius: 18px;
+    border-radius: 16px;
     background:
       radial-gradient(
-        circle at 8% 0%,
-        color-mix(in srgb, var(--ctp-teal) 13%, var(--ctp-transparent)),
+        circle at 0 0,
+        color-mix(in srgb, var(--ctp-teal) 9%, var(--ctp-transparent)),
         var(--ctp-transparent) 34%
       ),
       radial-gradient(
-        circle at 96% 4%,
-        color-mix(in srgb, var(--ctp-mauve) 12%, var(--ctp-transparent)),
-        var(--ctp-transparent) 32%
+        circle at 100% 0,
+        color-mix(in srgb, var(--ctp-mauve) 9%, var(--ctp-transparent)),
+        var(--ctp-transparent) 34%
       ),
-      color-mix(in srgb, var(--paper-bg) 94%, var(--ctp-base));
-    box-shadow:
-      0 1px 0 color-mix(in srgb, var(--ctp-white, white) 38%, var(--ctp-transparent)) inset,
-      0 16px 44px color-mix(in srgb, var(--ctp-crust) 14%, var(--ctp-transparent));
+      color-mix(in srgb, var(--paper-bg) 96%, var(--ctp-base));
+    box-shadow: 0 12px 34px color-mix(in srgb, var(--ctp-crust) 10%, var(--ctp-transparent));
     color: var(--text-color);
     font-family: var(--font-heading);
   }
 
-  .ov-explorer::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    opacity: 0.28;
-    background-image: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--border-color) 18%, var(--ctp-transparent)) 1px,
-      var(--ctp-transparent) 1px
-    );
-    background-size: 32px 32px;
-    mask-image: linear-gradient(to bottom, black, transparent 58%);
-    pointer-events: none;
+  .ov-native *,
+  .ov-native *::before,
+  .ov-native *::after {
+    box-sizing: border-box;
   }
 
-  .ov-explorer__header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem 2rem;
-    align-items: end;
-    margin-bottom: 1.35rem;
-  }
-
-  .ov-explorer__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.42rem;
-    margin: 0 0 0.45rem;
-    color: var(--ctp-sapphire);
-    font-size: 0.69rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .ov-explorer__eyebrow::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--ctp-teal);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ctp-teal) 13%, var(--ctp-transparent));
-  }
-
-  .ov-explorer h4 {
-    margin: 0;
-    color: var(--text-color);
-    font-family: var(--font-heading);
-    font-size: clamp(1.32rem, 2.8vw, 1.9rem);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.12;
-  }
-
-  .ov-explorer__intro {
-    max-width: 64ch;
-    margin: 0.55rem 0 0;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-
-  .ov-explorer__metric {
-    display: grid;
-    min-width: 126px;
-    padding: 0.7rem 0.82rem;
-    border: 1px solid color-mix(in srgb, var(--ctp-teal) 25%, var(--border-color));
-    border-radius: 11px;
-    background: color-mix(in srgb, var(--ctp-teal) 8%, var(--paper-bg));
-  }
-
-  .ov-explorer__metric strong {
-    color: var(--ctp-teal);
-    font-size: 1.15rem;
-    line-height: 1.15;
-  }
-
-  .ov-explorer__metric span {
-    margin-top: 0.18rem;
-    color: var(--text-secondary);
-    font-size: 0.68rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .ov-explorer__comparison {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.8rem, 2vw, 1.2rem);
-  }
-
-  .ov-explorer__panel {
-    min-width: 0;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--border-color) 36%, var(--ctp-transparent));
-    border-radius: 14px;
-    background: color-mix(in srgb, var(--paper-bg) 82%, var(--ctp-surface0));
-    box-shadow: 0 10px 28px color-mix(in srgb, var(--ctp-crust) 10%, var(--ctp-transparent));
-  }
-
-  .ov-explorer__panel--codec {
-    border-top: 3px solid var(--ov-codec);
-  }
-
-  .ov-explorer__panel--sampling {
-    border-top: 3px solid var(--ov-sampling);
-  }
-
-  .ov-explorer__panel-head,
-  .ov-explorer__panel-foot {
+  .ov-native__header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    gap: 0.8rem;
-    padding: 0.72rem 0.82rem;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
   }
 
-  .ov-explorer__panel-head {
-    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 22%, var(--ctp-transparent));
-  }
-
-  .ov-explorer__panel-title {
+  .ov-native__eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.42rem;
-    color: var(--text-color);
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-
-  .ov-explorer__panel-title i {
-    color: var(--ov-codec);
-    font-size: 1.05rem;
-  }
-
-  .ov-explorer__panel--sampling .ov-explorer__panel-title i {
-    color: var(--ov-sampling);
-  }
-
-  .ov-explorer__token-chip {
-    flex: none;
-    padding: 0.22rem 0.48rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ov-codec) 12%, var(--ctp-transparent));
-    color: var(--ov-codec);
-    font-family: var(--font-mono);
+    gap: 0.38rem;
+    margin: 0 0 0.35rem;
+    color: var(--ctp-sapphire);
     font-size: 0.65rem;
     font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
   }
 
-  .ov-explorer__panel--sampling .ov-explorer__token-chip {
-    background: color-mix(in srgb, var(--ov-sampling) 12%, var(--ctp-transparent));
-    color: var(--ov-sampling);
+  .ov-native__eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ctp-teal);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ctp-teal) 13%, var(--ctp-transparent));
   }
 
-  .ov-explorer__grid {
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    aspect-ratio: 1;
-    gap: 1px;
-    padding: clamp(5px, 1vw, 9px);
-    background: color-mix(in srgb, var(--ctp-crust) 94%, black);
-  }
-
-  .ov-explorer__grid img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    min-width: 0;
-    aspect-ratio: 1;
+  .ov-native h4 {
     margin: 0;
-    border-radius: 1px;
-    background: var(--ctp-mantle);
-    object-fit: cover;
-    box-shadow: none;
-    transition: opacity 0.18s ease, filter 0.18s ease;
-  }
-
-  .ov-explorer__grid[aria-busy="true"] img {
-    opacity: 0.55;
-    filter: saturate(0.72);
-  }
-
-  .ov-explorer__panel-foot {
-    min-height: 54px;
-    align-items: flex-start;
-    border-top: 1px solid color-mix(in srgb, var(--border-color) 22%, var(--ctp-transparent));
-  }
-
-  .ov-explorer__panel-copy {
-    min-width: 0;
-  }
-
-  .ov-explorer__panel-copy strong,
-  .ov-explorer__panel-copy span {
-    display: block;
-  }
-
-  .ov-explorer__panel-copy strong {
-    overflow: hidden;
     color: var(--text-color);
-    font-size: 0.76rem;
-    line-height: 1.3;
+    font: 700 clamp(1.15rem, 2.4vw, 1.55rem) / 1.2 var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+
+  .ov-native__intro {
+    max-width: 64ch;
+    margin: 0.42rem 0 0;
+    color: var(--text-secondary);
+    font: 400 0.82rem / 1.5 var(--font-body);
+  }
+
+  .ov-native__play {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 34px;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--ctp-sapphire) 30%, var(--border-color));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--ctp-sapphire) 7%, var(--paper-bg));
+    color: var(--ctp-sapphire);
+    cursor: pointer;
+    font: 700 0.7rem / 1 var(--font-heading);
+    transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+  }
+
+  .ov-native__play:hover {
+    border-color: color-mix(in srgb, var(--ctp-sapphire) 55%, var(--border-color));
+    background: color-mix(in srgb, var(--ctp-sapphire) 12%, var(--paper-bg));
+    transform: translateY(-1px);
+  }
+
+  .ov-native__play:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--ctp-sapphire) 65%, var(--ctp-transparent));
+    outline-offset: 2px;
+  }
+
+  .ov-native__budget {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    margin-bottom: 0.9rem;
+    border: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
+  }
+
+  .ov-native__budget-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.38rem;
+    min-width: 0;
+    padding: 0.55rem 0.7rem;
+    background: color-mix(in srgb, var(--paper-bg) 92%, var(--ctp-surface0));
+    text-align: center;
+  }
+
+  .ov-native__budget-item strong {
+    color: var(--text-color);
+    font-size: 0.8rem;
+  }
+
+  .ov-native__budget-item span {
+    overflow: hidden;
+    color: var(--text-secondary);
+    font-size: 0.64rem;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .ov-explorer__panel-copy span {
-    margin-top: 0.18rem;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: 0.68rem;
-    line-height: 1.35;
-  }
-
-  .ov-explorer__coverage {
-    flex: none;
-    color: var(--text-secondary);
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-  }
-
-  .ov-explorer__controls {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 0.7rem;
-    align-items: center;
-    margin-top: 1rem;
-    padding: 0.62rem;
+  .ov-native__mode {
+    overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--border-color) 28%, var(--ctp-transparent));
     border-radius: 12px;
-    background: color-mix(in srgb, var(--paper-bg) 72%, var(--ctp-surface0));
+    background: color-mix(in srgb, var(--paper-bg) 88%, var(--ctp-surface0));
   }
 
-  .ov-explorer__button,
-  .ov-explorer__step {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid color-mix(in srgb, var(--border-color) 34%, var(--ctp-transparent));
-    background: var(--paper-bg);
-    color: var(--text-secondary);
-    cursor: pointer;
-    font: inherit;
-    transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease,
-      transform 0.16s ease;
+  .ov-native__mode + .ov-native__mode {
+    margin-top: 0.8rem;
   }
 
-  .ov-explorer__button {
-    gap: 0.35rem;
-    min-height: 34px;
-    padding: 0.42rem 0.62rem;
-    border-radius: 8px;
-    font-size: 0.7rem;
-    font-weight: 700;
+  .ov-native__mode--codec {
+    border-top: 3px solid var(--ov-codec);
   }
 
-  .ov-explorer__button:hover,
-  .ov-explorer__step:hover {
-    border-color: color-mix(in srgb, var(--ctp-sapphire) 50%, var(--border-color));
-    background: color-mix(in srgb, var(--ctp-sapphire) 9%, var(--paper-bg));
-    color: var(--ctp-sapphire);
-    transform: translateY(-1px);
+  .ov-native__mode--uniform {
+    border-top: 3px solid var(--ov-uniform);
   }
 
-  .ov-explorer__button:focus-visible,
-  .ov-explorer__step:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--ctp-sapphire) 68%, var(--ctp-transparent));
-    outline-offset: 2px;
-  }
-
-  .ov-explorer__steps {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.38rem;
-  }
-
-  .ov-explorer__step {
-    min-width: 0;
-    min-height: 34px;
-    padding: 0.35rem 0.46rem;
-    border-radius: 8px;
-    font-size: 0.67rem;
-    font-weight: 600;
-    line-height: 1.15;
-  }
-
-  .ov-explorer__step[aria-pressed="true"] {
-    border-color: color-mix(in srgb, var(--ctp-sapphire) 48%, var(--border-color));
-    background: color-mix(in srgb, var(--ctp-sapphire) 13%, var(--paper-bg));
-    color: var(--ctp-sapphire);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--ctp-sapphire) 12%, var(--ctp-transparent));
-  }
-
-  .ov-explorer__status {
+  .ov-native__mode-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin: 0.8rem 0 0;
-    color: var(--text-secondary);
-    font-size: 0.68rem;
-    line-height: 1.45;
+    padding: 0.62rem 0.75rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 22%, var(--ctp-transparent));
   }
 
-  .ov-explorer__status span:first-child {
+  .ov-native__mode-title {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.48rem;
+  }
+
+  .ov-native__mode-title > i {
+    flex: none;
+    color: var(--ov-codec);
+    font-size: 1rem;
+  }
+
+  .ov-native__mode--uniform .ov-native__mode-title > i {
+    color: var(--ov-uniform);
+  }
+
+  .ov-native__mode-copy strong,
+  .ov-native__mode-copy span {
+    display: block;
+  }
+
+  .ov-native__mode-copy strong {
+    color: var(--text-color);
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
+
+  .ov-native__mode-copy span {
+    margin-top: 0.12rem;
+    color: var(--text-secondary);
+    font: 400 0.65rem / 1.3 var(--font-body);
+  }
+
+  .ov-native__mode-stat {
+    flex: none;
+    padding: 0.22rem 0.48rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ov-codec) 11%, var(--ctp-transparent));
+    color: var(--ov-codec);
+    font: 700 0.62rem / 1.2 var(--font-mono);
+  }
+
+  .ov-native__mode--uniform .ov-native__mode-stat {
+    background: color-mix(in srgb, var(--ov-uniform) 11%, var(--ctp-transparent));
+    color: var(--ov-uniform);
+  }
+
+  .ov-native__stage {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.45rem, 1.4vw, 0.75rem);
+    padding: clamp(0.55rem, 1.5vw, 0.8rem);
+  }
+
+  .ov-native__stage:empty {
+    display: block;
+    min-height: 190px;
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--ctp-surface0) 65%, var(--ctp-transparent)) 30%,
+      color-mix(in srgb, var(--ctp-surface1) 75%, var(--ctp-transparent)) 48%,
+      color-mix(in srgb, var(--ctp-surface0) 65%, var(--ctp-transparent)) 66%
+    );
+    background-size: 220% 100%;
+    animation: ov-native-loading 1.4s ease-in-out infinite;
+  }
+
+  .ov-native__frame {
+    min-width: 0;
+  }
+
+  .ov-native__grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    aspect-ratio: 1;
+    gap: 1px;
+    overflow: hidden;
+    padding: 4px;
+    border: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--ctp-crust) 93%, black);
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--ctp-crust) 15%, var(--ctp-transparent));
+  }
+
+  .ov-native__cell {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 1px;
+    background: color-mix(in srgb, var(--ctp-surface0) 35%, var(--ctp-crust));
+  }
+
+  .ov-native__cell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid color-mix(in srgb, var(--ctp-overlay0) 20%, var(--ctp-transparent));
+    pointer-events: none;
+  }
+
+  .ov-native__cell[data-has-patch="true"] {
+    cursor: crosshair;
+  }
+
+  .ov-native__cell[data-has-patch="true"]:hover {
+    z-index: 2;
+    outline: 2px solid color-mix(in srgb, var(--ctp-sapphire) 75%, white);
+    outline-offset: -2px;
+  }
+
+  .ov-native__cell img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    margin: 0;
+    border-radius: 0;
+    object-fit: cover;
+    box-shadow: none;
+  }
+
+  .ov-native__frame-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.28rem;
+    min-height: 25px;
+    padding-top: 0.35rem;
+    color: var(--text-color);
+    font-size: 0.66rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .ov-native__frame-label small {
+    color: var(--text-secondary);
+    font: 400 0.58rem / 1.2 var(--font-body);
+  }
+
+  .ov-native__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.65rem;
+    line-height: 1.4;
+  }
+
+  .ov-native__status {
     display: inline-flex;
     align-items: center;
-    gap: 0.36rem;
+    gap: 0.35rem;
   }
 
-  .ov-explorer__status i {
-    color: var(--ctp-sapphire);
+  .ov-native__status i {
+    color: var(--ctp-teal);
   }
 
-  .ov-explorer__loading {
-    margin: 0.85rem 0 0;
+  .ov-native__loading {
+    margin: 0.7rem 0 0;
     color: var(--text-secondary);
-    font-size: 0.72rem;
+    font-size: 0.68rem;
   }
 
-  .ov-explorer[data-blog-controller-state="ready"] .ov-explorer__loading,
-  .ov-explorer[data-blog-controller-state="error"] .ov-explorer__loading {
+  .ov-native[data-blog-controller-state="ready"] .ov-native__loading,
+  .ov-native[data-blog-controller-state="error"] .ov-native__loading {
     display: none;
   }
 
-  @media (max-width: 720px) {
-    .ov-explorer {
-      padding: 1rem;
-      border-radius: 14px;
+  .ov-native__tooltip {
+    position: absolute;
+    z-index: 2000;
+    max-width: min(240px, calc(100vw - 2rem));
+    padding: 0.38rem 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--ctp-sapphire) 35%, var(--border-color));
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--ctp-crust) 94%, var(--paper-bg));
+    box-shadow: 0 5px 18px color-mix(in srgb, var(--ctp-crust) 30%, var(--ctp-transparent));
+    color: var(--ctp-text);
+    font: 600 0.64rem / 1.3 var(--font-mono);
+    pointer-events: none;
+  }
+
+  .ov-native__tooltip[hidden] {
+    display: none;
+  }
+
+  @keyframes ov-native-loading {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: -100% 0;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .ov-native__header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
-    .ov-explorer__header,
-    .ov-explorer__comparison {
-      grid-template-columns: 1fr;
+    .ov-native__play {
+      align-self: flex-start;
     }
 
-    .ov-explorer__metric {
-      grid-template-columns: auto 1fr;
-      min-width: 0;
-      gap: 0.5rem;
-      align-items: baseline;
+    .ov-native__budget-item {
+      display: grid;
+      gap: 0.12rem;
+      justify-items: center;
+      padding-inline: 0.35rem;
     }
 
-    .ov-explorer__metric span {
-      margin: 0;
+    .ov-native__budget-item span {
+      white-space: normal;
     }
 
-    .ov-explorer__controls {
-      grid-template-columns: 1fr auto;
+    .ov-native__stage {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .ov-explorer__steps {
-      grid-column: 1 / -1;
-      grid-row: 1;
-    }
-
-    .ov-explorer__button:first-child {
-      justify-self: start;
-    }
-
-    .ov-explorer__button:last-child {
-      justify-self: end;
-    }
-
-    .ov-explorer__status {
+    .ov-native__mode-head,
+    .ov-native__footer {
       align-items: flex-start;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.4rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ov-explorer *,
-    .ov-explorer *::before,
-    .ov-explorer *::after {
-      scroll-behavior: auto !important;
+    .ov-native *,
+    .ov-native *::before,
+    .ov-native *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
   }
 
   @media print {
-    .ov-explorer {
-      border: 1px solid var(--ctp-surface2);
+    .ov-native {
+      border-color: var(--ctp-surface2);
       box-shadow: none;
     }
 
-    .ov-explorer__controls,
-    .ov-explorer__loading {
+    .ov-native__play,
+    .ov-native__tooltip,
+    .ov-native__loading {
       display: none;
     }
   }
 </style>
 
 <section
-  class="ov-explorer"
+  class="ov-native"
   data-blog-controller="./interactive/interactive.mjs"
-  aria-labelledby="ov-explorer-title"
+  aria-labelledby="ov-native-title"
 >
-  <header class="ov-explorer__header">
+  <header class="ov-native__header">
     <div>
-      <p class="ov-explorer__eyebrow">Native patch explorer</p>
-      <h4 id="ov-explorer-title">See where the visual tokens go</h4>
-      <p class="ov-explorer__intro">
-        Step through four equal-size token blocks. Codec patchification spends them across time
-        and motion; uniform sampling repeatedly spends them on dense frames.
+      <p class="ov-native__eyebrow">Interactive patch map</p>
+      <h4 id="ov-native-title">Same patch budget, different temporal coverage</h4>
+      <p class="ov-native__intro">
+        Both layouts spend 256 visual patches. Codec patchification distributes them over all 64
+        timesteps, while uniform sampling spends them on four complete frames.
       </p>
     </div>
-    <div class="ov-explorer__metric" aria-label="Patch reduction">
-      <strong>75–98%</strong>
-      <span>fewer patches</span>
-    </div>
-  </header>
-
-  <div class="ov-explorer__comparison">
-    <article class="ov-explorer__panel ov-explorer__panel--codec">
-      <div class="ov-explorer__panel-head">
-        <span class="ov-explorer__panel-title">
-          <i class="ph ph-wave-sine" aria-hidden="true"></i>
-          Codec-aligned
-        </span>
-        <span class="ov-explorer__token-chip">64 patches</span>
-      </div>
-      <div
-        class="ov-explorer__grid"
-        data-ov-grid="codec"
-        role="img"
-        aria-label="Codec-selected video patches"
-        aria-busy="true"
-      ></div>
-      <div class="ov-explorer__panel-foot">
-        <span class="ov-explorer__panel-copy">
-          <strong data-ov-codec-title>Reference anchor</strong>
-          <span data-ov-codec-detail>Dense spatial context at t=1</span>
-        </span>
-        <span class="ov-explorer__coverage" data-ov-codec-range>t = 1</span>
-      </div>
-    </article>
-
-    <article class="ov-explorer__panel ov-explorer__panel--sampling">
-      <div class="ov-explorer__panel-head">
-        <span class="ov-explorer__panel-title">
-          <i class="ph ph-grid-four" aria-hidden="true"></i>
-          Uniform sampling
-        </span>
-        <span class="ov-explorer__token-chip">64 patches</span>
-      </div>
-      <div
-        class="ov-explorer__grid"
-        data-ov-grid="sampling"
-        role="img"
-        aria-label="Uniformly sampled dense video frame patches"
-        aria-busy="true"
-      ></div>
-      <div class="ov-explorer__panel-foot">
-        <span class="ov-explorer__panel-copy">
-          <strong data-ov-sampling-title>8-frame sampling</strong>
-          <span data-ov-sampling-detail>One dense frame at a fixed interval</span>
-        </span>
-        <span class="ov-explorer__coverage" data-ov-sampling-range>8 frames</span>
-      </div>
-    </article>
-  </div>
-
-  <div class="ov-explorer__controls">
-    <button class="ov-explorer__button" type="button" data-ov-action="previous">
-      <i class="ph ph-arrow-left" aria-hidden="true"></i>
-      Previous
-    </button>
-    <div class="ov-explorer__steps" role="group" aria-label="Patch block">
-      <button class="ov-explorer__step" type="button" data-ov-step="0" aria-pressed="true">
-        Anchor
-      </button>
-      <button class="ov-explorer__step" type="button" data-ov-step="1" aria-pressed="false">
-        Early
-      </button>
-      <button class="ov-explorer__step" type="button" data-ov-step="2" aria-pressed="false">
-        Middle
-      </button>
-      <button class="ov-explorer__step" type="button" data-ov-step="3" aria-pressed="false">
-        Late
-      </button>
-    </div>
-    <button class="ov-explorer__button" type="button" data-ov-action="play" aria-pressed="true">
+    <button class="ov-native__play" type="button" data-ov-action="play" aria-pressed="true">
       <i class="ph ph-pause" data-ov-play-icon aria-hidden="true"></i>
       <span data-ov-play-label>Pause</span>
     </button>
+  </header>
+
+  <div class="ov-native__budget" aria-label="Shared visualization budget">
+    <div class="ov-native__budget-item"><strong>256</strong><span>patches in either layout</span></div>
+    <div class="ov-native__budget-item"><strong>64</strong><span>source video frames</span></div>
+    <div class="ov-native__budget-item"><strong>75–98%</strong><span>fewer processed patches</span></div>
   </div>
 
-  <p class="ov-explorer__status">
-    <span aria-live="polite">
-      <i class="ph ph-sparkle" aria-hidden="true"></i>
-      <span data-ov-status>Comparing the reference token block.</span>
+  <section class="ov-native__mode ov-native__mode--codec" aria-labelledby="ov-codec-title">
+    <header class="ov-native__mode-head">
+      <div class="ov-native__mode-title">
+        <i class="ph ph-wave-sine" aria-hidden="true"></i>
+        <div class="ov-native__mode-copy">
+          <strong id="ov-codec-title">Codec-style patch selection</strong>
+          <span>One reference frame, then only spatial regions carrying new temporal signal.</span>
+        </div>
+      </div>
+      <span class="ov-native__mode-stat">dense in time · sparse in space</span>
+    </header>
+    <div
+      class="ov-native__stage"
+      data-ov-stage="codec"
+      role="img"
+      aria-label="Reference frame and three animated sparse codec patch frames"
+    ></div>
+  </section>
+
+  <section class="ov-native__mode ov-native__mode--uniform" aria-labelledby="ov-uniform-title">
+    <header class="ov-native__mode-head">
+      <div class="ov-native__mode-title">
+        <i class="ph ph-grid-four" aria-hidden="true"></i>
+        <div class="ov-native__mode-copy">
+          <strong id="ov-uniform-title">Traditional frame sampling</strong>
+          <span>Four dense snapshots repeatedly process background and unchanged regions.</span>
+        </div>
+      </div>
+      <span class="ov-native__mode-stat">sparse in time · dense in space</span>
+    </header>
+    <div
+      class="ov-native__stage"
+      data-ov-stage="uniform"
+      role="img"
+      aria-label="Four uniformly sampled dense video frames"
+    ></div>
+  </section>
+
+  <footer class="ov-native__footer">
+    <span class="ov-native__status" aria-live="polite">
+      <i class="ph ph-clock-countdown" aria-hidden="true"></i>
+      <span data-ov-status>Loading temporal patch positions…</span>
     </span>
-    <span>Same patch budget · different temporal coverage</span>
-  </p>
-  <p class="ov-explorer__loading">Loading the local patch visualization…</p>
+    <span>Hover a retained patch to inspect its source position.</span>
+  </footer>
+
+  <p class="ov-native__loading">Loading the local patch visualization…</p>
+  <div class="ov-native__tooltip" data-ov-tooltip role="tooltip" hidden></div>
 </section>

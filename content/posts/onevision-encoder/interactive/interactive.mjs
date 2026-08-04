@@ -1,90 +1,208 @@
-const STEP_INTERVAL_MS = 3600;
-
-const STEPS = [
-  {
-    codecTitle: 'Reference anchor',
-    codecDetail: 'Dense spatial context at t=1',
-    codecRange: 't = 1',
-    samplingTitle: '8-frame sampling',
-    samplingDetail: 'One dense frame at a fixed interval',
-    samplingRange: '8 frames',
-    status: 'Comparing the reference token block.',
-  },
-  {
-    codecTitle: 'Early motion residuals',
-    codecDetail: 'Motion-bearing patches gathered across time',
-    codecRange: 't = 2–21',
-    samplingTitle: '16-frame sampling',
-    samplingDetail: 'Another complete frame, including static regions',
-    samplingRange: '16 frames',
-    status: 'Codec tokens follow early motion instead of another dense frame.',
-  },
-  {
-    codecTitle: 'Mid-sequence changes',
-    codecDetail: 'High-surprise regions keep their spatial evidence',
-    codecRange: 't = 22–42',
-    samplingTitle: '32-frame sampling',
-    samplingDetail: 'Dense compute is spent uniformly across the image',
-    samplingRange: '32 frames',
-    status: 'The same token block now covers changes from the middle of the clip.',
-  },
-  {
-    codecTitle: 'Long-range motion',
-    codecDetail: 'Late events remain represented within the budget',
-    codecRange: 't = 43–64',
-    samplingTitle: '64-frame sampling',
-    samplingDetail: 'Temporal reach grows only by adding dense samples',
-    samplingRange: '64 frames',
-    status: 'Codec selection reaches the final frames without a larger patch budget.',
-  },
-];
+const GRID_SIZE = 8;
+const CODEC_FRAME_COUNT = 64;
+const ANIMATED_CODEC_FRAMES = 3;
+const ANIMATION_INTERVAL_MS = 2000;
+const UNIFORM_FRAME_COUNTS = [8, 16, 32, 64];
 
 function requireElement(root, selector) {
   const element = root.querySelector(selector);
   if (!(element instanceof HTMLElement)) {
-    throw new Error(`OneVision patch explorer is missing ${selector}`);
+    throw new Error(`OneVision patch map is missing ${selector}`);
   }
   return element;
 }
 
-function makePatchGrid(folder, step) {
-  const fragment = document.createDocumentFragment();
-
-  for (let row = 0; row < 8; row += 1) {
-    for (let column = 0; column < 8; column += 1) {
-      const image = new Image();
-      image.src = new URL(`./${folder}/${step}_${row}_${column}.jpg`, import.meta.url).href;
-      image.alt = '';
-      image.decoding = 'async';
-      image.draggable = false;
-      fragment.append(image);
-    }
-  }
-
-  return fragment;
+function patchUrl(folder, group, row, column) {
+  return new URL(`./${folder}/${group}_${row}_${column}.jpg`, import.meta.url).href;
 }
 
-export function mount(root) {
-  const codecGrid = requireElement(root, '[data-ov-grid="codec"]');
-  const samplingGrid = requireElement(root, '[data-ov-grid="sampling"]');
-  const codecTitle = requireElement(root, '[data-ov-codec-title]');
-  const codecDetail = requireElement(root, '[data-ov-codec-detail]');
-  const codecRange = requireElement(root, '[data-ov-codec-range]');
-  const samplingTitle = requireElement(root, '[data-ov-sampling-title]');
-  const samplingDetail = requireElement(root, '[data-ov-sampling-detail]');
-  const samplingRange = requireElement(root, '[data-ov-sampling-range]');
-  const status = requireElement(root, '[data-ov-status]');
+function createPatchImage(folder, group, row, column) {
+  const image = new Image();
+  image.src = patchUrl(folder, group, row, column);
+  image.alt = '';
+  image.decoding = 'async';
+  image.loading = 'lazy';
+  image.draggable = false;
+  return image;
+}
+
+function createFrame() {
+  const frame = document.createElement('div');
+  frame.className = 'ov-native__frame';
+
+  const grid = document.createElement('div');
+  grid.className = 'ov-native__grid';
+  const cells = [];
+
+  for (let index = 0; index < GRID_SIZE * GRID_SIZE; index += 1) {
+    const cell = document.createElement('div');
+    cell.className = 'ov-native__cell';
+    cell.dataset.hasPatch = 'false';
+    grid.append(cell);
+    cells.push(cell);
+  }
+
+  const label = document.createElement('div');
+  label.className = 'ov-native__frame-label';
+  const title = document.createElement('span');
+  const detail = document.createElement('small');
+  label.append(title, detail);
+  frame.append(grid, label);
+
+  return { frame, cells, title, detail };
+}
+
+function setFrameLabel(frame, title, detail) {
+  frame.title.textContent = title;
+  frame.detail.textContent = detail;
+}
+
+function clearCell(cell) {
+  cell.replaceChildren();
+  cell.dataset.hasPatch = 'false';
+  delete cell.dataset.tooltip;
+  cell.removeAttribute('title');
+}
+
+function fillCell(cell, image, tooltip) {
+  cell.replaceChildren(image);
+  cell.dataset.hasPatch = 'true';
+  cell.dataset.tooltip = tooltip;
+  cell.title = tooltip;
+}
+
+function createUniformFrames(stage) {
+  const fragment = document.createDocumentFragment();
+
+  for (let group = 0; group < UNIFORM_FRAME_COUNTS.length; group += 1) {
+    const frame = createFrame();
+    setFrameLabel(frame, `Frame ${group + 1}`, `${UNIFORM_FRAME_COUNTS[group]} frames sampled`);
+
+    for (let row = 0; row < GRID_SIZE; row += 1) {
+      for (let column = 0; column < GRID_SIZE; column += 1) {
+        const index = row * GRID_SIZE + column;
+        const tooltip = `Uniform sample ${group + 1} · h=${row}, w=${column}`;
+        fillCell(
+          frame.cells[index],
+          createPatchImage('patches', group, row, column),
+          tooltip,
+        );
+      }
+    }
+
+    fragment.append(frame.frame);
+  }
+
+  stage.replaceChildren(fragment);
+}
+
+async function loadCodecRecords() {
+  const manifestUrl = new URL('./codec-positions.json', import.meta.url);
+  const response = await fetch(manifestUrl);
+  if (!response.ok) {
+    throw new Error(`Could not load codec patch positions (${response.status})`);
+  }
+
+  const positions = await response.json();
+  if (!Array.isArray(positions) || positions.length !== 256) {
+    throw new Error('Codec patch position manifest must contain 256 entries');
+  }
+
+  return positions.map((position, index) => {
+    if (
+      !Array.isArray(position) ||
+      position.length !== 3 ||
+      !position.every(Number.isInteger)
+    ) {
+      throw new Error(`Invalid codec patch position at index ${index}`);
+    }
+
+    const group = Math.floor(index / 64);
+    const displayIndex = index % 64;
+    const displayRow = Math.floor(displayIndex / GRID_SIZE);
+    const displayColumn = displayIndex % GRID_SIZE;
+    const [time, row, column] = position;
+
+    return {
+      time,
+      row,
+      column,
+      image: createPatchImage('patches-codec', group, displayRow, displayColumn),
+    };
+  });
+}
+
+function groupRecordsByTime(records) {
+  const recordsByTime = new Map();
+  for (const record of records) {
+    const group = recordsByTime.get(record.time) ?? [];
+    group.push(record);
+    recordsByTime.set(record.time, group);
+  }
+  return recordsByTime;
+}
+
+function renderCodecFrame(frame, time, records) {
+  for (const cell of frame.cells) {
+    clearCell(cell);
+  }
+
+  for (const record of records) {
+    const cell = frame.cells[record.row * GRID_SIZE + record.column];
+    if (!cell) {
+      continue;
+    }
+    const tooltip = `Codec patch · t=${record.time + 1}, h=${record.row}, w=${record.column}`;
+    fillCell(cell, record.image, tooltip);
+  }
+
+  setFrameLabel(
+    frame,
+    `t = ${time + 1}`,
+    time === 0 ? 'reference · 64 patches' : `${records.length} retained`,
+  );
+}
+
+function createCodecFrames(stage, recordsByTime) {
+  const frames = [];
+  const fragment = document.createDocumentFragment();
+
+  for (let index = 0; index < ANIMATED_CODEC_FRAMES + 1; index += 1) {
+    const frame = createFrame();
+    frames.push(frame);
+    fragment.append(frame.frame);
+  }
+
+  stage.replaceChildren(fragment);
+  renderCodecFrame(frames[0], 0, recordsByTime.get(0) ?? []);
+  return frames;
+}
+
+function nextCodecTime(time, offset = 0) {
+  return ((time + offset - 1) % (CODEC_FRAME_COUNT - 1)) + 1;
+}
+
+export async function mount(root) {
+  const codecStage = requireElement(root, '[data-ov-stage="codec"]');
+  const uniformStage = requireElement(root, '[data-ov-stage="uniform"]');
   const playButton = requireElement(root, '[data-ov-action="play"]');
   const playIcon = requireElement(root, '[data-ov-play-icon]');
   const playLabel = requireElement(root, '[data-ov-play-label]');
-  const previousButton = requireElement(root, '[data-ov-action="previous"]');
-  const stepButtons = Array.from(root.querySelectorAll('[data-ov-step]'));
+  const status = requireElement(root, '[data-ov-status]');
+  const tooltip = requireElement(root, '[data-ov-tooltip]');
+
+  const records = await loadCodecRecords();
+  const recordsByTime = groupRecordsByTime(records);
+  const codecFrames = createCodecFrames(codecStage, recordsByTime);
+  createUniformFrames(uniformStage);
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let currentStep = 0;
+  let baseTime = 1;
   let playing = !reducedMotion;
+  let hoveringCodec = false;
   let visible = true;
   let timer = null;
+  let activeTooltipCell = null;
 
   const clearTimer = () => {
     if (timer !== null) {
@@ -93,99 +211,129 @@ export function mount(root) {
     }
   };
 
+  const renderCodecWindow = () => {
+    const shownTimes = [];
+    for (let index = 0; index < ANIMATED_CODEC_FRAMES; index += 1) {
+      const time = nextCodecTime(baseTime, index);
+      shownTimes.push(time + 1);
+      renderCodecFrame(codecFrames[index + 1], time, recordsByTime.get(time) ?? []);
+    }
+    status.textContent = `Codec window: t = ${shownTimes.join(', ')}`;
+  };
+
+  const scheduleAnimation = () => {
+    clearTimer();
+    if (!playing || hoveringCodec || !visible || document.hidden) {
+      return;
+    }
+    timer = window.setTimeout(() => {
+      baseTime = nextCodecTime(baseTime, ANIMATED_CODEC_FRAMES);
+      renderCodecWindow();
+      scheduleAnimation();
+    }, ANIMATION_INTERVAL_MS);
+  };
+
   const updatePlayButton = () => {
     playButton.setAttribute('aria-pressed', String(playing));
-    playButton.setAttribute('aria-label', playing ? 'Pause animation' : 'Play animation');
+    playButton.setAttribute('aria-label', playing ? 'Pause codec animation' : 'Play codec animation');
     playIcon.classList.toggle('ph-pause', playing);
     playIcon.classList.toggle('ph-play', !playing);
     playLabel.textContent = playing ? 'Pause' : 'Play';
   };
 
-  const scheduleNextStep = () => {
-    clearTimer();
-    if (!playing || !visible || document.hidden) {
-      return;
-    }
-    timer = window.setTimeout(() => {
-      renderStep((currentStep + 1) % STEPS.length);
-    }, STEP_INTERVAL_MS);
-  };
-
-  const renderStep = step => {
-    currentStep = step;
-    const copy = STEPS[step];
-
-    codecGrid.setAttribute('aria-busy', 'true');
-    samplingGrid.setAttribute('aria-busy', 'true');
-    codecGrid.replaceChildren(makePatchGrid('patches-codec', step));
-    samplingGrid.replaceChildren(makePatchGrid('patches', step));
-
-    codecTitle.textContent = copy.codecTitle;
-    codecDetail.textContent = copy.codecDetail;
-    codecRange.textContent = copy.codecRange;
-    samplingTitle.textContent = copy.samplingTitle;
-    samplingDetail.textContent = copy.samplingDetail;
-    samplingRange.textContent = copy.samplingRange;
-    status.textContent = copy.status;
-
-    for (const button of stepButtons) {
-      const selected = Number(button.getAttribute('data-ov-step')) === step;
-      button.setAttribute('aria-pressed', String(selected));
-    }
-
-    window.requestAnimationFrame(() => {
-      codecGrid.setAttribute('aria-busy', 'false');
-      samplingGrid.setAttribute('aria-busy', 'false');
-    });
-    scheduleNextStep();
-  };
-
-  const handleStepClick = event => {
-    const step = Number(event.currentTarget.getAttribute('data-ov-step'));
-    if (Number.isInteger(step) && step >= 0 && step < STEPS.length) {
-      renderStep(step);
-    }
-  };
-
-  const handlePrevious = () => {
-    renderStep((currentStep - 1 + STEPS.length) % STEPS.length);
-  };
-
   const handlePlay = () => {
     playing = !playing;
     updatePlayButton();
-    scheduleNextStep();
+    scheduleAnimation();
   };
 
-  const handleVisibilityChange = () => scheduleNextStep();
+  const handleCodecEnter = () => {
+    hoveringCodec = true;
+    clearTimer();
+  };
 
-  for (const button of stepButtons) {
-    button.addEventListener('click', handleStepClick);
-  }
-  previousButton.addEventListener('click', handlePrevious);
+  const handleCodecLeave = () => {
+    hoveringCodec = false;
+    tooltip.hidden = true;
+    activeTooltipCell = null;
+    scheduleAnimation();
+  };
+
+  const positionTooltip = event => {
+    const rootRect = root.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const left = Math.min(
+      Math.max(8, event.clientX - rootRect.left + 12),
+      root.clientWidth - tooltipRect.width - 8,
+    );
+    const top = Math.min(
+      Math.max(8, event.clientY - rootRect.top + 12),
+      root.clientHeight - tooltipRect.height - 8,
+    );
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+  };
+
+  const handlePointerOver = event => {
+    const cell = event.target.closest?.('.ov-native__cell[data-has-patch="true"]');
+    if (!(cell instanceof HTMLElement) || cell === activeTooltipCell) {
+      return;
+    }
+    activeTooltipCell = cell;
+    tooltip.textContent = cell.dataset.tooltip ?? '';
+    tooltip.hidden = false;
+    positionTooltip(event);
+  };
+
+  const handlePointerMove = event => {
+    if (activeTooltipCell) {
+      positionTooltip(event);
+    }
+  };
+
+  const handlePointerOut = event => {
+    if (!activeTooltipCell || activeTooltipCell.contains(event.relatedTarget)) {
+      return;
+    }
+    activeTooltipCell = null;
+    tooltip.hidden = true;
+  };
+
+  const handleVisibilityChange = () => scheduleAnimation();
+
   playButton.addEventListener('click', handlePlay);
+  codecStage.addEventListener('pointerenter', handleCodecEnter);
+  codecStage.addEventListener('pointerleave', handleCodecLeave);
+  root.addEventListener('pointerover', handlePointerOver);
+  root.addEventListener('pointermove', handlePointerMove);
+  root.addEventListener('pointerout', handlePointerOut);
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
   const observer =
     'IntersectionObserver' in window
-      ? new IntersectionObserver(entries => {
-          visible = entries[0]?.isIntersecting ?? true;
-          scheduleNextStep();
-        }, { threshold: 0.08 })
+      ? new IntersectionObserver(
+          entries => {
+            visible = entries[0]?.isIntersecting ?? true;
+            scheduleAnimation();
+          },
+          { threshold: 0.08 },
+        )
       : null;
   observer?.observe(root);
 
+  renderCodecWindow();
   updatePlayButton();
-  renderStep(0);
+  scheduleAnimation();
 
   return () => {
     clearTimer();
     observer?.disconnect();
-    document.removeEventListener('visibilitychange', handleVisibilityChange);
-    previousButton.removeEventListener('click', handlePrevious);
     playButton.removeEventListener('click', handlePlay);
-    for (const button of stepButtons) {
-      button.removeEventListener('click', handleStepClick);
-    }
+    codecStage.removeEventListener('pointerenter', handleCodecEnter);
+    codecStage.removeEventListener('pointerleave', handleCodecLeave);
+    root.removeEventListener('pointerover', handlePointerOver);
+    root.removeEventListener('pointermove', handlePointerMove);
+    root.removeEventListener('pointerout', handlePointerOut);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
   };
 }

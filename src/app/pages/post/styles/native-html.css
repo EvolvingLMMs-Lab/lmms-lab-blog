@@ -6,10 +6,16 @@
 }
 
 .post-body .html-fragment--wide {
-  width: min(1080px, calc(100vw - 3rem));
+  width: min(920px, calc(100vw - 3rem));
   max-width: none;
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+@media (min-width: 1301px) {
+  app-post:not(:has(.post-toc.toc-visible)) .post-body .html-fragment--wide {
+    width: min(1080px, calc(100vw - 3rem));
+  }
 }
 
 .post-body [data-blog-controller][data-blog-controller-state="loading"] {
