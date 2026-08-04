@@ -413,7 +413,9 @@ filled card, border, or drop shadow. The table of contents uses the same corner
 treatment and flat active-section markers. The Giscus discussion area uses the
 site-owned `public/giscus.css` theme within matching corner marks and is omitted
 from print output. Keep that stylesheet available at `/giscus.css` with its
-`https://giscus.app` CORS rule in `public/_headers`.
+`https://giscus.app` CORS rule in `public/_headers`. The embed references the
+canonical HTTPS asset so the cross-origin iframe uses the same theme in local
+previews.
 
 ```css
 .demo {
