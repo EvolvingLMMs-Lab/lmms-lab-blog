@@ -18,6 +18,17 @@
   margin-right: auto;
 }
 
+.post-body video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 1.25rem auto;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  background: var(--ctp-crust);
+}
+
 .post-body .math-display {
   text-align: center;
   margin: 1.75rem 0;

@@ -17,4 +17,16 @@ describe('generated content data', () => {
     );
     expect(sample?.contentHtml).toContain('width="1440" height="810"');
   });
+
+  it('renders the migrated OneVision Encoder article', () => {
+    const post = POSTS.find(item => item.slug === 'onevision-encoder');
+
+    expect(post).toBeDefined();
+    expect(post?.contentHtml).toContain('/posts/onevision-encoder/method.avif');
+    expect(post?.contentHtml).toContain('/posts/onevision-encoder/codec-structure.avif');
+    expect(post?.contentHtml).toContain('<video controls="" autoplay=""');
+    expect(post?.contentHtml).toContain('<div class="table-wrapper"><table>');
+    expect(post?.contentHtml).toContain('<span class="code-lang">bibtex</span>');
+    expect(post?.contentHtml).toContain('onevision_encoder_2026');
+  });
 });
