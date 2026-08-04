@@ -15,26 +15,7 @@
     </div>
   }
   @for (post of posts; track post.slug) {
-    <a
-      class="post-entry"
-      [class.post-entry--with-cover]="!!post.coverImage"
-      [routerLink]="['/', post.slug]"
-    >
-      @if (post.coverImage) {
-        <div class="post-entry-media">
-          <app-image-lightbox
-            [src]="post.coverImage"
-            [alt]="post.title"
-            width="320"
-            height="180"
-            [priority]="$first"
-            loading="lazy"
-            sizes="(max-width: 600px) 120px, 208px"
-            imgClass="post-entry-image"
-            preventAncestorNavigation
-          />
-        </div>
-      }
+    <a class="post-entry" [routerLink]="['/', post.slug]">
       <div class="post-entry-content">
         <div class="post-row">
           <span class="post-title">

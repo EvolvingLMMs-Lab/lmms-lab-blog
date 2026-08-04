@@ -16,7 +16,6 @@ content/
 └── posts/
     ├── my-post.md
     └── my-post/
-        ├── cover.avif
         ├── result.avif
         └── interactive/
             ├── demo.css
@@ -49,8 +48,7 @@ Create `content/config/<slug>.json`:
 {
   "title": "A descriptive post title",
   "date": "2026-08-04",
-  "description": "A concise summary used on the blog index.",
-  "coverImage": "/posts/my-post/cover.avif"
+  "description": "A concise summary used on the blog index."
 }
 ```
 
@@ -59,10 +57,9 @@ Create `content/config/<slug>.json`:
 | `title` | Yes | Displayed as the article title and on the blog index. |
 | `date` | Yes | Use `YYYY-MM-DD`. Posts are sorted newest first. |
 | `description` | Yes | Keep it short enough to scan on the index page. |
-| `coverImage` | No | Use a published root-relative path, normally `/posts/<slug>/cover.avif`. A 16:9 image works best in the index card. |
 
 Do not add the title as an `h1` in the content source. The blog shell already
-renders the title, date, and cover image.
+renders the title and date.
 
 ## Markdown features
 
@@ -179,8 +176,8 @@ receive lazy loading, asynchronous decoding, and click-to-zoom behavior. When
 ImageMagick is available during generation, intrinsic width and height are
 added to reduce layout shift.
 
-Use meaningful alternative text. Prefer AVIF for committed article images and
-cover images unless the source format has a specific technical purpose.
+Use meaningful alternative text. Prefer AVIF for committed article images
+unless the source format has a specific technical purpose.
 
 Image captions can follow the image as an emphasized paragraph:
 

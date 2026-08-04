@@ -5,14 +5,4 @@
     <hr class="title-rule-bottom" />
   </div>
   <div class="date">{{ date() }}</div>
-  @if (coverImage()) {
-    <app-image-lightbox
-      [src]="coverImage()!"
-      [alt]="title()"
-      width="720"
-      height="405"
-      priority
-      imgClass="cover-image"
-    />
-  }
 </header>

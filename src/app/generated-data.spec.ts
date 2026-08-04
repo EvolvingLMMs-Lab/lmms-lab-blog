@@ -18,9 +18,6 @@ describe('generated content data', () => {
       expect(post.contentHtml.trim()).not.toBe('');
       expect(post.contentHtml).not.toContain('<html-fragment');
       expect(post.contentHtml).not.toContain('<iframe');
-      if (post.coverImage) {
-        expect(post.coverImage).toMatch(/^\//);
-      }
       slugs.add(post.slug);
     }
 
