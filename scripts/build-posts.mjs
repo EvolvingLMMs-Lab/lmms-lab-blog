@@ -7,6 +7,7 @@ import { createHighlighter } from 'shiki';
 import { createCodeRenderer } from './lib/code-renderer.mjs';
 import { mathBlock, mathInline } from './lib/math-extensions.mjs';
 import { tableRenderer } from './lib/table-renderer.mjs';
+import { renderWebEmbeds, webEmbedBlock } from './lib/web-embed-renderer.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const CONFIG_DIR = join(ROOT, 'content/config');
@@ -104,7 +105,7 @@ function insertAfter(referenceNode, newNode) {
   referenceNode.parentNode?.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-function renderAiImageFigures(html, slug) {
+function renderCustomElements(html, slug) {
   const dom = new JSDOM(`<body>${html}</body>`);
   const { document } = dom.window;
   let aiImageCount = 0;
@@ -172,6 +173,8 @@ function renderAiImageFigures(html, slug) {
     }
   }
 
+  renderWebEmbeds(document);
+
   return document.body.innerHTML;
 }
 
@@ -189,7 +192,7 @@ function renderMarkdown(md, slug, highlighter) {
   };
 
   const renderer = new Marked({
-    extensions: [mathBlock, mathInline],
+    extensions: [webEmbedBlock, mathBlock, mathInline],
     renderer: {
       code: createCodeRenderer(highlighter),
       table: tableRenderer,
@@ -198,7 +201,7 @@ function renderMarkdown(md, slug, highlighter) {
   });
 
   const html = renderer.parse(md, { async: false });
-  return renderAiImageFigures(html, slug);
+  return renderCustomElements(html, slug);
 }
 
 async function main() {

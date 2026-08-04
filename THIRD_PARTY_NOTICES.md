@@ -2,7 +2,7 @@
 
 ## LMMS-Lab Website
 
-The OneVision Encoder article and its migrated image assets are derived from
+The OneVision Encoder article, interactive embed, and migrated image assets are derived from
 [`Luodian/lmms-lab-website`](https://github.com/Luodian/lmms-lab-website) at
 commit `61adff1ec39ca458a8cf84dbc3b501c3b6e9c694`.
 

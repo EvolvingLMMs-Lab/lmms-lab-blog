@@ -36,6 +36,9 @@ Project guidance for agents working in this repository.
   from the Markdown file.
 - Add an AI summary image button beside a heading with
   `<ai-img>relative-image.avif</ai-img>`.
+- Embed interactive pages with `<web-embed src="https://..." title="..."
+  caption="..." height="680" wide></web-embed>`; use HTTPS or a root-relative
+  URL, and reserve `wide` for experiences that need more than the text column.
 - Convert post images to AVIF before committing them.
 - The `prebuild`, `prestart`, and `pretest` hooks regenerate post data.
 - Files under `src/app/data` are generated and ignored by Git. Edit source

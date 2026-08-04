@@ -175,3 +175,96 @@ export function initCodeCopyButtons(): void {
     });
   });
 }
+
+export function initWebEmbeds(container?: HTMLElement): () => void {
+  if (typeof document === 'undefined') {
+    return () => {};
+  }
+
+  const root = container ?? document;
+  const cleanups: Array<() => void> = [];
+
+  root.querySelectorAll<HTMLElement>('.web-embed[data-web-embed]').forEach(embed => {
+    const iframe = embed.querySelector<HTMLIFrameElement>('.web-embed__frame');
+    const reloadButton = embed.querySelector<HTMLButtonElement>('.web-embed__reload');
+    const fullscreenButton = embed.querySelector<HTMLButtonElement>('.web-embed__fullscreen');
+    const source = embed.dataset['webEmbedSource'];
+
+    if (!iframe || !source) {
+      return;
+    }
+
+    let loadingFallbackTimer: number | null = null;
+    const markLoading = () => {
+      embed.classList.remove('is-loaded');
+      if (loadingFallbackTimer !== null) {
+        window.clearTimeout(loadingFallbackTimer);
+      }
+      loadingFallbackTimer = window.setTimeout(() => markLoaded(), 15000);
+    };
+    const markLoaded = () => {
+      embed.classList.add('is-loaded');
+      if (loadingFallbackTimer !== null) {
+        window.clearTimeout(loadingFallbackTimer);
+        loadingFallbackTimer = null;
+      }
+    };
+    const handleReload = () => {
+      markLoading();
+      iframe.src = source;
+    };
+    const handleFullscreenChange = () => {
+      const isFullscreen = document.fullscreenElement === embed;
+      const icon = fullscreenButton?.querySelector('i');
+      fullscreenButton?.setAttribute(
+        'aria-label',
+        isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen',
+      );
+      if (fullscreenButton) {
+        fullscreenButton.title = isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen';
+      }
+      icon?.classList.toggle('ph-corners-out', !isFullscreen);
+      icon?.classList.toggle('ph-corners-in', isFullscreen);
+    };
+    const handleFullscreen = async () => {
+      try {
+        if (document.fullscreenElement === embed) {
+          await document.exitFullscreen();
+          return;
+        }
+        await embed.requestFullscreen();
+      } catch {
+        // Fullscreen can be denied by the browser or an embedding context.
+      }
+    };
+
+    markLoading();
+    iframe.addEventListener('load', markLoaded);
+    reloadButton?.addEventListener('click', handleReload);
+
+    if (typeof embed.requestFullscreen === 'function') {
+      fullscreenButton?.addEventListener('click', handleFullscreen);
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+    } else if (fullscreenButton) {
+      fullscreenButton.hidden = true;
+    }
+
+    embed.classList.add('is-hydrated');
+    cleanups.push(() => {
+      iframe.removeEventListener('load', markLoaded);
+      reloadButton?.removeEventListener('click', handleReload);
+      fullscreenButton?.removeEventListener('click', handleFullscreen);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      if (loadingFallbackTimer !== null) {
+        window.clearTimeout(loadingFallbackTimer);
+      }
+      embed.classList.remove('is-hydrated', 'is-loaded');
+    });
+  });
+
+  return () => {
+    for (const cleanup of cleanups) {
+      cleanup();
+    }
+  };
+}

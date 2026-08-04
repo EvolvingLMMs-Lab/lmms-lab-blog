@@ -43,6 +43,25 @@ Optional post assets belong in `content/posts/<slug>/` and can be referenced
 with relative Markdown paths. Generated TypeScript under `src/app/data` should
 not be edited or committed.
 
+### Embedded web experiences
+
+Use the blog's `web-embed` element for interactive demos and external pages:
+
+```html
+<web-embed
+  src="https://example.com/demo/"
+  title="Interactive demo"
+  caption="Explore the full interactive result without leaving the article."
+  height="680"
+  wide
+></web-embed>
+```
+
+The generated embed includes lazy loading, a sandbox, reload and fullscreen
+controls, an external-page fallback, and responsive/print styles. `src` must be
+HTTPS or root-relative. `height` is clamped between 360 and 1200 pixels; add
+`wide` when the experience benefits from extending beyond the text column.
+
 ## Deployment
 
 `wrangler.jsonc` maps the Worker to the custom domain. After authenticating
