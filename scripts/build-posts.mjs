@@ -68,19 +68,28 @@ function getImageDimensions(href, slug) {
     return imageDimensions.get(file);
   }
 
-  try {
-    const output = execFileSync('magick', ['identify', '-format', '%w %h', file], {
-      encoding: 'utf-8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    const [width, height] = output.split(/\s+/).map(Number);
-    const dimensions = Number.isFinite(width) && Number.isFinite(height) ? { width, height } : null;
-    imageDimensions.set(file, dimensions);
-    return dimensions;
-  } catch {
-    imageDimensions.set(file, null);
-    return null;
+  for (const [command, args] of [
+    ['magick', ['identify', '-format', '%w %h', file]],
+    ['identify', ['-format', '%w %h', file]],
+  ]) {
+    try {
+      const output = execFileSync(command, args, {
+        encoding: 'utf-8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+      const [width, height] = output.split(/\s+/).map(Number);
+      if (Number.isFinite(width) && Number.isFinite(height)) {
+        const dimensions = { width, height };
+        imageDimensions.set(file, dimensions);
+        return dimensions;
+      }
+    } catch {
+      // Try the next ImageMagick executable name.
+    }
   }
+
+  imageDimensions.set(file, null);
+  return null;
 }
 
 function escapeAttribute(value) {
