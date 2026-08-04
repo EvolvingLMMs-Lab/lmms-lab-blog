@@ -27,6 +27,7 @@ import {
   initAiSummaryFigures,
   initCodeCopyButtons,
   initContentImageZoom,
+  initContentVideos,
   initHtmlControllers,
   optimizeContentImages,
 } from '../../utils/post-content-hooks';
@@ -104,6 +105,7 @@ export class PostComponent implements OnDestroy {
       let cleanupAiSummaryFigures: (() => void) | null = null;
       let cleanupContentImageZoom: (() => void) | null = null;
       let cleanupContentImages: (() => void) | null = null;
+      let cleanupContentVideos: (() => void) | null = null;
       let cleanupHtmlControllers: (() => void) | null = null;
       let setupTimer: number | null = null;
       let isDisposed = false;
@@ -129,6 +131,7 @@ export class PostComponent implements OnDestroy {
           cleanupContentImages = this.hydrateContentImages(postBody);
           cleanupAiSummaryFigures = initAiSummaryFigures(postBody);
           cleanupContentImageZoom = initContentImageZoom(postBody);
+          cleanupContentVideos = initContentVideos(postBody);
           cleanupHtmlControllers = initHtmlControllers(postBody);
           this.setupHeadingObserver();
           this.giscus()?.load();
@@ -145,6 +148,7 @@ export class PostComponent implements OnDestroy {
         cleanupAiSummaryFigures?.();
         cleanupContentImageZoom?.();
         cleanupContentImages?.();
+        cleanupContentVideos?.();
         cleanupHtmlControllers?.();
         this.headingObserver.disconnect();
       });

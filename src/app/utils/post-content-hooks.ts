@@ -1,5 +1,9 @@
 import mediumZoom from 'medium-zoom';
 
+type ContentVideoPlayerModule = typeof import('./content-video-player');
+
+let contentVideoPlayerModule: Promise<ContentVideoPlayerModule> | null = null;
+
 type MathJaxApi = {
   startup?: {
     promise?: Promise<unknown>;
@@ -65,6 +69,81 @@ export function initContentImageZoom(container?: HTMLElement): () => void {
   const zoom = images.length ? mediumZoom(images, IMAGE_ZOOM_OPTIONS) : null;
 
   return () => zoom?.detach();
+}
+
+function loadContentVideoPlayer(): Promise<ContentVideoPlayerModule> {
+  if (!contentVideoPlayerModule) {
+    contentVideoPlayerModule = import('./content-video-player').catch(error => {
+      contentVideoPlayerModule = null;
+      throw error;
+    });
+  }
+
+  return contentVideoPlayerModule;
+}
+
+export function initContentVideos(container?: HTMLElement): () => void {
+  if (typeof document === 'undefined') {
+    return () => {};
+  }
+
+  const root = container ?? document;
+  const videos = Array.from(root.querySelectorAll<HTMLVideoElement>('video[controls]')).filter(
+    video => video.dataset['videoPlayerState'] === undefined && !video.closest('media-player'),
+  );
+
+  if (videos.length === 0) {
+    return () => {};
+  }
+
+  let disposed = false;
+  const playerCleanups: Array<() => void> = [];
+
+  for (const video of videos) {
+    video.dataset['videoPlayerState'] = 'loading';
+  }
+
+  void loadContentVideoPlayer()
+    .then(({ mountContentVideoPlayer }) => {
+      if (disposed) {
+        return;
+      }
+
+      for (const video of videos) {
+        if (!video.isConnected) {
+          delete video.dataset['videoPlayerState'];
+          continue;
+        }
+
+        try {
+          playerCleanups.push(mountContentVideoPlayer(video));
+          video.dataset['videoPlayerState'] = 'ready';
+        } catch (error) {
+          video.dataset['videoPlayerState'] = 'error';
+          console.error('Failed to initialize content video player', error);
+        }
+      }
+    })
+    .catch(error => {
+      if (disposed) {
+        return;
+      }
+
+      for (const video of videos) {
+        video.dataset['videoPlayerState'] = 'error';
+      }
+      console.error('Failed to load content video player', error);
+    });
+
+  return () => {
+    disposed = true;
+    for (const cleanup of playerCleanups) {
+      cleanup();
+    }
+    for (const video of videos) {
+      delete video.dataset['videoPlayerState'];
+    }
+  };
 }
 
 export function initAiSummaryFigures(container?: HTMLElement): () => void {

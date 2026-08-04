@@ -105,6 +105,28 @@ test('inlines a fragment-local stylesheet into the document flow', (t) => {
   assert.equal(body.querySelector('link[rel="stylesheet"]'), null);
 });
 
+test('rewrites post-local video sources, posters, and caption tracks', (t) => {
+  const body = render(
+    t,
+    `<video controls src="./interactive/preview.mp4" poster="./interactive/poster.avif">
+  <source src="./interactive/preview.webm" type="video/webm">
+  <track kind="captions" src="./interactive/preview.en.vtt" srclang="en">
+</video>`,
+  );
+  const video = body.querySelector('video');
+
+  assert.equal(video?.getAttribute('src'), '/posts/example/interactive/preview.mp4');
+  assert.equal(video?.getAttribute('poster'), '/posts/example/interactive/poster.avif');
+  assert.equal(
+    video?.querySelector('source')?.getAttribute('src'),
+    '/posts/example/interactive/preview.webm',
+  );
+  assert.equal(
+    video?.querySelector('track')?.getAttribute('src'),
+    '/posts/example/interactive/preview.en.vtt',
+  );
+});
+
 test('rejects iframe content', (t) => {
   assert.throws(
     () => render(t, '<iframe src="https://example.test"></iframe>'),

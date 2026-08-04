@@ -211,18 +211,41 @@ The image remains hidden until the button is activated.
 
 ### Video and audio
 
-Use semantic HTML for media that Markdown does not express directly:
+Use semantic HTML for media that Markdown does not express directly. Videos with
+`controls` are progressively enhanced with the blog's Vidstack player. The
+player JavaScript loads only on articles that contain a video, adapts its
+controls to the available width, and supports keyboard playback, seeking, mute,
+captions, picture-in-picture, and fullscreen. Native browser controls remain
+available if JavaScript or the player module fails to load.
 
 ```html
-<video controls muted playsinline preload="metadata" aria-label="Pipeline comparison">
-  <source src="./pipeline.webm" type="video/webm">
-  Your browser does not support WebM video.
-</video>
+<figure class="media-figure">
+  <video
+    controls
+    muted
+    playsinline
+    preload="metadata"
+    width="1280"
+    height="720"
+    poster="./pipeline-poster.avif"
+    aria-label="Pipeline comparison"
+  >
+    <source src="./pipeline.webm" type='video/webm; codecs="vp8, vorbis"'>
+    <source src="./pipeline.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
+    <track kind="captions" src="./pipeline.en.vtt" srclang="en" label="English">
+    Your browser does not support embedded video.
+  </video>
+  <figcaption>Comparison of the baseline and proposed pipeline.</figcaption>
+</figure>
 ```
 
 Post-local `video`, `audio`, `source`, `track`, and video `poster` paths are
 rewritten to their published `/posts/<slug>/...` URLs. HTTPS media URLs remain
-external.
+external. Prefer a WebM source followed by an MP4 fallback, an AVIF poster,
+explicit `width` and `height`, `playsinline`, and `preload="metadata"`; include
+accurate `codecs` values so the player can choose the browser's best-supported
+source. Avoid autoplay for article media. Add a WebVTT captions track whenever
+speech or other meaningful audio is present.
 
 ### Comments
 

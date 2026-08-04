@@ -41,7 +41,9 @@
               "node_modules/@fontsource-variable/space-grotesk/index.css",
               "node_modules/@fontsource-variable/google-sans-code/index.css",
               "node_modules/@phosphor-icons/web/src/regular/style.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/vidstack/player/styles/default/theme.css",
+              "node_modules/vidstack/player/styles/default/layouts/video.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "static"
