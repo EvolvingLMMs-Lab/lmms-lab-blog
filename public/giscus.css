@@ -1,0 +1,96 @@
+@import url('https://giscus.app/themes/transparent_dark.css');
+
+main {
+  --color-btn-text: #fed7aa;
+  --color-btn-bg: rgb(1 47 73 / 18%);
+  --color-btn-border: rgb(254 215 170 / 28%);
+  --color-btn-hover-bg: rgb(254 215 170 / 9%);
+  --color-btn-hover-border: rgb(254 215 170 / 52%);
+  --color-btn-active-bg: rgb(254 215 170 / 14%);
+  --color-btn-active-border: rgb(254 215 170 / 68%);
+  --color-btn-selected-bg: rgb(254 215 170 / 12%);
+  --color-btn-primary-text: #012f49;
+  --color-btn-primary-bg: #fed7aa;
+  --color-btn-primary-border: rgb(254 215 170 / 72%);
+  --color-btn-primary-hover-bg: #ffe5a6;
+  --color-btn-primary-hover-border: #ffe5a6;
+  --color-btn-primary-selected-bg: #fbd3a5;
+  --color-btn-primary-disabled-text: rgb(1 47 73 / 62%);
+  --color-btn-primary-disabled-bg: rgb(254 215 170 / 58%);
+  --color-btn-primary-disabled-border: rgb(254 215 170 / 36%);
+  --color-action-list-item-default-hover-bg: rgb(254 215 170 / 8%);
+  --color-segmented-control-bg: transparent;
+  --color-segmented-control-button-bg: transparent;
+  --color-segmented-control-button-selected-border: #fed7aa;
+  --color-fg-default: #fed7aa;
+  --color-fg-muted: #c2deeb;
+  --color-fg-subtle: #93c4da;
+  --color-canvas-default: transparent;
+  --color-canvas-overlay: #024e79;
+  --color-canvas-inset: transparent;
+  --color-canvas-subtle: transparent;
+  --color-border-default: rgb(254 215 170 / 30%);
+  --color-border-muted: rgb(254 215 170 / 18%);
+  --color-neutral-muted: rgb(254 215 170 / 6%);
+  --color-neutral-subtle: rgb(254 215 170 / 10%);
+  --color-accent-fg: #ffffff;
+  --color-accent-emphasis: #fed7aa;
+  --color-accent-muted: rgb(255 255 255 / 34%);
+  --color-accent-subtle: rgb(255 255 255 / 8%);
+  --color-success-fg: #b8e6b3;
+  --color-success-emphasis: #b8e6b3;
+  --color-attention-fg: #ffe5a6;
+  --color-attention-muted: rgb(255 229 166 / 40%);
+  --color-attention-subtle: rgb(255 229 166 / 12%);
+  --color-danger-fg: #ffcbd1;
+  --color-danger-muted: rgb(255 203 209 / 38%);
+  --color-danger-subtle: rgb(255 203 209 / 10%);
+}
+
+#__next .gsc-comment > .color-bg-primary,
+#__next .gsc-comment-box {
+  border-width: 1px 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+#__next .gsc-comment-box-tabs {
+  border-bottom-width: 1px;
+  background-color: transparent;
+}
+
+#__next .gsc-comment-box-tabs button,
+#__next .gsc-comment-box-textarea,
+#__next .gsc-comment-box-textarea-extras,
+#__next .gsc-comment-box .btn,
+#__next .BtnGroup,
+#__next .BtnGroup-item,
+#__next .BtnGroup .btn {
+  border-radius: 0;
+}
+
+#__next .gsc-comment-box-textarea,
+#__next .gsc-comment-box-textarea-extras {
+  border-right-width: 0;
+  border-left-width: 0;
+  background-color: rgb(1 47 73 / 10%);
+}
+
+#__next .BtnGroup {
+  background: transparent;
+}
+
+#__next .BtnGroup-item {
+  border-color: transparent;
+  border-bottom-color: transparent;
+}
+
+#__next .BtnGroup-item--selected {
+  border-bottom-color: #fed7aa;
+}
+
+@media (max-width: 600px) {
+  #__next .gsc-comment-box-bottom {
+    padding-right: 3rem;
+  }
+}

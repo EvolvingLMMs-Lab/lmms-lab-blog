@@ -29,7 +29,12 @@ export class GiscusCommentsComponent {
     script.setAttribute('data-reactions-enabled', '1');
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'catppuccin_latte');
+    script.setAttribute(
+      'data-theme',
+      document.location.protocol === 'https:'
+        ? new URL('/giscus.css', document.location.origin).href
+        : 'transparent_dark',
+    );
     script.setAttribute('data-lang', 'en');
     script.crossOrigin = 'anonymous';
     script.async = true;

@@ -410,7 +410,10 @@ variables:
 The screen layout is intentionally flat: the page and content canvas share one
 blue surface, with corner marks indicating the content boundary instead of a
 filled card, border, or drop shadow. The table of contents uses the same corner
-treatment and flat active-section markers.
+treatment and flat active-section markers. The Giscus discussion area uses the
+site-owned `public/giscus.css` theme within matching corner marks and is omitted
+from print output. Keep that stylesheet available at `/giscus.css` with its
+`https://giscus.app` CORS rule in `public/_headers`.
 
 ```css
 .demo {
