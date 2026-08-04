@@ -36,7 +36,10 @@
             ],
             "styles": [
               "node_modules/modern-normalize/modern-normalize.css",
-              "node_modules/charter-webfont/charter.css",
+              "node_modules/@fontsource-variable/roboto/index.css",
+              "node_modules/@fontsource-variable/roboto/wght-italic.css",
+              "node_modules/@fontsource-variable/space-grotesk/index.css",
+              "node_modules/@fontsource-variable/google-sans-code/index.css",
               "node_modules/@phosphor-icons/web/src/regular/style.css",
               "src/styles.css"
             ],

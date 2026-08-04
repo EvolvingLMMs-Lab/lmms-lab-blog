@@ -431,6 +431,9 @@ Frequently useful variables include:
 - Catppuccin accents such as `--ctp-blue`, `--ctp-teal`, `--ctp-mauve`,
   `--ctp-peach`, `--ctp-green`, and `--ctp-red`.
 
+The font variables use self-hosted Roboto, Space Grotesk, and Google Sans Code.
+Fragments should inherit them instead of loading remote web fonts.
+
 Use `color-mix()` with theme variables instead of hard-coded light backgrounds.
 Check light and dark mode, mobile widths, print layout, keyboard focus, reduced
 motion, and overflow. Keep selectors under the fragment's unique root class.
