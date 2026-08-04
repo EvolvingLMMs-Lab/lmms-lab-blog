@@ -1,14 +1,38 @@
 .paper {
+  --paper-corner-color: color-mix(in srgb, var(--ctp-peach) 58%, var(--ctp-transparent));
+  --paper-corner-size: 2rem;
+  --paper-corner-stroke: 1px;
+  position: relative;
   max-width: 900px;
   width: 92%;
   margin: 2.5rem auto;
   padding: 3rem 3.5rem 4rem;
-  background: var(--paper-bg);
-  border: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
-  box-shadow: var(--paper-shadow);
-  border-radius: 3px;
+  background: var(--ctp-transparent);
   overflow: visible;
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) left top /
+      var(--paper-corner-size) var(--paper-corner-stroke) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) left top /
+      var(--paper-corner-stroke) var(--paper-corner-size) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) right top /
+      var(--paper-corner-size) var(--paper-corner-stroke) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) right top /
+      var(--paper-corner-stroke) var(--paper-corner-size) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) left bottom /
+      var(--paper-corner-size) var(--paper-corner-stroke) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) left bottom /
+      var(--paper-corner-stroke) var(--paper-corner-size) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) right bottom /
+      var(--paper-corner-size) var(--paper-corner-stroke) no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) right bottom /
+      var(--paper-corner-stroke) var(--paper-corner-size) no-repeat;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -21,12 +45,12 @@
   .paper {
     width: 96%;
     padding: 2rem 1.5rem 3rem;
-    border-radius: 0;
+    --paper-corner-size: 1.35rem;
   }
 }
 
 @media print {
-  .paper {
-    border: none;
+  .paper::before {
+    display: none;
   }
 }

@@ -407,6 +407,10 @@ Native content participates in the LMMs-Lab brand-blue theme, which uses
 print output switches to an ink-friendly white surface. Prefer the semantic site
 variables:
 
+The screen layout is intentionally flat: the page and content canvas share one
+blue surface, with corner marks indicating the content boundary instead of a
+filled card, border, or drop shadow.
+
 ```css
 .demo {
   color: var(--text-color);

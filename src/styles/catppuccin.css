@@ -40,11 +40,8 @@
   --backdrop-bg-strong: rgb(1 37 57 / 82%);
   --border-light: color-mix(in srgb, var(--border-color) 15%, var(--ctp-transparent));
   --accent-bg: color-mix(in srgb, var(--ctp-peach) 10%, var(--ctp-transparent));
-  --background: var(--ctp-mantle);
+  --background: var(--ctp-base);
   --paper-bg: var(--ctp-base);
-  --paper-shadow:
-    0 1px 3px rgb(1 37 57 / 28%),
-    0 12px 30px var(--shadow-color);
   --font-body: "Roboto Variable", "Roboto", sans-serif;
   --font-heading: "Space Grotesk Variable", "Space Grotesk", system-ui, -apple-system, sans-serif;
   --font-mono: "Google Sans Code Variable", "Google Sans Code", monospace;
@@ -91,6 +88,5 @@
     --shadow-color-strong: var(--ctp-transparent);
     --background: var(--ctp-base);
     --paper-bg: var(--ctp-base);
-    --paper-shadow: none;
   }
 }
