@@ -409,7 +409,8 @@ variables:
 
 The screen layout is intentionally flat: the page and content canvas share one
 blue surface, with corner marks indicating the content boundary instead of a
-filled card, border, or drop shadow.
+filled card, border, or drop shadow. The table of contents uses the same corner
+treatment and flat active-section markers.
 
 ```css
 .demo {

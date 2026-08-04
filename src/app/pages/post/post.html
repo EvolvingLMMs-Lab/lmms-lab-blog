@@ -27,6 +27,9 @@
       <div class="toc-title">
         <i class="ph ph-list-numbers toc-title-icon" aria-hidden="true"></i>
         <span>Contents</span>
+        <button class="toc-close" type="button" (click)="closeToc()" aria-label="Close table of contents">
+          <i class="ph ph-x" aria-hidden="true"></i>
+        </button>
       </div>
       <div class="toc-nav" appAutoAnimate [appAutoAnimateOptions]="{ duration: 150, easing: 'ease-out' }">
         @for (item of tocItems(); track item.id) {

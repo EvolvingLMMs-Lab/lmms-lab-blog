@@ -25,6 +25,9 @@
 }
 
 .post-toc {
+  --toc-corner-color: color-mix(in srgb, var(--ctp-peach) 58%, var(--ctp-transparent));
+  --toc-corner-size: 1.15rem;
+  --toc-corner-stroke: 1px;
   font-family: var(--font-heading);
   font-size: 0.84rem;
   line-height: 1.5;
@@ -35,6 +38,30 @@
   transition-duration: 0.3s, 0.3s, 0s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1), cubic-bezier(0.4, 0, 0.2, 1), linear;
   transition-delay: 0s, 0s, 0.3s;
+}
+
+.post-toc::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) left top /
+      var(--toc-corner-size) var(--toc-corner-stroke) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) left top /
+      var(--toc-corner-stroke) var(--toc-corner-size) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) right top /
+      var(--toc-corner-size) var(--toc-corner-stroke) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) right top /
+      var(--toc-corner-stroke) var(--toc-corner-size) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) left bottom /
+      var(--toc-corner-size) var(--toc-corner-stroke) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) left bottom /
+      var(--toc-corner-stroke) var(--toc-corner-size) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) right bottom /
+      var(--toc-corner-size) var(--toc-corner-stroke) no-repeat,
+    linear-gradient(var(--toc-corner-color), var(--toc-corner-color)) right bottom /
+      var(--toc-corner-stroke) var(--toc-corner-size) no-repeat;
+  pointer-events: none;
 }
 
 .post-toc.toc-visible {
@@ -62,18 +89,41 @@
   gap: 0.22rem;
 }
 
+.toc-close {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  background: var(--ctp-transparent);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.toc-close:hover {
+  color: var(--text-color);
+}
+
+.toc-close:focus-visible {
+  outline: 1px solid var(--text-color);
+  outline-offset: 2px;
+}
+
 .toc-link {
   display: block;
   cursor: pointer;
   color: var(--text-secondary);
-  border-radius: 7px;
-  border: 1px solid var(--ctp-transparent);
-  padding: 0.38rem 0.48rem;
-  margin-left: 0.38rem;
+  border-left: 2px solid var(--ctp-transparent);
+  padding: 0.38rem 0.48rem 0.38rem 0.62rem;
   line-height: 1.35;
   font-size: 0.84rem;
   text-decoration: none;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, padding-left 0.2s ease;
 }
 
 .toc-link.level-3 {
@@ -82,14 +132,14 @@
 
 .toc-link:hover {
   color: var(--text-color);
-  background: color-mix(in srgb, var(--link-color) 14%, var(--ctp-transparent));
+  border-left-color: color-mix(in srgb, var(--link-color) 42%, var(--ctp-transparent));
+  padding-left: 0.76rem;
   text-decoration: none;
 }
 
 .toc-link.is-active {
   color: var(--text-color);
-  background: color-mix(in srgb, var(--link-color) 16%, var(--ctp-transparent));
-  border-color: color-mix(in srgb, var(--link-color) 26%, var(--ctp-transparent));
+  border-left-color: color-mix(in srgb, var(--ctp-peach) 78%, var(--ctp-transparent));
 }
 
 .toc-backdrop {
@@ -124,11 +174,8 @@
     overflow: auto;
     z-index: 100;
     transform: translateY(-10px);
-    background: color-mix(in srgb, var(--paper-bg) 90%, var(--background));
-    border: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
-    border-radius: 12px;
-    padding: 0.74rem 0.68rem;
-    box-shadow: 0 8px 22px var(--shadow-color);
+    background: var(--ctp-transparent);
+    padding: 0.9rem 0.8rem;
   }
 
   .post-toc.toc-visible {
@@ -144,13 +191,15 @@
     left: 0;
     width: min(312px, 86vw);
     height: 100vh;
-    background: color-mix(in srgb, var(--paper-bg) 95%, var(--background));
+    background: var(--paper-bg);
     padding: 4.1rem 1rem 1.6rem;
-    box-shadow: 4px 0 24px var(--shadow-color-strong);
     z-index: 1000;
     overflow-y: auto;
     transform: translateX(-100%);
-    border-right: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
+  }
+
+  .post-toc::before {
+    inset: 3.55rem 0.55rem 0.65rem;
   }
 
   .post-toc.toc-visible {
@@ -165,6 +214,14 @@
 
   .post-toc {
     padding-top: 4.9rem;
+  }
+
+  .post-toc::before {
+    inset: 4.35rem 0.55rem 0.65rem;
+  }
+
+  .toc-close {
+    display: inline-flex;
   }
 }
 
