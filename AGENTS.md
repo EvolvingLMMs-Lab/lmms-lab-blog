@@ -39,6 +39,8 @@ Project guidance for agents working in this repository.
 - Add native interactive content with a post-local `<html-fragment>` and a local
   `data-blog-controller` module. Scope fragment CSS to the component, return a
   cleanup function from `mount(host)`, and never use iframes or inline scripts.
+  Default fragments expand directly into the Markdown document flow; use
+  `wide` only when a transparent breakout wrapper is genuinely necessary.
 - Convert post images to AVIF before committing them.
 - The `prebuild`, `prestart`, and `pretest` hooks regenerate post data.
 - Files under `src/app/data` are generated and ignored by Git. Edit source

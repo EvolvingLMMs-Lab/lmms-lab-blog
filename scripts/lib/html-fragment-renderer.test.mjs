@@ -18,6 +18,7 @@ function createFixture(t, fragment) {
   mkdirSync(join(postDir, 'interactive'), { recursive: true });
   writeFileSync(join(postDir, 'interactive.html'), fragment, 'utf-8');
   writeFileSync(join(postDir, 'interactive', 'preview.avif'), 'fixture', 'utf-8');
+  writeFileSync(join(postDir, 'interactive', 'styles.css'), '.fixture { color: teal; }', 'utf-8');
   writeFileSync(
     join(postDir, 'interactive', 'controller.mjs'),
     'export function mount() {}',
@@ -77,6 +78,31 @@ test('inlines native HTML, scoped styles, local assets, and a local controller',
   assert.equal(image?.getAttribute('height'), '360');
   assert.equal(image?.getAttribute('loading'), 'lazy');
   assert.equal(body.querySelector('html-fragment'), null);
+});
+
+test('inserts a default fragment directly into the Markdown document flow', (t) => {
+  const body = render(
+    t,
+    '<section class="seamless"><p>Native HTML between Markdown blocks.</p></section>',
+    'Before.\n\n<html-fragment src="./interactive.html"></html-fragment>\n\nAfter.',
+  );
+
+  const section = body.querySelector('.seamless');
+  assert.equal(section?.parentElement, body);
+  assert.equal(body.querySelector('.html-fragment'), null);
+  assert.match(body.textContent ?? '', /Before[\s\S]*Native HTML[\s\S]*After/);
+});
+
+test('inlines a fragment-local stylesheet into the document flow', (t) => {
+  const body = render(
+    t,
+    '<link rel="stylesheet" href="./interactive/styles.css"><section class="fixture"></section>',
+    '<html-fragment src="./interactive.html"></html-fragment>',
+  );
+
+  const style = body.querySelector('style[data-html-stylesheet]');
+  assert.match(style?.textContent ?? '', /color: teal/);
+  assert.equal(body.querySelector('link[rel="stylesheet"]'), null);
 });
 
 test('rejects iframe content', (t) => {

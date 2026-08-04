@@ -51,6 +51,26 @@ function resolveLocalReference(rawHref, { baseDir, postDir, slug }) {
   };
 }
 
+function inlineLocalStylesheets(document, { baseDir, postDir }) {
+  for (const link of Array.from(document.querySelectorAll('link[rel="stylesheet"][href]'))) {
+    const rawHref = link.getAttribute('href')?.trim() ?? '';
+    if (!rawHref || ROOTED_OR_REMOTE.test(rawHref)) {
+      continue;
+    }
+
+    const stylesheetPath = resolve(baseDir, rawHref);
+    assertInside(postDir, stylesheetPath, `HTML stylesheet "${rawHref}"`);
+    if (extname(stylesheetPath).toLowerCase() !== '.css') {
+      throw new Error(`HTML stylesheet must reference a .css file: ${rawHref}`);
+    }
+
+    const style = document.createElement('style');
+    style.dataset['htmlStylesheet'] = rawHref;
+    style.textContent = readFileSync(stylesheetPath, 'utf-8');
+    link.replaceWith(style);
+  }
+}
+
 export function normalizeHtmlAssets(
   document,
   { baseDir, postDir, slug, getImageDimensions = () => null },
@@ -139,6 +159,10 @@ export function renderHtmlFragments(document, { postsDir, slug, getImageDimensio
 
     const fragmentDom = new JSDOM(readFileSync(fragmentPath, 'utf-8'));
     const fragmentDocument = fragmentDom.window.document;
+    inlineLocalStylesheets(fragmentDocument, {
+      baseDir: dirname(fragmentPath),
+      postDir,
+    });
     normalizeHtmlAssets(fragmentDocument, {
       baseDir: dirname(fragmentPath),
       postDir,
@@ -146,23 +170,27 @@ export function renderHtmlFragments(document, { postsDir, slug, getImageDimensio
       getImageDimensions,
     });
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'html-fragment';
-    if (node.hasAttribute('wide')) {
-      wrapper.classList.add('html-fragment--wide');
-    }
-    wrapper.dataset['htmlFragment'] = rawSource;
+    const fragmentNodes = [];
 
     for (const style of Array.from(
       fragmentDocument.head.querySelectorAll('style, link[rel="stylesheet"]'),
     )) {
-      wrapper.append(document.importNode(style, true));
+      fragmentNodes.push(document.importNode(style, true));
     }
 
     for (const child of Array.from(fragmentDocument.body.childNodes)) {
-      wrapper.append(document.importNode(child, true));
+      fragmentNodes.push(document.importNode(child, true));
     }
 
-    node.replaceWith(wrapper);
+    if (node.hasAttribute('wide')) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'html-fragment html-fragment--wide';
+      wrapper.dataset['htmlFragment'] = rawSource;
+      wrapper.append(...fragmentNodes);
+      node.replaceWith(wrapper);
+      continue;
+    }
+
+    node.replaceWith(...fragmentNodes);
   }
 }

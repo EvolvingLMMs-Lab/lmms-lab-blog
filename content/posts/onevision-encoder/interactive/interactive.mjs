@@ -7,7 +7,7 @@ const UNIFORM_FRAME_COUNTS = [8, 16, 32, 64];
 function requireElement(root, selector) {
   const element = root.querySelector(selector);
   if (!(element instanceof HTMLElement)) {
-    throw new Error(`OneVision patch map is missing ${selector}`);
+    throw new Error(`OneVision patch visualization is missing ${selector}`);
   }
   return element;
 }
@@ -28,22 +28,22 @@ function createPatchImage(folder, group, row, column) {
 
 function createFrame() {
   const frame = document.createElement('div');
-  frame.className = 'ov-native__frame';
+  frame.className = 'ov-inline__frame';
 
   const grid = document.createElement('div');
-  grid.className = 'ov-native__grid';
+  grid.className = 'ov-inline__grid';
   const cells = [];
 
   for (let index = 0; index < GRID_SIZE * GRID_SIZE; index += 1) {
     const cell = document.createElement('div');
-    cell.className = 'ov-native__cell';
+    cell.className = 'ov-inline__cell';
     cell.dataset.hasPatch = 'false';
     grid.append(cell);
     cells.push(cell);
   }
 
   const label = document.createElement('div');
-  label.className = 'ov-native__frame-label';
+  label.className = 'ov-inline__frame-label';
   const title = document.createElement('span');
   const detail = document.createElement('small');
   label.append(title, detail);
@@ -81,11 +81,10 @@ function createUniformFrames(stage) {
     for (let row = 0; row < GRID_SIZE; row += 1) {
       for (let column = 0; column < GRID_SIZE; column += 1) {
         const index = row * GRID_SIZE + column;
-        const tooltip = `Uniform sample ${group + 1} · h=${row}, w=${column}`;
         fillCell(
           frame.cells[index],
           createPatchImage('patches', group, row, column),
-          tooltip,
+          `Uniform sample ${group + 1} · h=${row}, w=${column}`,
         );
       }
     }
@@ -152,8 +151,11 @@ function renderCodecFrame(frame, time, records) {
     if (!cell) {
       continue;
     }
-    const tooltip = `Codec patch · t=${record.time + 1}, h=${record.row}, w=${record.column}`;
-    fillCell(cell, record.image, tooltip);
+    fillCell(
+      cell,
+      record.image,
+      `Codec patch · t=${record.time + 1}, h=${record.row}, w=${record.column}`,
+    );
   }
 
   setFrameLabel(
@@ -182,82 +184,9 @@ function nextCodecTime(time, offset = 0) {
   return ((time + offset - 1) % (CODEC_FRAME_COUNT - 1)) + 1;
 }
 
-export async function mount(root) {
-  const codecStage = requireElement(root, '[data-ov-stage="codec"]');
-  const uniformStage = requireElement(root, '[data-ov-stage="uniform"]');
-  const playButton = requireElement(root, '[data-ov-action="play"]');
-  const playIcon = requireElement(root, '[data-ov-play-icon]');
-  const playLabel = requireElement(root, '[data-ov-play-label]');
-  const status = requireElement(root, '[data-ov-status]');
+function initTooltip(root) {
   const tooltip = requireElement(root, '[data-ov-tooltip]');
-
-  const records = await loadCodecRecords();
-  const recordsByTime = groupRecordsByTime(records);
-  const codecFrames = createCodecFrames(codecStage, recordsByTime);
-  createUniformFrames(uniformStage);
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let baseTime = 1;
-  let playing = !reducedMotion;
-  let hoveringCodec = false;
-  let visible = true;
-  let timer = null;
-  let activeTooltipCell = null;
-
-  const clearTimer = () => {
-    if (timer !== null) {
-      window.clearTimeout(timer);
-      timer = null;
-    }
-  };
-
-  const renderCodecWindow = () => {
-    const shownTimes = [];
-    for (let index = 0; index < ANIMATED_CODEC_FRAMES; index += 1) {
-      const time = nextCodecTime(baseTime, index);
-      shownTimes.push(time + 1);
-      renderCodecFrame(codecFrames[index + 1], time, recordsByTime.get(time) ?? []);
-    }
-    status.textContent = `Codec window: t = ${shownTimes.join(', ')}`;
-  };
-
-  const scheduleAnimation = () => {
-    clearTimer();
-    if (!playing || hoveringCodec || !visible || document.hidden) {
-      return;
-    }
-    timer = window.setTimeout(() => {
-      baseTime = nextCodecTime(baseTime, ANIMATED_CODEC_FRAMES);
-      renderCodecWindow();
-      scheduleAnimation();
-    }, ANIMATION_INTERVAL_MS);
-  };
-
-  const updatePlayButton = () => {
-    playButton.setAttribute('aria-pressed', String(playing));
-    playButton.setAttribute('aria-label', playing ? 'Pause codec animation' : 'Play codec animation');
-    playIcon.classList.toggle('ph-pause', playing);
-    playIcon.classList.toggle('ph-play', !playing);
-    playLabel.textContent = playing ? 'Pause' : 'Play';
-  };
-
-  const handlePlay = () => {
-    playing = !playing;
-    updatePlayButton();
-    scheduleAnimation();
-  };
-
-  const handleCodecEnter = () => {
-    hoveringCodec = true;
-    clearTimer();
-  };
-
-  const handleCodecLeave = () => {
-    hoveringCodec = false;
-    tooltip.hidden = true;
-    activeTooltipCell = null;
-    scheduleAnimation();
-  };
+  let activeCell = null;
 
   const positionTooltip = event => {
     const rootRect = root.getBoundingClientRect();
@@ -275,38 +204,113 @@ export async function mount(root) {
   };
 
   const handlePointerOver = event => {
-    const cell = event.target.closest?.('.ov-native__cell[data-has-patch="true"]');
-    if (!(cell instanceof HTMLElement) || cell === activeTooltipCell) {
+    const cell = event.target.closest?.('.ov-inline__cell[data-has-patch="true"]');
+    if (!(cell instanceof HTMLElement) || cell === activeCell) {
       return;
     }
-    activeTooltipCell = cell;
+    activeCell = cell;
     tooltip.textContent = cell.dataset.tooltip ?? '';
     tooltip.hidden = false;
     positionTooltip(event);
   };
 
   const handlePointerMove = event => {
-    if (activeTooltipCell) {
+    if (activeCell) {
       positionTooltip(event);
     }
   };
 
   const handlePointerOut = event => {
-    if (!activeTooltipCell || activeTooltipCell.contains(event.relatedTarget)) {
+    if (!activeCell || activeCell.contains(event.relatedTarget)) {
       return;
     }
-    activeTooltipCell = null;
+    activeCell = null;
     tooltip.hidden = true;
   };
 
-  const handleVisibilityChange = () => scheduleAnimation();
-
-  playButton.addEventListener('click', handlePlay);
-  codecStage.addEventListener('pointerenter', handleCodecEnter);
-  codecStage.addEventListener('pointerleave', handleCodecLeave);
   root.addEventListener('pointerover', handlePointerOver);
   root.addEventListener('pointermove', handlePointerMove);
   root.addEventListener('pointerout', handlePointerOut);
+
+  return () => {
+    root.removeEventListener('pointerover', handlePointerOver);
+    root.removeEventListener('pointermove', handlePointerMove);
+    root.removeEventListener('pointerout', handlePointerOut);
+  };
+}
+
+async function mountCodec(root, stage) {
+  const playButton = requireElement(root, '[data-ov-action="play"]');
+  const playIcon = requireElement(root, '[data-ov-play-icon]');
+  const playLabel = requireElement(root, '[data-ov-play-label]');
+  const status = requireElement(root, '[data-ov-status]');
+  const records = await loadCodecRecords();
+  const recordsByTime = groupRecordsByTime(records);
+  const frames = createCodecFrames(stage, recordsByTime);
+  const cleanupTooltip = initTooltip(root);
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let baseTime = 1;
+  let playing = !reducedMotion;
+  let hovering = false;
+  let visible = true;
+  let timer = null;
+
+  const clearTimer = () => {
+    if (timer !== null) {
+      window.clearTimeout(timer);
+      timer = null;
+    }
+  };
+
+  const renderWindow = () => {
+    const shownTimes = [];
+    for (let index = 0; index < ANIMATED_CODEC_FRAMES; index += 1) {
+      const time = nextCodecTime(baseTime, index);
+      shownTimes.push(time + 1);
+      renderCodecFrame(frames[index + 1], time, recordsByTime.get(time) ?? []);
+    }
+    status.textContent = `t = ${shownTimes.join(', ')}`;
+  };
+
+  const scheduleAnimation = () => {
+    clearTimer();
+    if (!playing || hovering || !visible || document.hidden) {
+      return;
+    }
+    timer = window.setTimeout(() => {
+      baseTime = nextCodecTime(baseTime, ANIMATED_CODEC_FRAMES);
+      renderWindow();
+      scheduleAnimation();
+    }, ANIMATION_INTERVAL_MS);
+  };
+
+  const updatePlayButton = () => {
+    playButton.setAttribute('aria-pressed', String(playing));
+    playButton.setAttribute('aria-label', playing ? 'Pause codec animation' : 'Play codec animation');
+    playIcon.classList.toggle('ph-pause', playing);
+    playIcon.classList.toggle('ph-play', !playing);
+    playLabel.textContent = playing ? 'Pause' : 'Play';
+  };
+
+  const handlePlay = () => {
+    playing = !playing;
+    updatePlayButton();
+    scheduleAnimation();
+  };
+  const handlePointerEnter = () => {
+    hovering = true;
+    clearTimer();
+  };
+  const handlePointerLeave = () => {
+    hovering = false;
+    scheduleAnimation();
+  };
+  const handleVisibilityChange = () => scheduleAnimation();
+
+  playButton.addEventListener('click', handlePlay);
+  stage.addEventListener('pointerenter', handlePointerEnter);
+  stage.addEventListener('pointerleave', handlePointerLeave);
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
   const observer =
@@ -321,19 +325,32 @@ export async function mount(root) {
       : null;
   observer?.observe(root);
 
-  renderCodecWindow();
+  renderWindow();
   updatePlayButton();
   scheduleAnimation();
 
   return () => {
     clearTimer();
     observer?.disconnect();
+    cleanupTooltip();
     playButton.removeEventListener('click', handlePlay);
-    codecStage.removeEventListener('pointerenter', handleCodecEnter);
-    codecStage.removeEventListener('pointerleave', handleCodecLeave);
-    root.removeEventListener('pointerover', handlePointerOver);
-    root.removeEventListener('pointermove', handlePointerMove);
-    root.removeEventListener('pointerout', handlePointerOut);
+    stage.removeEventListener('pointerenter', handlePointerEnter);
+    stage.removeEventListener('pointerleave', handlePointerLeave);
     document.removeEventListener('visibilitychange', handleVisibilityChange);
   };
+}
+
+export async function mount(root) {
+  const stage = requireElement(root, '[data-ov-stage]');
+  const mode = root.dataset.ovMode;
+
+  if (mode === 'uniform') {
+    createUniformFrames(stage);
+    return initTooltip(root);
+  }
+  if (mode === 'codec') {
+    return mountCodec(root, stage);
+  }
+
+  throw new Error(`Unknown OneVision visualization mode: ${mode ?? '(missing)'}`);
 }

@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="./interactive/interactive.css">
+
+<figure
+  class="ov-inline ov-inline--codec"
+  data-blog-controller="./interactive/interactive.mjs"
+  data-ov-mode="codec"
+>
+  <div class="ov-inline__toolbar">
+    <span class="ov-inline__label">
+      <i class="ph ph-wave-sine" aria-hidden="true"></i>
+      <strong>64-frame codec trace</strong>
+      <span data-ov-status>Loading temporal patch positions…</span>
+    </span>
+    <button class="ov-inline__play" type="button" data-ov-action="play" aria-pressed="true">
+      <i class="ph ph-pause" data-ov-play-icon aria-hidden="true"></i>
+      <span data-ov-play-label>Pause</span>
+    </button>
+  </div>
+  <div
+    class="ov-inline__stage"
+    data-ov-stage
+    role="img"
+    aria-label="Reference frame and three animated sparse codec patch frames"
+  ></div>
+  <figcaption>
+    The first grid is the dense reference frame. The next three grids advance through the video
+    and retain only patches carrying new temporal signal. Hover a patch to inspect its
+    <code>(t, h, w)</code> position.
+  </figcaption>
+  <div class="ov-inline__tooltip" data-ov-tooltip role="tooltip" hidden></div>
+</figure>

@@ -66,13 +66,15 @@ The reference frame contains all patches. Consecutive frames retain only salient
 patches at their spatial positions. The result is **75%-98% fewer patches** while
 retaining the information that matters.
 
+<html-fragment src="./codec-visualization.html"></html-fragment>
+
 ### Traditional Frame Sampling
 
 Traditional sampling selects a small number of frames and processes every patch
 from each. Static backgrounds, repeated textures, and unchanging regions are
 therefore processed multiple times even though they add no new information.
 
-<html-fragment src="./interactive.html" wide></html-fragment>
+<html-fragment src="./uniform-visualization.html"></html-fragment>
 
 ## Video Processing Pipeline
 

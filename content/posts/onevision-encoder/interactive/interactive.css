@@ -1,0 +1,259 @@
+.ov-inline {
+  --ov-accent: var(--ctp-teal);
+  position: relative;
+  margin: 1.15rem 0 1.85rem;
+  color: var(--text-color);
+  font-family: var(--font-heading);
+  text-align: left;
+}
+
+.ov-inline--uniform {
+  --ov-accent: var(--ctp-mauve);
+}
+
+.ov-inline *,
+.ov-inline *::before,
+.ov-inline *::after {
+  box-sizing: border-box;
+}
+
+.ov-inline__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0 0.55rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
+}
+
+.ov-inline__label {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.38rem;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+}
+
+.ov-inline__label > i {
+  flex: none;
+  color: var(--ov-accent);
+  font-size: 0.95rem;
+}
+
+.ov-inline__label strong {
+  flex: none;
+  color: var(--text-color);
+  font-size: 0.72rem;
+}
+
+.ov-inline__label [data-ov-status] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ov-inline__play {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 30px;
+  padding: 0.34rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--ov-accent) 32%, var(--border-color));
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--ov-accent) 7%, var(--paper-bg));
+  color: var(--ov-accent);
+  cursor: pointer;
+  font: 700 0.66rem / 1 var(--font-heading);
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+
+.ov-inline__play:hover {
+  border-color: color-mix(in srgb, var(--ov-accent) 56%, var(--border-color));
+  background: color-mix(in srgb, var(--ov-accent) 12%, var(--paper-bg));
+}
+
+.ov-inline__play:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ov-accent) 65%, var(--ctp-transparent));
+  outline-offset: 2px;
+}
+
+.ov-inline__stage {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.45rem, 1.4vw, 0.72rem);
+  padding: 0.7rem 0 0.45rem;
+}
+
+.ov-inline__stage:empty {
+  display: block;
+  min-height: 170px;
+  border-radius: 7px;
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--ctp-surface0) 55%, var(--ctp-transparent)) 30%,
+    color-mix(in srgb, var(--ctp-surface1) 68%, var(--ctp-transparent)) 48%,
+    color-mix(in srgb, var(--ctp-surface0) 55%, var(--ctp-transparent)) 66%
+  );
+  background-size: 220% 100%;
+  animation: ov-inline-loading 1.4s ease-in-out infinite;
+}
+
+.ov-inline[data-blog-controller-state="error"] .ov-inline__stage:empty {
+  display: none;
+}
+
+.ov-inline__frame {
+  min-width: 0;
+  padding: 0.38rem;
+  border: 1px solid color-mix(in srgb, var(--border-color) 25%, var(--ctp-transparent));
+  border-top-color: color-mix(in srgb, var(--ov-accent) 52%, var(--border-color));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--paper-bg) 92%, var(--ctp-surface0));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--ctp-crust) 8%, var(--ctp-transparent));
+}
+
+.ov-inline__grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  aspect-ratio: 1;
+  gap: 1px;
+  overflow: hidden;
+  padding: 3px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ctp-crust) 93%, black);
+}
+
+.ov-inline__cell {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ctp-surface0) 35%, var(--ctp-crust));
+}
+
+.ov-inline__cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--ctp-overlay0) 18%, var(--ctp-transparent));
+  pointer-events: none;
+}
+
+.ov-inline__cell[data-has-patch="true"] {
+  cursor: crosshair;
+}
+
+.ov-inline__cell[data-has-patch="true"]:hover {
+  z-index: 2;
+  outline: 2px solid color-mix(in srgb, var(--ov-accent) 78%, white);
+  outline-offset: -2px;
+}
+
+.ov-inline__cell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  margin: 0;
+  border-radius: 0;
+  object-fit: cover;
+  box-shadow: none;
+}
+
+.ov-inline__frame-label {
+  display: flex;
+  min-height: 24px;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.27rem;
+  padding-top: 0.36rem;
+  color: var(--text-color);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.ov-inline__frame-label small {
+  color: var(--text-secondary);
+  font: 400 0.56rem / 1.15 var(--font-body);
+}
+
+.ov-inline figcaption {
+  margin-top: 0.15rem;
+  padding-left: 0.65rem;
+  border-left: 2px solid color-mix(in srgb, var(--ov-accent) 55%, var(--border-color));
+  color: var(--text-secondary);
+  font: 400 0.72rem / 1.5 var(--font-body);
+}
+
+.ov-inline figcaption code {
+  font-size: 0.88em;
+}
+
+.ov-inline__tooltip {
+  position: absolute;
+  z-index: 2000;
+  max-width: min(240px, calc(100vw - 2rem));
+  padding: 0.36rem 0.48rem;
+  border: 1px solid color-mix(in srgb, var(--ov-accent) 38%, var(--border-color));
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ctp-crust) 94%, var(--paper-bg));
+  box-shadow: 0 5px 18px color-mix(in srgb, var(--ctp-crust) 30%, var(--ctp-transparent));
+  color: var(--ctp-text);
+  font: 600 0.62rem / 1.3 var(--font-mono);
+  pointer-events: none;
+}
+
+.ov-inline__tooltip[hidden] {
+  display: none;
+}
+
+@keyframes ov-inline-loading {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .ov-inline__stage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ov-inline__label [data-ov-status] {
+    display: none;
+  }
+
+  .ov-inline__frame-label {
+    align-items: center;
+    flex-direction: column;
+    gap: 0.12rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ov-inline *,
+  .ov-inline *::before,
+  .ov-inline *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .ov-inline__play,
+  .ov-inline__tooltip {
+    display: none;
+  }
+
+  .ov-inline__frame {
+    box-shadow: none;
+  }
+}

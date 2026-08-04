@@ -50,8 +50,18 @@ HTML fragment. Fragments are inserted into the article DOM at build time, so
 they inherit the blog theme and never use an iframe:
 
 ```html
-<html-fragment src="./interactive.html" wide></html-fragment>
+<html-fragment src="./interactive.html"></html-fragment>
 ```
+
+Without `wide`, the fragment's HTML nodes replace `<html-fragment>` directly
+and become siblings of the surrounding Markdown output—there is no runtime
+wrapper or embedded document. This makes it natural to alternate Markdown and
+HTML sections. Raw HTML can also be written directly in a Markdown file when a
+separate fragment is unnecessary. `wide` adds a transparent layout wrapper only
+for visualizations that need to extend beyond the reading column. Post-local
+stylesheets referenced by a fragment are inlined during generation, so their
+rules participate in the same document cascade without a runtime stylesheet
+request.
 
 Keep fragment styles scoped to a unique component class. For interactivity,
 point `data-blog-controller` to a post-local JavaScript module:
@@ -73,8 +83,7 @@ export function mount(host) {
 The module is mounted after the article renders and its cleanup function runs
 when navigation replaces the post. Fragment sources, assets, and controllers
 must stay inside `content/posts/<slug>/`. Inline scripts and iframes are rejected
-during content generation. Add `wide` only when a visualization benefits from
-extending beyond the reading column.
+during content generation.
 
 ## Deployment
 
