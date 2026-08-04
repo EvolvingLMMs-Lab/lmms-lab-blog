@@ -1,29 +1,40 @@
 import { transformerNotationDiff, transformerNotationHighlight } from '@shikijs/transformers';
-import { readFileSync } from 'fs';
 
-const CATPPUCCIN_THEME_URL = new URL('../../src/styles/catppuccin.css', import.meta.url);
-let catppuccinColorMap;
-
-function getCatppuccinColorMap() {
-  if (catppuccinColorMap) return catppuccinColorMap;
-
-  const css = readFileSync(CATPPUCCIN_THEME_URL, 'utf-8');
-  catppuccinColorMap = new Map();
-
-  for (const match of css.matchAll(/--ctp-([a-z0-9-]+):\s*(#[0-9a-f]{6})/gi)) {
-    const [, name, color] = match;
-    catppuccinColorMap.set(color.toLowerCase(), `var(--ctp-${name})`);
-  }
-
-  return catppuccinColorMap;
-}
+const CATPPUCCIN_LATTE_COLORS = new Map(
+  Object.entries({
+    rosewater: '#dc8a78',
+    flamingo: '#dd7878',
+    pink: '#ea76cb',
+    mauve: '#8839ef',
+    red: '#d20f39',
+    maroon: '#e64553',
+    peach: '#fe640b',
+    yellow: '#df8e1d',
+    green: '#40a02b',
+    teal: '#179299',
+    sky: '#04a5e5',
+    sapphire: '#209fb5',
+    blue: '#1e66f5',
+    lavender: '#7287fd',
+    text: '#4c4f69',
+    subtext1: '#5c5f77',
+    subtext0: '#6c6f85',
+    overlay2: '#7c7f93',
+    overlay1: '#8c8fa1',
+    overlay0: '#9ca0b0',
+    surface2: '#acb0be',
+    surface1: '#bcc0cc',
+    surface0: '#ccd0da',
+    base: '#eff1f5',
+    mantle: '#e6e9ef',
+    crust: '#dce0e8',
+  }).map(([name, color]) => [color, `var(--ctp-${name})`]),
+);
 
 function replaceInlineCatppuccinColors(html) {
-  const colors = getCatppuccinColorMap();
-
   return html.replace(/style="([^"]*)"/g, (attribute, style) => {
     const nextStyle = style.replace(/#[0-9a-f]{6}\b/gi, (color) => {
-      return colors.get(color.toLowerCase()) ?? color;
+      return CATPPUCCIN_LATTE_COLORS.get(color.toLowerCase()) ?? color;
     });
 
     return attribute.replace(style, nextStyle);
@@ -36,7 +47,7 @@ export function createCodeRenderer(highlighter) {
     const html = replaceInlineCatppuccinColors(
       highlighter.codeToHtml(text, {
         lang: language,
-        themes: { light: 'catppuccin-latte', dark: 'catppuccin-mocha' },
+        theme: 'catppuccin-latte',
         transformers: [transformerNotationDiff(), transformerNotationHighlight()],
       }),
     );

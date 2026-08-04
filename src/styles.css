@@ -49,13 +49,6 @@ a:hover {
   z-index: 2001;
 }
 
-/* Shiki dark mode: swap to --shiki-dark colors */
-[data-theme="dark"] .shiki,
-[data-theme="dark"] .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
-}
-
 @media print {
   @page {
     size: A4;

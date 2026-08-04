@@ -121,8 +121,8 @@ are preserved.
 
 ### Code
 
-Fenced code blocks are highlighted with Shiki, use Catppuccin Latte and Mocha
-for light and dark mode, show the language, and include a copy button:
+Fenced code blocks are highlighted with Shiki, use the site's adapted
+Catppuccin accents, show the language, and include a copy button:
 
 ````markdown
 ```python
@@ -402,10 +402,9 @@ independently embedded application.
 
 ## Styling native content
 
-Native content participates in both LMMs-Lab blue themes. The default theme uses
-the `#03639a` brand blue for the paper surface and warm cream text; dark mode
-deepens the blue shell and paper while keeping the same visual identity. Print
-output switches back to an ink-friendly white surface. Prefer the semantic site
+Native content participates in the LMMs-Lab brand-blue theme, which uses
+`#03639a` for the paper surface and warm cream text. The screen theme is fixed;
+print output switches to an ink-friendly white surface. Prefer the semantic site
 variables:
 
 ```css
@@ -438,8 +437,8 @@ The font variables use self-hosted Roboto, Space Grotesk, and Google Sans Code.
 Fragments should inherit them instead of loading remote web fonts.
 
 Use `color-mix()` with theme variables instead of hard-coded light backgrounds.
-Check light and dark mode, mobile widths, print layout, keyboard focus, reduced
-motion, and overflow. Keep selectors under the fragment's unique root class.
+Check mobile widths, print layout, keyboard focus, reduced motion, and overflow.
+Keep selectors under the fragment's unique root class.
 
 ## Publishing and validation
 
@@ -462,9 +461,9 @@ errors.
 
 Review the rendered post at desktop and mobile widths. Check at least:
 
-- the index title, date, description, and cover crop;
+- the index title, date, and description;
 - heading order and table-of-contents labels;
-- light and dark mode;
+- the fixed brand-blue screen theme and white print theme;
 - image alternative text and zoom;
 - table and code overflow;
 - math rendering;

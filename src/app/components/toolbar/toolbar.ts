@@ -1,6 +1,5 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ThemeService } from '../../services/theme.service';
 import { ToolbarExtensionService } from '../../services/toolbar-extension.service';
 import { SearchModalComponent } from '../search-modal/search-modal';
 
@@ -12,7 +11,6 @@ import { SearchModalComponent } from '../search-modal/search-modal';
   styleUrl: './toolbar.css',
 })
 export class ToolbarComponent {
-  themeService = inject(ThemeService);
   toolbarExt = inject(ToolbarExtensionService);
   searchOpen = signal(false);
 
