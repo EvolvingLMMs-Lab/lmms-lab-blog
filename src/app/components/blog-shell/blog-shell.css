@@ -50,6 +50,14 @@
 }
 
 @media print {
+  .paper {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--ctp-transparent);
+  }
+
   .paper::before {
     display: none;
   }

@@ -52,11 +52,11 @@ a:hover {
 @media print {
   @page {
     size: A4;
-    margin: 20mm 18mm 20mm 18mm;
+    margin: 14mm 13mm 15mm;
   }
 
   @page :first {
-    margin-top: 24mm;
+    margin-top: 16mm;
   }
 
   body {
@@ -71,7 +71,7 @@ a:hover {
   }
 
   .paper {
-    max-width: 100%;
+    max-width: none;
     width: 100%;
     margin: 0;
     padding: 0;

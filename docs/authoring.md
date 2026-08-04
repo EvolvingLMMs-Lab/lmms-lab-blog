@@ -404,8 +404,9 @@ independently embedded application.
 
 Native content participates in the LMMs-Lab brand-blue theme, which uses
 `#03639a` for the paper surface and warm cream text. The screen theme is fixed;
-print output switches to an ink-friendly white surface. Prefer the semantic site
-variables:
+print output switches to an ink-friendly white surface. A4 output uses compact
+printer-safe margins and removes the screen canvas width and padding so content
+does not receive a second inset. Prefer the semantic site variables:
 
 The screen layout is intentionally flat: the page and content canvas share one
 blue surface, with corner marks indicating the content boundary instead of a
