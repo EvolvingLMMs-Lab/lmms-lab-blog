@@ -11,6 +11,7 @@ import {
   inject,
   signal,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -23,7 +24,6 @@ import { BackToTopComponent } from '../../components/back-to-top/back-to-top';
 import { ToolbarExtensionService } from '../../services/toolbar-extension.service';
 import { ImageLightboxComponent } from '../../components/image-lightbox/image-lightbox';
 import {
-  typesetMath,
   initAiSummaryFigures,
   initCodeCopyButtons,
   initContentImageZoom,
@@ -31,6 +31,7 @@ import {
   initHtmlControllers,
   optimizeContentImages,
 } from '../../utils/post-content-hooks';
+import { typesetMath } from '../../utils/mathjax';
 import { smoothScrollTo, SmoothScrollHandle } from '../../utils/smooth-scroll';
 import { buildContentWithToc, TocItem } from '../../utils/toc-builder';
 import { HeadingObserver } from '../../utils/heading-observer';
@@ -57,6 +58,7 @@ const HEADING_SCROLL_OFFSET_PX = 20;
     './styles/native-html.css',
     './styles/layout.css',
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
 })
 export class PostComponent implements OnDestroy {
@@ -65,7 +67,7 @@ export class PostComponent implements OnDestroy {
   private readonly toolbarExt = inject(ToolbarExtensionService);
   private readonly appRef = inject(ApplicationRef);
   private readonly environmentInjector = inject(EnvironmentInjector);
-  private readonly slug = toSignal(this.route.paramMap.pipe(map(p => p.get('slug'))));
+  private readonly slug = toSignal(this.route.paramMap.pipe(map((p) => p.get('slug'))));
   private readonly headingObserver = new HeadingObserver();
   private scrollHandle: SmoothScrollHandle | null = null;
 
@@ -76,7 +78,7 @@ export class PostComponent implements OnDestroy {
 
   readonly post = computed(() => {
     const s = this.slug();
-    return POSTS.find(p => p.slug === s);
+    return POSTS.find((p) => p.slug === s);
   });
 
   private readonly processedContent = computed(() => {
@@ -86,12 +88,14 @@ export class PostComponent implements OnDestroy {
 
   readonly tocItems = computed(() => this.processedContent().toc);
 
-  readonly safeHtml = computed(() => this.sanitizer.bypassSecurityTrustHtml(this.processedContent().html));
+  readonly safeHtml = computed(() =>
+    this.sanitizer.bypassSecurityTrustHtml(this.processedContent().html),
+  );
 
   constructor() {
     this.setupToolbarExtension();
 
-    effect(onCleanup => {
+    effect((onCleanup) => {
       this.safeHtml();
 
       if (typeof window === 'undefined') {
@@ -103,41 +107,53 @@ export class PostComponent implements OnDestroy {
       let cleanupContentImages: (() => void) | null = null;
       let cleanupContentVideos: (() => void) | null = null;
       let cleanupHtmlControllers: (() => void) | null = null;
+      let cleanupMath: (() => void) | null = null;
       let setupTimer: number | null = null;
       let isDisposed = false;
+      const mathAbortController = new AbortController();
 
       const runPostHooks = (attempt = 0) => {
-        setupTimer = window.setTimeout(() => {
-          setupTimer = null;
-          if (isDisposed) {
-            return;
-          }
-
-          const postBody = document.querySelector<HTMLElement>('.post-body');
-          if (!postBody || postBody.childElementCount === 0) {
-            if (attempt < 20) {
-              runPostHooks(attempt + 1);
+        setupTimer = window.setTimeout(
+          () => {
+            setupTimer = null;
+            if (isDisposed) {
+              return;
             }
-            return;
-          }
 
-          void typesetMath(postBody);
-          initCodeCopyButtons();
-          optimizeContentImages();
-          cleanupContentImages = this.hydrateContentImages(postBody);
-          cleanupAiSummaryFigures = initAiSummaryFigures(postBody);
-          cleanupContentImageZoom = initContentImageZoom(postBody);
-          cleanupContentVideos = initContentVideos(postBody);
-          cleanupHtmlControllers = initHtmlControllers(postBody);
-          this.setupHeadingObserver();
-          this.giscus()?.load();
-        }, attempt === 0 ? 0 : 25);
+            const postBody = document.querySelector<HTMLElement>('.post-body');
+            if (!postBody || postBody.childElementCount === 0) {
+              if (attempt < 20) {
+                runPostHooks(attempt + 1);
+              }
+              return;
+            }
+
+            void typesetMath(postBody, mathAbortController.signal).then((cleanup) => {
+              if (isDisposed) {
+                cleanup();
+              } else {
+                cleanupMath = cleanup;
+              }
+            });
+            initCodeCopyButtons();
+            optimizeContentImages();
+            cleanupContentImages = this.hydrateContentImages(postBody);
+            cleanupAiSummaryFigures = initAiSummaryFigures(postBody);
+            cleanupContentImageZoom = initContentImageZoom(postBody);
+            cleanupContentVideos = initContentVideos(postBody);
+            cleanupHtmlControllers = initHtmlControllers(postBody);
+            this.setupHeadingObserver();
+            this.giscus()?.load();
+          },
+          attempt === 0 ? 0 : 25,
+        );
       };
 
       runPostHooks();
 
       onCleanup(() => {
         isDisposed = true;
+        mathAbortController.abort();
         if (setupTimer !== null) {
           window.clearTimeout(setupTimer);
         }
@@ -146,6 +162,7 @@ export class PostComponent implements OnDestroy {
         cleanupContentImages?.();
         cleanupContentVideos?.();
         cleanupHtmlControllers?.();
+        cleanupMath?.();
         this.headingObserver.disconnect();
       });
     });
@@ -158,7 +175,7 @@ export class PostComponent implements OnDestroy {
   }
 
   toggleToc(): void {
-    this.tocOpen.update(value => !value);
+    this.tocOpen.update((value) => !value);
   }
 
   onTocHeadingSelected(id: string): void {

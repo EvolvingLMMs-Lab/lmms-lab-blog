@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-giscus-comments',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<div class="giscus"></div>',
 })
 export class GiscusCommentsComponent {

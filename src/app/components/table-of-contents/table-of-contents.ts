@@ -13,6 +13,7 @@ import {
   output,
   signal,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { TocItem } from '../../utils/toc-builder';
 
@@ -24,6 +25,7 @@ const ACTIVE_LINK_PADDING_PX = 8;
   standalone: true,
   imports: [CdkTrapFocus],
   templateUrl: './table-of-contents.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './table-of-contents.css',
 })
 export class TableOfContentsComponent implements OnInit, OnDestroy {
@@ -51,7 +53,7 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
   readonly titleId = computed(() => `${this.tocId()}-title`);
 
   constructor() {
-    effect(onCleanup => {
+    effect((onCleanup) => {
       const activeId = this.activeHeadingId();
       const viewport = this.scrollViewport()?.nativeElement;
 
@@ -90,7 +92,7 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
   }
 
   toggle(): void {
-    this.open.update(value => !value);
+    this.open.update((value) => !value);
   }
 
   close(): void {
@@ -155,7 +157,7 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
 
   private revealActiveLink(viewport: HTMLElement, activeId: string): void {
     const activeLink = Array.from(viewport.querySelectorAll<HTMLAnchorElement>('.toc-link')).find(
-      link => link.getAttribute('data-toc-id') === activeId,
+      (link) => link.getAttribute('data-toc-id') === activeId,
     );
 
     if (!activeLink) {
@@ -176,8 +178,7 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
 
   private openDrawer(): void {
     const activeElement = this.document.activeElement;
-    this.previouslyFocusedElement =
-      activeElement instanceof HTMLElement ? activeElement : null;
+    this.previouslyFocusedElement = activeElement instanceof HTMLElement ? activeElement : null;
     this.lockBodyScroll();
 
     if (typeof window !== 'undefined') {

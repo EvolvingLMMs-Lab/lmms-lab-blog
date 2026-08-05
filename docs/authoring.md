@@ -184,8 +184,11 @@ $$
 $$
 ```
 
-MathJax typesets both forms after the article is mounted. Display equations are
-centered and become horizontally scrollable when necessary.
+The generator marks both forms and loads MathJax 4.1.3 only after an article
+containing mathematics is mounted. Articles without mathematics do not download
+MathJax. HTML-first posts may author `\\(...\\)` and `\\[...\\]` delimiters directly;
+the on-demand loader recognizes those forms as well. Display equations are centered
+and become horizontally scrollable when necessary.
 
 ### Images
 

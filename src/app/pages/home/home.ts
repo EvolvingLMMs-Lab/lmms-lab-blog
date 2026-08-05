@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { POSTS } from '../../data/posts';
 
@@ -7,6 +7,7 @@ import { POSTS } from '../../data/posts';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './home.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.css',
 })
 export class HomeComponent {

@@ -1,5 +1,15 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, inject, output, signal, ElementRef, viewChild, afterNextRender, OnDestroy } from '@angular/core';
+import {
+  Component,
+  inject,
+  output,
+  signal,
+  ElementRef,
+  viewChild,
+  afterNextRender,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { SearchService, SearchResult } from '../../services/search.service';
 import { AutoAnimateDirective } from '../../directives/auto-animate';
@@ -9,6 +19,7 @@ import { AutoAnimateDirective } from '../../directives/auto-animate';
   standalone: true,
   imports: [AutoAnimateDirective],
   templateUrl: './search-modal.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-modal.css',
 })
 export class SearchModalComponent implements OnDestroy {
@@ -49,11 +60,11 @@ export class SearchModalComponent implements OnDestroy {
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
-        this.activeIndex.update(i => (i + 1) % Math.max(len, 1));
+        this.activeIndex.update((i) => (i + 1) % Math.max(len, 1));
         break;
       case 'ArrowUp':
         event.preventDefault();
-        this.activeIndex.update(i => (i - 1 + Math.max(len, 1)) % Math.max(len, 1));
+        this.activeIndex.update((i) => (i - 1 + Math.max(len, 1)) % Math.max(len, 1));
         break;
       case 'Enter':
         event.preventDefault();
@@ -82,9 +93,12 @@ export class SearchModalComponent implements OnDestroy {
 
   matchLabel(field: SearchResult['matchField']): string {
     switch (field) {
-      case 'title': return 'Title';
-      case 'description': return 'Description';
-      case 'content': return 'Content';
+      case 'title':
+        return 'Title';
+      case 'description':
+        return 'Description';
+      case 'content':
+        return 'Content';
     }
   }
 

@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
   inject,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
@@ -31,6 +32,7 @@ const HEADING_SCROLL_OFFSET_PX = 20;
     '../post/styles/layout.css',
     './docs.css',
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
 })
 export class DocsComponent implements AfterViewInit, OnDestroy {
@@ -82,7 +84,7 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleToc(): void {
-    this.tocOpen.update(value => !value);
+    this.tocOpen.update((value) => !value);
   }
 
   onTocHeadingSelected(id: string): void {

@@ -32,6 +32,6 @@ export const mathInline = {
     }
   },
   renderer(token) {
-    return `\\(${escapeHtml(token.text)}\\)`;
+    return `<span class="math-inline">\\(${escapeHtml(token.text)}\\)</span>`;
   },
 };

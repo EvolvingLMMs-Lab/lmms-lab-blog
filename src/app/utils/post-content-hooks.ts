@@ -4,51 +4,13 @@ type ContentVideoPlayerModule = typeof import('./content-video-player');
 
 let contentVideoPlayerModule: Promise<ContentVideoPlayerModule> | null = null;
 
-type MathJaxApi = {
-  startup?: {
-    promise?: Promise<unknown>;
-  };
-  typesetPromise?: (elements?: HTMLElement[]) => Promise<unknown>;
-};
-
 const IMAGE_ZOOM_OPTIONS = {
   margin: 24,
   background: 'color-mix(in srgb, var(--ctp-crust) 86%, var(--ctp-transparent))',
 };
 
-async function waitForMathJax(timeoutMs = 10000): Promise<MathJaxApi | null> {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  const start = Date.now();
-  while (Date.now() - start < timeoutMs) {
-    const mathJax = (window as any).MathJax as MathJaxApi | undefined;
-    if (mathJax?.typesetPromise) {
-      return mathJax;
-    }
-    await new Promise<void>(resolve => window.setTimeout(resolve, 50));
-  }
-
-  return null;
-}
-
-export async function typesetMath(container?: HTMLElement): Promise<void> {
-  const mathJax = await waitForMathJax();
-  if (!mathJax?.typesetPromise) {
-    return;
-  }
-
-  try {
-    await mathJax.startup?.promise;
-    await mathJax.typesetPromise(container ? [container] : undefined);
-  } catch (error) {
-    console.error('MathJax typeset failed', error);
-  }
-}
-
 export function optimizeContentImages(): void {
-  document.querySelectorAll<HTMLImageElement>('.post-body img').forEach(img => {
+  document.querySelectorAll<HTMLImageElement>('.post-body img').forEach((img) => {
     if (!img.hasAttribute('loading')) {
       img.setAttribute('loading', 'lazy');
     }
@@ -64,8 +26,9 @@ export function initContentImageZoom(container?: HTMLElement): () => void {
   }
 
   const root = container ?? document;
-  const images = Array.from(root.querySelectorAll<HTMLImageElement>('.post-body img'))
-    .filter(img => !img.closest('app-image-lightbox'));
+  const images = Array.from(root.querySelectorAll<HTMLImageElement>('.post-body img')).filter(
+    (img) => !img.closest('app-image-lightbox'),
+  );
   const zoom = images.length ? mediumZoom(images, IMAGE_ZOOM_OPTIONS) : null;
 
   return () => zoom?.detach();
@@ -73,7 +36,7 @@ export function initContentImageZoom(container?: HTMLElement): () => void {
 
 function loadContentVideoPlayer(): Promise<ContentVideoPlayerModule> {
   if (!contentVideoPlayerModule) {
-    contentVideoPlayerModule = import('./content-video-player').catch(error => {
+    contentVideoPlayerModule = import('./content-video-player').catch((error) => {
       contentVideoPlayerModule = null;
       throw error;
     });
@@ -89,7 +52,7 @@ export function initContentVideos(container?: HTMLElement): () => void {
 
   const root = container ?? document;
   const videos = Array.from(root.querySelectorAll<HTMLVideoElement>('video[controls]')).filter(
-    video => video.dataset['videoPlayerState'] === undefined && !video.closest('media-player'),
+    (video) => video.dataset['videoPlayerState'] === undefined && !video.closest('media-player'),
   );
 
   if (videos.length === 0) {
@@ -124,7 +87,7 @@ export function initContentVideos(container?: HTMLElement): () => void {
         }
       }
     })
-    .catch(error => {
+    .catch((error) => {
       if (disposed) {
         return;
       }
@@ -154,7 +117,7 @@ export function initAiSummaryFigures(container?: HTMLElement): () => void {
   const root = container ?? document;
   const cleanups: Array<() => void> = [];
 
-  root.querySelectorAll<HTMLButtonElement>('.ai-summary-button').forEach(button => {
+  root.querySelectorAll<HTMLButtonElement>('.ai-summary-button').forEach((button) => {
     if (button.dataset['aiSummaryBound'] === 'true') {
       return;
     }
@@ -199,11 +162,13 @@ export function initAiSummaryFigures(container?: HTMLElement): () => void {
           return;
         }
 
-        currentImage.dispatchEvent(new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        }));
+        currentImage.dispatchEvent(
+          new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+          }),
+        );
 
         window.setTimeout(() => {
           if (!document.body.classList.contains('medium-zoom--opened')) {
@@ -231,7 +196,7 @@ export function initAiSummaryFigures(container?: HTMLElement): () => void {
 }
 
 export function initCodeCopyButtons(): void {
-  document.querySelectorAll<HTMLButtonElement>('.code-copy').forEach(btn => {
+  document.querySelectorAll<HTMLButtonElement>('.code-copy').forEach((btn) => {
     if (btn.dataset['copyBound'] === 'true') return;
     btn.dataset['copyBound'] = 'true';
 
@@ -273,7 +238,7 @@ export function initHtmlControllers(container?: HTMLElement): () => void {
   const root = container ?? document;
   const cleanups: Array<() => void> = [];
 
-  root.querySelectorAll<HTMLElement>('[data-blog-controller]').forEach(host => {
+  root.querySelectorAll<HTMLElement>('[data-blog-controller]').forEach((host) => {
     const source = host.dataset['blogController'];
     if (!source || host.dataset['blogControllerBound'] === 'true') {
       return;
@@ -287,7 +252,7 @@ export function initHtmlControllers(container?: HTMLElement): () => void {
     host.dataset['blogControllerState'] = 'loading';
 
     void importBlogController(controllerUrl)
-      .then(async module => {
+      .then(async (module) => {
         if (typeof module.mount !== 'function') {
           throw new Error(`Blog controller ${source} does not export mount(host)`);
         }
@@ -301,7 +266,7 @@ export function initHtmlControllers(container?: HTMLElement): () => void {
         controllerCleanup = cleanup;
         host.dataset['blogControllerState'] = 'ready';
       })
-      .catch(error => {
+      .catch((error) => {
         if (disposed) {
           return;
         }

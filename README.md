@@ -5,9 +5,13 @@ Angular and deployed as a static Cloudflare Worker.
 
 ## Development
 
-Install dependencies and start the local server:
+Development requires Node.js 24.15 or newer within the Node 24 release line and
+pnpm 11.20.0. The repository includes an `.nvmrc` and a `packageManager` pin, so
+NVM and Corepack can select the matching tools without system-wide installs:
 
 ```bash
+nvm use
+corepack enable
 pnpm install
 pnpm start
 ```
