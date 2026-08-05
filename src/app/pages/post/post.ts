@@ -36,6 +36,7 @@ import { smoothScrollTo, SmoothScrollHandle } from '../../utils/smooth-scroll';
 import { buildContentWithToc, TocItem } from '../../utils/toc-builder';
 import { HeadingObserver } from '../../utils/heading-observer';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
+import { replaceLocationHash } from '../../utils/location-hash';
 
 const HEADING_SCROLL_OFFSET_PX = 20;
 
@@ -230,9 +231,7 @@ export class PostComponent implements OnDestroy {
     }
 
     this.activeHeadingId.set(id);
-    if (typeof history !== 'undefined') {
-      history.replaceState(history.state, '', `#${encodeURIComponent(id)}`);
-    }
+    replaceLocationHash(id);
   }
 
   private readHashId(): string | null {

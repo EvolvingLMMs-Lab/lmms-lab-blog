@@ -108,6 +108,8 @@ the Escape key.
 Reader position is preserved across browser refreshes and back/forward
 navigation. A newly opened URL with a heading fragment still jumps to that
 heading; refreshing after further scrolling restores the exact viewport instead.
+Selecting a contents entry updates only the fragment, preserving the current
+post pathname and query parameters.
 
 Use deeper headings only for local structure. They are rendered normally but
 are not included in the table of contents.

@@ -17,6 +17,7 @@ import { initCodeCopyButtons } from '../../utils/post-content-hooks';
 import { SmoothScrollHandle, smoothScrollTo } from '../../utils/smooth-scroll';
 import { buildContentWithToc } from '../../utils/toc-builder';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
+import { replaceLocationHash } from '../../utils/location-hash';
 
 const HEADING_SCROLL_OFFSET_PX = 20;
 
@@ -123,9 +124,7 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
     }
 
     this.activeHeadingId.set(id);
-    if (typeof history !== 'undefined') {
-      history.replaceState(history.state, '', `#${encodeURIComponent(id)}`);
-    }
+    replaceLocationHash(id);
   }
 
   private readHashId(): string | null {
