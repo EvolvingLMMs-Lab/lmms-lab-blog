@@ -1,31 +1,47 @@
-<div class="title-block">
-  <div class="title-wrapper">
-    <hr class="title-rule-top" />
-    <h1 class="title">LMMs-Lab Blog</h1>
-    <hr class="title-rule-bottom" />
+<header class="home-hero">
+  <div class="home-kicker">
+    <span>LMMs-Lab</span>
+    <span class="home-kicker-rule" aria-hidden="true"></span>
+    <span>Research journal</span>
   </div>
-  <p class="title-subtitle">Feeling and building multimodal intelligence.</p>
-</div>
+  <h1 class="title">LMMs-Lab Blog</h1>
+  <p class="title-subtitle">
+    Research notes, engineering stories, and open-source updates—feeling and building
+    multimodal intelligence.
+  </p>
+</header>
 
-<section class="post-list" appAutoAnimate [appAutoAnimateOptions]="{ duration: 180, easing: 'ease-out' }">
+<section class="post-index" aria-labelledby="post-index-title">
+  <header class="post-index-heading">
+    <div>
+      <p class="post-index-kicker">Publication index</p>
+      <h2 id="post-index-title">Latest notes</h2>
+    </div>
+    <span class="post-count">{{ posts.length }} {{ posts.length === 1 ? 'entry' : 'entries' }}</span>
+  </header>
+
   @if (posts.length === 0) {
     <div class="empty-state">
       <i class="ph ph-sparkle" aria-hidden="true"></i>
       <p>Research notes, engineering stories, and open-source updates are on the way.</p>
     </div>
-  }
-  @for (post of posts; track post.slug) {
-    <a class="post-entry" [routerLink]="['/', post.slug]">
-      <div class="post-entry-content">
-        <div class="post-row">
-          <span class="post-title">
-            <i class="ph ph-file-text" aria-hidden="true"></i>
-            <span>{{ post.title }}</span>
-          </span>
-          <time class="post-date" [attr.datetime]="post.date">{{ post.date }}</time>
-        </div>
-        <div class="post-description">{{ post.description }}</div>
-      </div>
-    </a>
+  } @else {
+    <ol class="post-list">
+      @for (post of posts; track post.slug) {
+        <li class="post-item">
+          <a class="post-entry" [routerLink]="['/', post.slug]">
+            <span class="post-number" aria-hidden="true"></span>
+            <article class="post-entry-content">
+              <time class="post-date" [attr.datetime]="post.date">{{ post.date }}</time>
+              <h3 class="post-title">{{ post.title }}</h3>
+              <p class="post-description">{{ post.description }}</p>
+            </article>
+            <span class="post-arrow" aria-hidden="true">
+              <i class="ph ph-arrow-up-right"></i>
+            </span>
+          </a>
+        </li>
+      }
+    </ol>
   }
 </section>

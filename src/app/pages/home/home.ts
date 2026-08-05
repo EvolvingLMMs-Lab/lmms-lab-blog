@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { POSTS } from '../../data/posts';
-import { AutoAnimateDirective } from '../../directives/auto-animate';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, AutoAnimateDirective],
+  imports: [RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
