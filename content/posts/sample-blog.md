@@ -79,6 +79,7 @@ this semantic element with the blog player, while native controls remain the fal
     poster="./flower-poster.avif"
     aria-label="Time-lapse of a flower blooming"
   >
+    <source src="./flower.m3u8" type="application/vnd.apple.mpegurl">
     <source src="./flower.webm" type='video/webm; codecs="vp8, vorbis"'>
     <source src="./flower.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
     Your browser does not support embedded video.

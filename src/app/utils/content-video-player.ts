@@ -1,4 +1,5 @@
 import type { MediaPlayerElement } from 'vidstack/elements';
+import { isHLSProvider, type MediaProviderChangeEvent } from 'vidstack';
 import 'vidstack/player';
 import 'vidstack/player/layouts/default';
 import 'vidstack/player/ui';
@@ -30,6 +31,12 @@ function appendMediaSources(video: HTMLVideoElement, outlet: HTMLElement): void 
   }
 }
 
+function useLocalHlsLibrary(event: MediaProviderChangeEvent): void {
+  if (isHLSProvider(event.detail)) {
+    event.detail.library = () => import('hls.js');
+  }
+}
+
 export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   if (!video.parentNode) {
     return () => {};
@@ -49,6 +56,7 @@ export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   player.setAttribute('stream-type', 'on-demand');
   player.setAttribute('load', 'visible');
   player.style.aspectRatio = getAspectRatio(video);
+  player.addEventListener('provider-change', useLocalHlsLibrary);
 
   copyAttribute(video, player, 'src');
   copyAttribute(video, player, 'poster');
@@ -75,6 +83,7 @@ export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   player.muted = muted;
 
   return () => {
+    player.removeEventListener('provider-change', useLocalHlsLibrary);
     void player.pause().catch(() => {});
     if (player.parentNode) {
       player.replaceWith(video);

@@ -230,6 +230,7 @@ available if JavaScript or the player module fails to load.
     poster="./pipeline-poster.avif"
     aria-label="Pipeline comparison"
   >
+    <source src="./pipeline.m3u8" type="application/vnd.apple.mpegurl">
     <source src="./pipeline.webm" type='video/webm; codecs="vp8, vorbis"'>
     <source src="./pipeline.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
     <track kind="captions" src="./pipeline.en.vtt" srclang="en" label="English">
@@ -241,11 +242,14 @@ available if JavaScript or the player module fails to load.
 
 Post-local `video`, `audio`, `source`, `track`, and video `poster` paths are
 rewritten to their published `/posts/<slug>/...` URLs. HTTPS media URLs remain
-external. Prefer a WebM source followed by an MP4 fallback, an AVIF poster,
-explicit `width` and `height`, `playsinline`, and `preload="metadata"`; include
-accurate `codecs` values so the player can choose the browser's best-supported
-source. Avoid autoplay for article media. Add a WebVTT captions track whenever
-speech or other meaningful audio is present.
+external. Prefer an HLS `.m3u8` source first, followed by WebM and MP4 fallbacks;
+Vidstack loads the bundled `hls.js` implementation when the browser supports it.
+Keep every relative segment or media URL referenced by the manifest inside the
+same post asset directory. Also provide an AVIF poster, explicit `width` and
+`height`, `playsinline`, and `preload="metadata"`; include accurate `codecs`
+values so the player can choose the browser's best-supported fallback. Avoid
+autoplay for article media. Add a WebVTT captions track whenever speech or other
+meaningful audio is present.
 
 ### Comments
 

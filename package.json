@@ -47,6 +47,7 @@
     "@phosphor-icons/web": "^2.1.2",
     "@shikijs/transformers": "^4.1.0",
     "flexsearch": "^0.8.212",
+    "hls.js": "1.6.16",
     "marked": "^18.0.4",
     "medium-zoom": "^1.1.0",
     "modern-normalize": "^3.0.1",
