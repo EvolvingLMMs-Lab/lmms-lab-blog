@@ -32,6 +32,26 @@
                   "**/*.html",
                   "**/.gitkeep"
                 ]
+              },
+              {
+                "glob": "roboto-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/roboto/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "roboto-latin-wght-italic.woff2",
+                "input": "node_modules/@fontsource-variable/roboto/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "space-grotesk-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/space-grotesk/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "google-sans-code-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/google-sans-code/files",
+                "output": "fonts"
               }
             ],
             "styles": [

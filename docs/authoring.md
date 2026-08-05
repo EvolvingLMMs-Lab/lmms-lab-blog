@@ -255,7 +255,9 @@ meaningful audio is present.
 
 Giscus comments are appended automatically to every valid post. Authors should
 not add a Giscus script to article content. The blog maps discussions by
-pathname and keeps the Giscus theme synchronized with the site theme.
+pathname and uses the site-owned blue theme. Fenced code in comments and comment
+previews is rendered on a framed, horizontally scrollable dark-blue surface;
+inline code receives a smaller matching frame.
 
 ## Native HTML and Markdown flow
 
@@ -441,9 +443,11 @@ filled card, border, or drop shadow. The table of contents uses the same corner
 treatment and flat active-section markers. The Giscus discussion area uses the
 site-owned `public/giscus.css` theme within matching corner marks and is omitted
 from print output. Keep that stylesheet available at `/giscus.css` with its
-`https://giscus.app` CORS rule in `public/_headers`. The embed references the
-canonical HTTPS asset so the cross-origin iframe uses the same theme in local
-previews.
+`https://giscus.app` CORS rule in `public/_headers`. Its stable Roboto, Space
+Grotesk, and Google Sans Code webfont assets are copied from the installed
+Fontsource packages into `/fonts`; those responses need the same Giscus CORS
+rule. The embed references the versioned canonical HTTPS theme asset so the
+cross-origin iframe uses the same typography and styling in local previews.
 
 ```css
 .demo {

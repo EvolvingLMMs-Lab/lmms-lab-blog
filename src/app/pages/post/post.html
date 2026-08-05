@@ -60,7 +60,14 @@
 
   <article class="post-body" [innerHTML]="safeHtml()"></article>
 
-  <section class="giscus-wrapper" aria-label="Discussion">
+  <section class="giscus-wrapper" aria-labelledby="discussion-title">
+    <header class="discussion-heading">
+      <div>
+        <p class="discussion-kicker">Community</p>
+        <h2 id="discussion-title">Discussion</h2>
+      </div>
+      <p class="discussion-intro">Questions, corrections, and ideas are welcome.</p>
+    </header>
     <app-giscus-comments />
   </section>
 
