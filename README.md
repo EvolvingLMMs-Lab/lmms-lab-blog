@@ -24,10 +24,11 @@ pnpm build
 
 ## Writing a post
 
-Use the canonical [blog authoring guide](docs/authoring.md). It documents the
-post layout and metadata, Markdown extensions, math, code, tables, media,
-comments, seamless native HTML fragments, interactive controllers, theming,
-asset rules, and the publishing checklist.
+Use the canonical [blog authoring guide](docs/authoring.md), also published at
+[blog.lmms-lab.com/docs](https://blog.lmms-lab.com/docs). It documents the post
+layout and metadata, Markdown extensions, math, code, tables, media, comments,
+seamless native HTML fragments, interactive controllers, theming, asset rules,
+and the publishing checklist.
 
 Keep author-facing behavior in that guide rather than duplicating it here. Any
 publishing feature change must update the guide in the same change.

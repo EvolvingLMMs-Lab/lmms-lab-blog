@@ -66,26 +66,18 @@ rewrites this relative path for production and preserves its intrinsic size.
 ## Local video
 
 Articles can keep video sources and their poster beside the post. JavaScript enhances
-this semantic element with the blog player, while native controls remain the fallback.
+the short tag with the Vidstack player, while native controls remain the fallback.
 
-<figure class="media-figure">
-  <video
-    controls
-    muted
-    playsinline
-    preload="metadata"
-    width="960"
-    height="540"
-    poster="./flower-poster.avif"
-    aria-label="Time-lapse of a flower blooming"
-  >
-    <source src="./flower.m3u8" type="application/vnd.apple.mpegurl">
-    <source src="./flower.webm" type='video/webm; codecs="vp8, vorbis"'>
-    <source src="./flower.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
-    Your browser does not support embedded video.
-  </video>
-  <figcaption>
-    A short CC0 flower time-lapse from
-    <a href="https://interactive-examples.mdn.mozilla.net/pages/tabbed/video.html">MDN's video example</a>.
-  </figcaption>
-</figure>
+<blog-video
+  src="./flower.m3u8"
+  poster="./flower-poster.avif"
+  caption="A short CC0 flower time-lapse."
+  width="960"
+  height="540"
+  muted
+>
+  <source src="./flower.webm" type='video/webm; codecs="vp8, vorbis"'>
+  <source src="./flower.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
+</blog-video>
+
+*Source: [MDN's video example](https://interactive-examples.mdn.mozilla.net/pages/tabbed/video.html).*

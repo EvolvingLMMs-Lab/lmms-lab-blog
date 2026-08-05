@@ -7,6 +7,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: 'docs',
+    renderMode: RenderMode.Prerender,
+  },
+  {
     path: ':slug',
     renderMode: RenderMode.Prerender,
     fallback: PrerenderFallback.None,

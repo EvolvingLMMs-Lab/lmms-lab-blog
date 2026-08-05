@@ -2,7 +2,9 @@
 
 This is the canonical reference for writing content for the LMMs-Lab Blog.
 When the publishing pipeline gains, removes, or changes an author-facing
-feature, update this guide in the same change.
+feature, update this guide in the same change. The same file is published at
+[blog.lmms-lab.com/docs](https://blog.lmms-lab.com/docs), so the repository and
+online references cannot drift apart.
 
 ## Quick start
 
@@ -39,6 +41,23 @@ pnpm start
 ```
 
 The post is available at `http://localhost:4200/<slug>`.
+
+## Blog-specific syntax at a glance
+
+Most articles only need ordinary Markdown. These are the blog's compact
+extensions for richer content:
+
+| Syntax | Purpose |
+| --- | --- |
+| `<ai-img>./summary.avif</ai-img>` | Add an AI-summary image button beside a heading. |
+| `<blog-video src="./demo.m3u8"></blog-video>` | Add a Vidstack-enhanced video with sensible defaults. |
+| `<html-fragment src="./demo.html"></html-fragment>` | Insert a post-local native HTML fragment into the Markdown flow. |
+| `<html-fragment src="./demo.html" wide></html-fragment>` | Let a genuinely wide fragment break out of the reading column. |
+| `data-blog-controller="./demo.mjs"` | Progressively enhance native HTML with a local controller module. |
+| `$...$` and `$$...$$` | Typeset inline and display mathematics. |
+
+The sections below define the attributes, asset rules, fallbacks, and complete
+examples for each extension.
 
 ## Metadata
 
@@ -211,45 +230,75 @@ The image remains hidden until the button is activated.
 
 ### Video and audio
 
-Use semantic HTML for media that Markdown does not express directly. Videos with
-`controls` are progressively enhanced with the blog's Vidstack player. The
-player JavaScript loads only on articles that contain a video, adapts its
-controls to the available width, and supports keyboard playback, seeking, mute,
-captions, picture-in-picture, and fullscreen. Native browser controls remain
-available if JavaScript or the player module fails to load.
+For a normal article video, one line is enough:
 
 ```html
-<figure class="media-figure">
-  <video
-    controls
-    muted
-    playsinline
-    preload="metadata"
-    width="1280"
-    height="720"
-    poster="./pipeline-poster.avif"
-    aria-label="Pipeline comparison"
-  >
-    <source src="./pipeline.m3u8" type="application/vnd.apple.mpegurl">
-    <source src="./pipeline.webm" type='video/webm; codecs="vp8, vorbis"'>
-    <source src="./pipeline.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
-    <track kind="captions" src="./pipeline.en.vtt" srclang="en" label="English">
-    Your browser does not support embedded video.
-  </video>
-  <figcaption>Comparison of the baseline and proposed pipeline.</figcaption>
-</figure>
+<blog-video src="./pipeline.m3u8"></blog-video>
 ```
+
+`src` is the only required attribute. The generator expands `<blog-video>` into
+a semantic figure and native `<video>` fallback with controls, `playsinline`,
+`preload="metadata"`, and a default 1280-by-720 aspect ratio. It infers common
+media types, including HLS from `.m3u8`, and then progressively enhances the
+native element with Vidstack in the browser.
+
+A recommended authored video adds a poster and visible caption:
+
+```html
+<blog-video
+  src="./pipeline.m3u8"
+  poster="./pipeline-poster.avif"
+  caption="Comparison of the baseline and proposed pipeline."
+></blog-video>
+```
+
+Add fallback formats and captions only when needed:
+
+```html
+<blog-video
+  src="./pipeline.m3u8"
+  poster="./pipeline-poster.avif"
+  caption="Comparison of the baseline and proposed pipeline."
+  width="1280"
+  height="720"
+  muted
+>
+  <source src="./pipeline.webm" type='video/webm; codecs="vp8, vorbis"'>
+  <source src="./pipeline.mp4" type='video/mp4; codecs="avc1.64001F, mp4a.40.2"'>
+  <track kind="captions" src="./pipeline.en.vtt" srclang="en" label="English">
+</blog-video>
+```
+
+Supported value attributes are `src`, `type`, `poster`, `caption`,
+`aria-label`, `title`, `width`, `height`, `preload`, `crossorigin`, and
+`controlslist`. Supported boolean attributes are `muted`, `loop`, `autoplay`,
+and `disablepictureinpicture`. A caption is plain text and also becomes the
+video's accessible label unless `aria-label` or `title` is supplied. Native
+`<video controls>` markup remains supported when a use case needs lower-level
+HTML control.
+
+The player JavaScript loads only on articles that contain a controlled video,
+adapts its controls to the available width, and supports keyboard playback,
+seeking, mute, captions, picture-in-picture, and fullscreen. Native browser
+controls remain available if JavaScript or the player module fails to load.
 
 Post-local `video`, `audio`, `source`, `track`, and video `poster` paths are
 rewritten to their published `/posts/<slug>/...` URLs. HTTPS media URLs remain
-external. Prefer an HLS `.m3u8` source first, followed by WebM and MP4 fallbacks;
-Vidstack loads the bundled `hls.js` implementation when the browser supports it.
-Keep every relative segment or media URL referenced by the manifest inside the
-same post asset directory. Also provide an AVIF poster, explicit `width` and
-`height`, `playsinline`, and `preload="metadata"`; include accurate `codecs`
-values so the player can choose the browser's best-supported fallback. Avoid
+external. Prefer an HLS `.m3u8` primary source, followed by WebM and MP4
+fallbacks; Vidstack loads the bundled `hls.js` implementation when the browser
+supports it. Keep every relative segment or media URL referenced by the
+manifest inside the same post asset directory. Include accurate `codecs` values
+on fallbacks so the player can choose the browser's best-supported source. Avoid
 autoplay for article media. Add a WebVTT captions track whenever speech or other
 meaningful audio is present.
+
+Audio continues to use native semantic HTML:
+
+```html
+<audio controls preload="metadata">
+  <source src="./narration.mp3" type="audio/mpeg">
+</audio>
+```
 
 ### Comments
 
@@ -476,7 +525,9 @@ Frequently useful variables include:
   `--ctp-mauve`, `--ctp-peach`, `--ctp-green`, and `--ctp-red`.
 
 The font variables use self-hosted Roboto, Space Grotesk, and Google Sans Code.
-Fragments should inherit them instead of loading remote web fonts.
+Fragments should inherit them instead of loading remote web fonts. Heading and
+monospace stacks fall back to the self-hosted Roboto face when a specialized
+face is unavailable, so content and controls remain readable.
 
 Use `color-mix()` with theme variables instead of hard-coded light backgrounds.
 Check mobile widths, print layout, keyboard focus, reduced motion, and overflow.
@@ -486,7 +537,8 @@ Keep selectors under the fragment's unique root class.
 
 Generated TypeScript under `src/app/data/` is ignored. Never edit or commit it.
 The source of truth is always `content/config/`, `content/posts/`, and post-local
-assets.
+assets. The online `/docs` page is also generated from this file; do not create
+a second copy of the authoring guide in an Angular template.
 
 Run these checks before publishing:
 
@@ -544,4 +596,4 @@ Update this guide whenever a change affects any of the following:
 
 Keep examples executable, prefer one canonical explanation over duplicated
 README text, and update or add tests when documenting behavior enforced by the
-generator.
+generator. `pnpm generate:data` rebuilds both post data and the online guide.

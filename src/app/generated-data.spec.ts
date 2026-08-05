@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest';
+import { AUTHORING_DOCS_HTML } from './data/authoring-docs';
 import { POSTS } from './data/posts';
 
 describe('generated content data', () => {
   it('loads the generated post list', () => {
     expect(Array.isArray(POSTS)).toBe(true);
     expect(POSTS.length).toBeGreaterThan(0);
+  });
+
+  it('generates the online guide from the canonical authoring document', () => {
+    expect(AUTHORING_DOCS_HTML).toContain('<h1>Blog authoring guide</h1>');
+    expect(AUTHORING_DOCS_HTML).toContain('&lt;blog-video');
+    expect(AUTHORING_DOCS_HTML).toContain('class="code-copy"');
   });
 
   it('produces complete, unique publishable records', () => {
