@@ -7,6 +7,7 @@ export class HeadingObserver {
   readonly activeHeadingId = signal('');
   private observer: IntersectionObserver | null = null;
   private trackedHeadings: HTMLElement[] = [];
+  private scrollFrame: number | null = null;
 
   observe(tocItems: TocItem[], hashId: string | null): void {
     this.disconnect();
@@ -46,6 +47,7 @@ export class HeadingObserver {
     );
 
     headings.forEach(heading => this.observer?.observe(heading));
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
 
     if (!hashId) {
       this.syncActiveHeading();
@@ -54,6 +56,13 @@ export class HeadingObserver {
 
   disconnect(): void {
     this.trackedHeadings = [];
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('scroll', this.handleScroll);
+      if (this.scrollFrame !== null) {
+        window.cancelAnimationFrame(this.scrollFrame);
+        this.scrollFrame = null;
+      }
+    }
     if (this.observer) {
       this.observer.disconnect();
       this.observer = null;
@@ -78,4 +87,15 @@ export class HeadingObserver {
 
     this.activeHeadingId.set(activeId);
   }
+
+  private readonly handleScroll = (): void => {
+    if (this.scrollFrame !== null || typeof window === 'undefined') {
+      return;
+    }
+
+    this.scrollFrame = window.requestAnimationFrame(() => {
+      this.scrollFrame = null;
+      this.syncActiveHeading();
+    });
+  };
 }

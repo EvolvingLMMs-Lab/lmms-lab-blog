@@ -99,6 +99,12 @@ Level-two and level-three headings are added to the table of contents. Heading
 IDs are generated from their visible text and duplicate IDs receive a numeric
 suffix. An explicit HTML `id` is preserved when possible.
 
+The contents panel follows the active section as the reader scrolls. Long
+contents lists scroll inside the panel, so the title and four-corner frame stay
+fixed. On narrow screens it opens as an accessible drawer: focus remains inside
+the drawer until it is closed with a link, the close button, the backdrop, or
+the Escape key.
+
 Use deeper headings only for local structure. They are rendered normally but
 are not included in the table of contents.
 

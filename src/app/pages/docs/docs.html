@@ -1,63 +1,13 @@
 @if (tocItems.length) {
-  <button
-    class="toc-toggle"
-    type="button"
-    (click)="toggleToc()"
-    [attr.aria-expanded]="tocOpen()"
-    aria-controls="docs-toc"
-    aria-label="Toggle table of contents"
-    title="Table of Contents"
-  >
-    @if (tocOpen()) {
-      <i class="ph ph-x" aria-hidden="true" style="font-size: 20px"></i>
-    } @else {
-      <i class="ph ph-list" aria-hidden="true" style="font-size: 20px"></i>
-    }
-  </button>
-
-  <nav
-    class="post-toc"
-    [class.toc-visible]="tocOpen()"
-    id="docs-toc"
-    aria-label="Documentation table of contents"
-    (keydown.escape)="closeToc()"
-    tabindex="-1"
-  >
-    <div class="toc-title">
-      <i class="ph ph-list-numbers toc-title-icon" aria-hidden="true"></i>
-      <span>Contents</span>
-      <button
-        class="toc-close"
-        type="button"
-        (click)="closeToc()"
-        aria-label="Close table of contents"
-      >
-        <i class="ph ph-x" aria-hidden="true"></i>
-      </button>
-    </div>
-    <div class="toc-nav">
-      @for (item of tocItems; track item.id) {
-        <a
-          class="toc-link"
-          [class.level-3]="item.level === 3"
-          [class.is-active]="activeHeadingId() === item.id"
-          [href]="'#' + item.id"
-          (click)="onTocClick($event, item.id)"
-        >
-          {{ item.text }}
-        </a>
-      }
-    </div>
-  </nav>
-
-  <div
-    class="toc-backdrop"
-    [class.toc-backdrop-visible]="tocOpen() && !isWide()"
-    (click)="closeToc()"
-    tabindex="-1"
-    role="button"
-    aria-label="Close table of contents"
-  ></div>
+  <app-table-of-contents
+    [items]="tocItems"
+    [activeHeadingId]="activeHeadingId()"
+    [open]="tocOpen()"
+    tocId="docs-toc"
+    label="Documentation table of contents"
+    (openChange)="tocOpen.set($event)"
+    (headingSelected)="onTocHeadingSelected($event)"
+  />
 }
 
 <header class="docs-meta">

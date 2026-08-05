@@ -15,14 +15,14 @@ import { HeadingObserver } from '../../utils/heading-observer';
 import { initCodeCopyButtons } from '../../utils/post-content-hooks';
 import { SmoothScrollHandle, smoothScrollTo } from '../../utils/smooth-scroll';
 import { buildContentWithToc } from '../../utils/toc-builder';
+import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 
-const WIDE_QUERY = '(min-width: 1301px)';
 const HEADING_SCROLL_OFFSET_PX = 20;
 
 @Component({
   selector: 'app-docs',
   standalone: true,
-  imports: [RouterLink, BackToTopComponent],
+  imports: [RouterLink, BackToTopComponent, TableOfContentsComponent],
   templateUrl: './docs.html',
   styleUrls: [
     '../post/styles/typography.css',
@@ -38,18 +38,15 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   private readonly toolbarExt = inject(ToolbarExtensionService);
   private readonly headingObserver = new HeadingObserver();
   private readonly processedContent = buildContentWithToc(AUTHORING_DOCS_HTML);
-  private viewportMediaQuery: MediaQueryList | null = null;
   private scrollHandle: SmoothScrollHandle | null = null;
   private setupTimer: number | null = null;
 
   readonly tocOpen = signal(false);
-  readonly isWide = signal(false);
   readonly activeHeadingId = this.headingObserver.activeHeadingId;
   readonly tocItems = this.processedContent.toc;
   readonly safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.processedContent.html);
 
   constructor() {
-    this.setupViewportObserver();
     this.toolbarExt.mobileTitle.set('Docs');
     this.toolbarExt.leadingButtons.set([
       {
@@ -80,7 +77,6 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
       window.clearTimeout(this.setupTimer);
     }
     this.headingObserver.disconnect();
-    this.teardownViewportObserver();
     this.scrollHandle?.cancel();
     this.toolbarExt.reset();
   }
@@ -89,17 +85,8 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
     this.tocOpen.update(value => !value);
   }
 
-  closeToc(): void {
-    this.tocOpen.set(false);
-  }
-
-  onTocClick(event: Event, id: string): void {
-    event.preventDefault();
+  onTocHeadingSelected(id: string): void {
     this.scrollToHeading(id, true);
-
-    if (!this.isWide() && typeof window !== 'undefined') {
-      window.setTimeout(() => this.tocOpen.set(false), 150);
-    }
   }
 
   private setupHeadingObserver(): void {
@@ -110,44 +97,6 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
       this.scrollToHeading(hashId, false);
     }
   }
-
-  private setupViewportObserver(): void {
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-      return;
-    }
-
-    const mediaQuery = window.matchMedia(WIDE_QUERY);
-    this.viewportMediaQuery = mediaQuery;
-    this.isWide.set(mediaQuery.matches);
-    this.tocOpen.set(mediaQuery.matches);
-
-    if (typeof mediaQuery.addEventListener === 'function') {
-      mediaQuery.addEventListener('change', this.handleViewportChange);
-      return;
-    }
-
-    mediaQuery.addListener(this.handleViewportChange);
-  }
-
-  private teardownViewportObserver(): void {
-    const mediaQuery = this.viewportMediaQuery;
-    if (!mediaQuery) {
-      return;
-    }
-
-    if (typeof mediaQuery.removeEventListener === 'function') {
-      mediaQuery.removeEventListener('change', this.handleViewportChange);
-    } else {
-      mediaQuery.removeListener(this.handleViewportChange);
-    }
-
-    this.viewportMediaQuery = null;
-  }
-
-  private readonly handleViewportChange = (event: MediaQueryListEvent): void => {
-    this.isWide.set(event.matches);
-    this.tocOpen.set(event.matches);
-  };
 
   private scrollToHeading(id: string, smooth: boolean): void {
     if (typeof document === 'undefined' || typeof window === 'undefined') {
