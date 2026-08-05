@@ -105,6 +105,10 @@ fixed. On narrow screens it opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or
 the Escape key.
 
+Reader position is preserved across browser refreshes and back/forward
+navigation. A newly opened URL with a heading fragment still jumps to that
+heading; refreshing after further scrolling restores the exact viewport instead.
+
 Use deeper headings only for local structure. They are rendered normally but
 are not included in the table of contents.
 

@@ -1,5 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ScrollRestorationService } from './services/scroll-restoration.service';
+
+const HEADING_SCROLL_OFFSET_PX = 20;
 
 @Component({
   selector: 'app-root',
@@ -9,4 +13,11 @@ import { RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.css',
 })
-export class App {}
+export class App {
+  constructor() {
+    inject(ViewportScroller).setOffset([0, HEADING_SCROLL_OFFSET_PX]);
+    const scrollRestoration = inject(ScrollRestorationService);
+
+    afterNextRender(() => scrollRestoration.initialize());
+  }
+}

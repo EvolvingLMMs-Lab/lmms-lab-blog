@@ -231,7 +231,7 @@ export class PostComponent implements OnDestroy {
 
     this.activeHeadingId.set(id);
     if (typeof history !== 'undefined') {
-      history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+      history.replaceState(history.state, '', `#${encodeURIComponent(id)}`);
     }
   }
 

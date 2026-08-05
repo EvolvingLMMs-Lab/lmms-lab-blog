@@ -124,7 +124,7 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
 
     this.activeHeadingId.set(id);
     if (typeof history !== 'undefined') {
-      history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+      history.replaceState(history.state, '', `#${encodeURIComponent(id)}`);
     }
   }
 
