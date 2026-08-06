@@ -157,7 +157,8 @@ are preserved.
 ### Code
 
 Fenced code blocks are highlighted with Shiki, use the site's adapted
-Catppuccin accents, show the language, and include a copy button:
+Catppuccin accents, show the language, and include a copy button. Their flat,
+square-edged frame follows the same fine-rule treatment as the article shell:
 
 ````markdown
 ```python
@@ -517,11 +518,18 @@ Fontsource packages into `/fonts`; those responses need the same Giscus CORS
 rule. The embed references the versioned canonical HTTPS theme asset so the
 cross-origin iframe uses the same typography and styling in local previews.
 
+Article text sits in a stable reading column, uses left-aligned paragraphs, and
+widens only for explicitly marked wide fragments. Major headings, quotations,
+tables, code, search, and navigation controls use fine rules and warm corner or
+baseline accents instead of rounded cards. On small screens the reading column
+fills the available canvas without forcing justification, which avoids uneven
+word spacing in narrow paragraphs.
+
 ```css
 .demo {
   color: var(--text-color);
-  background: var(--paper-bg);
-  border: 1px solid var(--border-color);
+  background: var(--surface-wash);
+  border-block: 1px solid var(--line-soft);
   font-family: var(--font-body);
 }
 
@@ -539,6 +547,9 @@ Frequently useful variables include:
 - `--background`, `--paper-bg`, and `--accent-bg`;
 - `--text-color` and `--text-secondary`;
 - `--link-color` and `--border-color`;
+- `--line-faint`, `--line-soft`, `--line-strong`, `--line-accent`, and
+  `--surface-wash`;
+- `--page-width` and `--reading-width` for shell and article geometry;
 - `--font-body`, `--font-heading`, and `--font-mono`; and
 - adapted Catppuccin accent tokens such as `--ctp-blue`, `--ctp-teal`,
   `--ctp-mauve`, `--ctp-peach`, `--ctp-green`, and `--ctp-red`.

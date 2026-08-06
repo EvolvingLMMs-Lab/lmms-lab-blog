@@ -1,8 +1,17 @@
 <header class="title-block">
-  <div class="title-wrapper">
-    <hr class="title-rule-top" />
-    <h1 class="title">{{ title() }}</h1>
-    <hr class="title-rule-bottom" />
+  <div class="post-kicker">
+    <span>LMMs-Lab</span>
+    <span class="post-kicker-rule" aria-hidden="true"></span>
+    <span>Field note</span>
   </div>
-  <div class="date">{{ date() }}</div>
+
+  <div class="title-wrapper">
+    <h1 class="title" [class.title-long]="title().length > 64">{{ title() }}</h1>
+  </div>
+
+  <div class="post-meta">
+    <time [attr.datetime]="date()">{{ date() }}</time>
+    <span class="post-meta-rule" aria-hidden="true"></span>
+    <span>Multimodal intelligence</span>
+  </div>
 </header>

@@ -13,7 +13,7 @@ import { smoothScrollTo, SmoothScrollHandle } from '../../utils/smooth-scroll';
       aria-label="Back to top"
       title="Back to top"
     >
-      <i class="ph ph-arrow-line-up" aria-hidden="true" style="font-size: 20px"></i>
+      <i class="ph ph-arrow-line-up" aria-hidden="true"></i>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.Eager,

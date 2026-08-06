@@ -1,19 +1,26 @@
 <div class="toolbar-nav">
   <a class="toolbar-desktop-btn" routerLink="/" aria-label="Home" title="Home">
-    <i class="ph ph-house" style="font-size: 20px"></i>
+    <i class="ph ph-house" aria-hidden="true"></i>
   </a>
-  <a class="toolbar-desktop-btn" href="https://www.lmms-lab.com/" aria-label="LMMs-Lab website" title="LMMs-Lab" target="_blank" rel="noopener noreferrer">
-    <i class="ph ph-globe" style="font-size: 20px"></i>
+  <a
+    class="toolbar-desktop-btn"
+    href="https://www.lmms-lab.com/"
+    aria-label="LMMs-Lab website"
+    title="LMMs-Lab"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <i class="ph ph-globe" aria-hidden="true"></i>
   </a>
 </div>
 
 <div class="toolbar">
   <div class="toolbar-desktop">
     <button (click)="searchOpen.set(true)" aria-label="Search" title="Search posts (Ctrl+K)">
-      <i class="ph ph-magnifying-glass" style="font-size: 20px"></i>
+      <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
     </button>
     <button (click)="print()" aria-label="Print" title="Export as PDF / Print">
-      <i class="ph ph-printer" style="font-size: 20px"></i>
+      <i class="ph ph-printer" aria-hidden="true"></i>
     </button>
   </div>
 
@@ -45,7 +52,13 @@
     <div class="toolbar-mobile-title">{{ toolbarExt.mobileTitle() }}</div>
 
     <div class="toolbar-mobile-group">
-      <button class="toolbar-mobile-btn" type="button" (click)="searchOpen.set(true)" aria-label="Search" title="Search posts (Ctrl+K)">
+      <button
+        class="toolbar-mobile-btn"
+        type="button"
+        (click)="searchOpen.set(true)"
+        aria-label="Search"
+        title="Search posts (Ctrl+K)"
+      >
         <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
       </button>
       <button class="toolbar-mobile-btn" type="button" (click)="print()" aria-label="Print" title="Export as PDF / Print">

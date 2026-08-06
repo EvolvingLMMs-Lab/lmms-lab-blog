@@ -1,9 +1,9 @@
 .post-body img {
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: 0;
   margin: 0.5rem 0;
-  box-shadow: 0 1px 4px var(--shadow-color);
+  box-shadow: none;
 }
 
 .post-body p > img {
@@ -198,7 +198,7 @@ body > .vds-video-layout {
   border: none;
   margin: 2.5rem auto;
   height: 1px;
-  max-width: 280px;
+  max-width: 18rem;
   position: relative;
   background: linear-gradient(
     to right,
@@ -211,7 +211,7 @@ body > .vds-video-layout {
 }
 
 .post-body hr::after {
-  content: "\2726";
+  content: "·  ·  ·";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -221,5 +221,5 @@ body > .vds-video-layout {
   font-size: 0.7rem;
   color: color-mix(in srgb, var(--border-color) 55%, var(--ctp-transparent));
   line-height: 1;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.24em;
 }

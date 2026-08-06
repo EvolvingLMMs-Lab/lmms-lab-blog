@@ -48,6 +48,13 @@
   --font-mono: "Google Sans Code Variable", "Google Sans Code", ui-monospace, "SFMono-Regular",
     "Menlo", "Consolas", "Liberation Mono", "Roboto Variable", "Roboto", monospace;
   --code-header-bg: color-mix(in srgb, var(--border-color) 10%, var(--paper-bg));
+  --page-width: 980px;
+  --reading-width: 760px;
+  --line-faint: color-mix(in srgb, var(--border-color) 13%, var(--ctp-transparent));
+  --line-soft: color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
+  --line-strong: color-mix(in srgb, var(--border-color) 42%, var(--ctp-transparent));
+  --line-accent: color-mix(in srgb, var(--ctp-peach) 62%, var(--ctp-transparent));
+  --surface-wash: color-mix(in srgb, var(--ctp-sapphire) 6%, var(--ctp-transparent));
 }
 
 @media print {

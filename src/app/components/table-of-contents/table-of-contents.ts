@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import { TocItem } from '../../utils/toc-builder';
 
-const WIDE_QUERY = '(min-width: 1301px)';
+const WIDE_QUERY = '(min-width: 1440px)';
 const ACTIVE_LINK_PADDING_PX = 8;
 
 @Component({

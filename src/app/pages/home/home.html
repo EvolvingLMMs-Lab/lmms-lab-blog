@@ -4,11 +4,34 @@
     <span class="home-kicker-rule" aria-hidden="true"></span>
     <span>Research journal</span>
   </div>
-  <h1 class="title">LMMs-Lab Blog</h1>
-  <p class="title-subtitle">
-    Research notes, engineering stories, and open-source updates—feeling and building
-    multimodal intelligence.
-  </p>
+
+  <div class="home-hero-main">
+    <div class="home-hero-copy">
+      <h1 class="title">LMMs-Lab Blog</h1>
+      <p class="title-subtitle">
+        Research notes, engineering stories, and open-source updates—feeling and building
+        multimodal intelligence.
+      </p>
+    </div>
+
+    <aside class="home-focus" aria-label="Journal focus">
+      <span class="home-focus-label">Focus / 03</span>
+      <span>Research</span>
+      <span>Engineering</span>
+      <span>Open source</span>
+    </aside>
+  </div>
+
+  <nav class="home-hero-links" aria-label="Journal shortcuts">
+    <a href="#post-index-title">
+      Browse the journal
+      <i class="ph ph-arrow-down" aria-hidden="true"></i>
+    </a>
+    <a routerLink="/docs">
+      Authoring guide
+      <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+    </a>
+  </nav>
 </header>
 
 <section class="post-index" aria-labelledby="post-index-title">
@@ -31,8 +54,8 @@
         <li class="post-item">
           <a class="post-entry" [routerLink]="['/', post.slug]">
             <span class="post-number" aria-hidden="true"></span>
+            <time class="post-date" [attr.datetime]="post.date">{{ post.date }}</time>
             <article class="post-entry-content">
-              <time class="post-date" [attr.datetime]="post.date">{{ post.date }}</time>
               <h3 class="post-title">{{ post.title }}</h3>
               <p class="post-description">{{ post.description }}</p>
             </article>

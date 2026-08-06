@@ -1,12 +1,12 @@
 .paper {
   --paper-corner-color: color-mix(in srgb, var(--ctp-peach) 58%, var(--ctp-transparent));
-  --paper-corner-size: 2rem;
+  --paper-corner-size: 1.8rem;
   --paper-corner-stroke: 1px;
   position: relative;
-  max-width: 900px;
-  width: 92%;
-  margin: 2.5rem auto;
-  padding: 3rem 3.5rem 4rem;
+  width: min(var(--page-width), calc(100% - 3rem));
+  min-height: 42rem;
+  margin: 2rem auto 0;
+  padding: 3.75rem 4.15rem 4.75rem;
   background: var(--ctp-transparent);
   overflow: visible;
 }
@@ -35,17 +35,33 @@
   pointer-events: none;
 }
 
+.paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) center top / 1px 0.7rem
+      no-repeat,
+    linear-gradient(var(--paper-corner-color), var(--paper-corner-color)) center bottom / 1px 0.7rem
+      no-repeat;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
 @media (max-width: 768px) {
   .paper {
-    margin-top: 4.2rem;
+    width: calc(100% - 1.35rem);
+    margin-top: 4.4rem;
+    padding-inline: clamp(1.25rem, 5vw, 2.4rem);
   }
 }
 
 @media (max-width: 600px) {
   .paper {
-    width: 96%;
-    padding: 2rem 1.5rem 3rem;
-    --paper-corner-size: 1.35rem;
+    width: calc(100% - 1rem);
+    min-height: 0;
+    padding: 2.25rem 1.25rem 3.25rem;
+    --paper-corner-size: 1.2rem;
   }
 }
 
@@ -58,7 +74,8 @@
     background: var(--ctp-transparent);
   }
 
-  .paper::before {
+  .paper::before,
+  .paper::after {
     display: none;
   }
 }

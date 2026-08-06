@@ -1,28 +1,39 @@
 <footer class="footer">
-  <p class="footer-line">LMMs-Lab · Building multimodal intelligence</p>
-  <p class="footer-line">
-    Built with
-    <a class="footer-icon-link" href="https://angular.dev" target="_blank" rel="noopener noreferrer" aria-label="Angular">
-      <i class="ph ph-angular-logo"></i>
-      Angular
-    </a>
-    &middot; Deployed on
-    <a class="footer-icon-link" href="https://developers.cloudflare.com/workers/" target="_blank" rel="noopener noreferrer" aria-label="Cloudflare Workers">
-      <i class="ph ph-cloud"></i>
-      Cloudflare Workers
-    </a>
-  </p>
-  <p class="footer-line">
-    <a class="footer-icon-link" routerLink="/docs">Authoring Docs</a>
-    &middot; Source Code:
-    <a
-      class="footer-icon-link"
-      [href]="sourceCodeUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Source code on GitHub"
-    >
-      <i class="ph ph-github-logo"></i>
-    </a>
-  </p>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <p class="footer-label">LMMs / Journal</p>
+      <p class="footer-statement">Building multimodal intelligence in the open.</p>
+    </div>
+
+    <nav class="footer-links" aria-label="Blog links">
+      <p class="footer-label">Explore</p>
+      <a routerLink="/">All posts</a>
+      <a routerLink="/docs">Authoring docs</a>
+      <a [href]="sourceCodeUrl" target="_blank" rel="noopener noreferrer">
+        Source code
+        <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+      </a>
+    </nav>
+
+    <div class="footer-stack">
+      <p class="footer-label">Infrastructure</p>
+      <a href="https://angular.dev" target="_blank" rel="noopener noreferrer">
+        <i class="ph ph-angular-logo" aria-hidden="true"></i>
+        Angular
+      </a>
+      <a
+        href="https://developers.cloudflare.com/workers/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="ph ph-cloud" aria-hidden="true"></i>
+        Cloudflare Workers
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-baseline">
+    <span>LMMs-Lab Blog</span>
+    <span class="footer-signal" aria-hidden="true"><i></i> Open research log</span>
+  </div>
 </footer>

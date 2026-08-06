@@ -8,16 +8,18 @@
   display: flex;
   position: fixed;
   top: 1rem;
-  left: calc(1rem + 36px + 0.5rem + 36px + 0.5rem);
+  left: calc(1rem + 38px + 0.4rem + 38px + 0.4rem);
   z-index: 1001;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   align-items: center;
   justify-content: center;
-  border: 1px solid color-mix(in srgb, var(--border-color) 25%, var(--ctp-transparent));
-  border-radius: 50%;
-  background: var(--paper-bg);
-  box-shadow: 0 1px 4px var(--shadow-color);
+  border: 1px solid var(--line-soft);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--paper-bg) 82%, var(--ctp-transparent));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: none;
   color: var(--text-color);
   cursor: pointer;
   font-family: var(--font-heading);
@@ -30,8 +32,8 @@
 }
 
 .toc-toggle:hover {
-  opacity: 0.8;
-  border-color: color-mix(in srgb, var(--border-color) 45%, var(--ctp-transparent));
+  border-color: var(--line-accent);
+  background: color-mix(in srgb, var(--ctp-sapphire) 10%, var(--paper-bg));
 }
 
 .toc-toggle:focus-visible {
@@ -228,11 +230,11 @@
 }
 
 /* Wide screens: fixed sidebar outside the paper. */
-@media (min-width: 1301px) {
+@media (min-width: 1440px) {
   .post-toc {
     top: 4rem;
-    left: calc((100vw - 900px) / 2 - 250px);
-    width: 218px;
+    left: calc((100vw - var(--page-width)) / 2 - 212px);
+    width: 200px;
     max-height: calc(100dvh - 5rem);
     padding: 0.9rem 0.8rem;
     background: var(--ctp-transparent);
@@ -245,7 +247,7 @@
 }
 
 /* Narrow screens: the shell stays fixed while only the links scroll. */
-@media (max-width: 1300px) {
+@media (max-width: 1439px) {
   .post-toc {
     top: 0;
     bottom: 0;

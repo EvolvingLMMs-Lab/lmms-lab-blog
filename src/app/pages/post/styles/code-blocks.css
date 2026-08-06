@@ -1,11 +1,39 @@
 /* Code block container */
 .post-body .code-block {
+  --code-corner-color: color-mix(in srgb, var(--ctp-peach) 46%, var(--ctp-transparent));
+  position: relative;
   margin: 1.75rem 0;
-  border: 1px solid color-mix(in srgb, var(--border-color) 18%, var(--ctp-transparent));
-  border-radius: 12px;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 0;
   overflow: hidden;
-  background: var(--paper-bg);
-  box-shadow: 0 8px 22px var(--shadow-color);
+  background: color-mix(in srgb, var(--ctp-crust) 16%, var(--paper-bg));
+  box-shadow: none;
+}
+
+.post-body .code-block::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) left top / 0.75rem 1px
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) left top / 1px 0.75rem
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) right top / 0.75rem 1px
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) right top / 1px 0.75rem
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) left bottom / 0.75rem 1px
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) left bottom / 1px 0.75rem
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) right bottom / 0.75rem 1px
+      no-repeat,
+    linear-gradient(var(--code-corner-color), var(--code-corner-color)) right bottom / 1px 0.75rem
+      no-repeat;
+  pointer-events: none;
 }
 
 .post-body .code-header {
@@ -19,7 +47,7 @@
     color-mix(in srgb, var(--border-color) 7%, var(--paper-bg)),
     color-mix(in srgb, var(--border-color) 4%, var(--paper-bg))
   );
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 16%, var(--ctp-transparent));
+  border-bottom: 1px solid var(--line-faint);
 }
 
 .post-body .code-lang {
@@ -37,7 +65,7 @@
   content: '';
   width: 0.5rem;
   height: 0.5rem;
-  border-radius: 999px;
+  border-radius: 0;
   background: color-mix(in srgb, var(--link-color) 45%, var(--ctp-transparent));
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--link-color) 35%, var(--ctp-transparent));
 }
@@ -50,10 +78,11 @@
   line-height: 1.3;
   letter-spacing: 0.01em;
   color: var(--text-secondary);
-  background: color-mix(in srgb, var(--paper-bg) 82%, var(--border-color) 18%);
-  border: 1px solid color-mix(in srgb, var(--border-color) 24%, var(--ctp-transparent));
-  border-radius: 999px;
-  padding: 0.2rem 0.7rem;
+  background: var(--ctp-transparent);
+  border: 0;
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 0;
+  padding: 0.18rem 0.1rem;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
 }
@@ -61,7 +90,7 @@
 .post-body .code-copy:hover {
   color: var(--text-color);
   border-color: color-mix(in srgb, var(--border-color) 40%, var(--ctp-transparent));
-  background: color-mix(in srgb, var(--border-color) 12%, var(--paper-bg));
+  background: var(--ctp-transparent);
   transform: translateY(-1px);
 }
 
@@ -134,8 +163,9 @@
   margin: 1.75rem 0;
   padding: 1.1rem 1.2rem;
   background: color-mix(in srgb, var(--border-color) 6%, var(--paper-bg));
-  border: 1px solid color-mix(in srgb, var(--border-color) 18%, var(--ctp-transparent));
-  border-radius: 10px;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  border-radius: 0;
   overflow-x: auto;
   line-height: 1.6;
   text-align: left;

@@ -4,9 +4,21 @@ body.landing-active {
   background: var(--background);
 }
 
-::selection { background: color-mix(in srgb, var(--ctp-blue) 28%, var(--ctp-transparent)); color: var(--ctp-text); }
+::selection {
+  background: color-mix(in srgb, var(--ctp-peach) 26%, var(--ctp-transparent));
+  color: var(--ctp-text);
+}
 
-* { margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 html {
   font-size: 15px;
@@ -18,14 +30,33 @@ html {
 }
 
 body {
+  min-height: 100vh;
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
   color: var(--text-color);
-  background: var(--background);
+  background:
+    radial-gradient(
+      circle at 50% -12rem,
+      color-mix(in srgb, var(--ctp-sapphire) 10%, var(--ctp-transparent)),
+      var(--ctp-transparent) 38rem
+    ),
+    var(--background);
   transition: background 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--ctp-peach) 78%, var(--ctp-transparent));
+  outline-offset: 3px;
 }
 
 a {

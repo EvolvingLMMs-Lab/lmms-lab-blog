@@ -3,7 +3,9 @@
   --comments-corner-size: 1.35rem;
   --comments-corner-stroke: 1px;
   position: relative;
+  max-width: var(--reading-width);
   margin-top: 3.5rem;
+  margin-inline: auto;
   padding: 2.25rem 1.15rem 1.15rem;
 }
 
@@ -44,7 +46,7 @@
 .discussion-kicker {
   margin: 0 0 0.15rem;
   color: var(--ctp-overlay2);
-  font-family: var(--font-heading);
+  font-family: var(--font-mono);
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.14em;
