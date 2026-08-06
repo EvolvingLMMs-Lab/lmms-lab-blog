@@ -1,3 +1,11 @@
+---
+title: 'OneVision Encoder: Codec-Aligned Sparsity as a Foundational Principle for Multimodal Intelligence'
+date: '2026-01-15'
+description: >-
+  Codec Patchification processes only the 3.1%-25% of visual regions rich in signal entropy,
+  improving video understanding while using substantially fewer patches.
+---
+
 [Models](https://huggingface.co/collections/lmms-lab-encoder/onevision-encoder) ·
 [Tech Report](https://arxiv.org/abs/2602.08683) ·
 [Model Card](https://github.com/EvolvingLMMs-Lab/OneVision-Encoder/blob/main/docs/model_card.md) ·

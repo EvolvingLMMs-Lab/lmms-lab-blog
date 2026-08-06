@@ -1,8 +1,8 @@
 import { execFileSync } from 'child_process';
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { JSDOM } from 'jsdom';
 import { Marked } from 'marked';
-import { basename, join } from 'path';
+import { join } from 'path';
 import { createHighlighter } from 'shiki';
 import { blogVideoBlock, renderBlogVideos } from './lib/blog-video-renderer.mjs';
 import { createCodeRenderer } from './lib/code-renderer.mjs';
@@ -12,10 +12,10 @@ import {
   renderHtmlFragments,
 } from './lib/html-fragment-renderer.mjs';
 import { mathBlock, mathInline } from './lib/math-extensions.mjs';
+import { discoverPostSources } from './lib/post-source.mjs';
 import { tableRenderer } from './lib/table-renderer.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
-const CONFIG_DIR = join(ROOT, 'content/config');
 const POSTS_DIR = join(ROOT, 'content/posts');
 const AUTHORING_GUIDE = join(ROOT, 'docs/authoring.md');
 const DATA_DIR = join(ROOT, 'src/app/data');
@@ -243,29 +243,7 @@ function renderAuthoringGuide(markdown, highlighter) {
 
 async function main() {
   mkdirSync(DATA_DIR, { recursive: true });
-
-  const configFiles = readdirSync(CONFIG_DIR)
-    .filter((f) => f.endsWith('.json'))
-    .sort();
-
-  const rawPosts = configFiles.map((file) => {
-    const slug = basename(file, '.json');
-    const meta = JSON.parse(readFileSync(join(CONFIG_DIR, file), 'utf-8'));
-    const markdownPath = join(POSTS_DIR, `${slug}.md`);
-    const htmlPath = join(POSTS_DIR, `${slug}.html`);
-    const hasMarkdown = existsSync(markdownPath);
-    const hasHtml = existsSync(htmlPath);
-
-    if (hasMarkdown === hasHtml) {
-      throw new Error(
-        `Post "${slug}" must have exactly one source file: ${slug}.md or ${slug}.html`,
-      );
-    }
-
-    const format = hasHtml ? 'html' : 'markdown';
-    const source = readFileSync(hasHtml ? htmlPath : markdownPath, 'utf-8');
-    return { slug, meta, format, source };
-  });
+  const rawPosts = discoverPostSources(POSTS_DIR);
 
   const authoringGuide = readFileSync(AUTHORING_GUIDE, 'utf-8');
 

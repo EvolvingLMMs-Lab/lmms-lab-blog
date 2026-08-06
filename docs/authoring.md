@@ -8,27 +8,24 @@ online references cannot drift apart.
 
 ## Quick start
 
-Every post has one metadata file, one content source, and an optional asset
-directory:
+Every post is one self-contained directory containing an index source and any
+local assets it needs:
 
 ```text
-content/
-├── config/
-│   └── my-post.json
-└── posts/
-    ├── my-post.md
-    └── my-post/
-        ├── result.avif
-        └── interactive/
-            ├── demo.css
-            └── demo.mjs
+content/posts/
+└── my-post/
+    ├── index.md
+    ├── result.avif
+    └── interactive/
+        ├── demo.css
+        └── demo.mjs
 ```
 
-Use a lowercase kebab-case slug such as `my-post`. Create exactly one content
-source:
+Use a lowercase kebab-case directory name such as `my-post`; that directory name
+becomes the URL slug. Create exactly one index source inside it:
 
-- `content/posts/<slug>.md` for a Markdown-first article; or
-- `content/posts/<slug>.html` for an HTML-first article.
+- `content/posts/<slug>/index.md` for a Markdown-first article; or
+- `content/posts/<slug>/index.html` for an HTML-first article.
 
 Markdown is the recommended default. It can alternate seamlessly with raw HTML
 and post-local HTML fragments, so choosing Markdown does not limit interactive
@@ -61,14 +58,15 @@ examples for each extension.
 
 ## Metadata
 
-Create `content/config/<slug>.json`:
+Start every `index.md` or `index.html` with YAML front matter:
 
-```json
-{
-  "title": "A descriptive post title",
-  "date": "2026-08-04",
-  "description": "A concise summary used on the blog index."
-}
+```yaml
+---
+title: 'A descriptive post title'
+date: '2026-08-04'
+description: >-
+  A concise summary used on the blog index.
+---
 ```
 
 | Field | Required | Notes |
@@ -76,6 +74,11 @@ Create `content/config/<slug>.json`:
 | `title` | Yes | Displayed as the article title and on the blog index. |
 | `date` | Yes | Use `YYYY-MM-DD`. Posts are sorted newest first. |
 | `description` | Yes | Keep it short enough to scan on the index page. |
+
+The opening delimiter must be the first line of the file. Quote the date so its
+string type is explicit. Unknown fields, malformed YAML, invalid calendar dates,
+missing fields, and empty article bodies fail generation with the source path in
+the error. Front matter is removed before Markdown or HTML rendering.
 
 Do not add the title as an `h1` in the content source. The blog shell already
 renders the title and date.
@@ -402,9 +405,9 @@ on small screens.
 
 ### HTML-first posts
 
-For an HTML-first article, create `content/posts/<slug>.html` instead of the
-Markdown file. Write article body content only; do not include `<!doctype>`,
-`<html>`, or a duplicate page title.
+For an HTML-first article, create `content/posts/<slug>/index.html` instead of
+`index.md`. Use the same YAML front matter, followed by article body content
+only; do not include `<!doctype>`, `<html>`, or a duplicate page title.
 
 HTML-first posts use the same asset normalization, native controller lifecycle,
 table of contents, image behavior, comments, and site shell as Markdown posts.
@@ -551,9 +554,9 @@ Keep selectors under the fragment's unique root class.
 ## Publishing and validation
 
 Generated TypeScript under `src/app/data/` is ignored. Never edit or commit it.
-The source of truth is always `content/config/`, `content/posts/`, and post-local
-assets. The online `/docs` page is also generated from this file; do not create
-a second copy of the authoring guide in an Angular template.
+The source of truth is each `content/posts/<slug>/` directory and its `index.md`
+or `index.html`. The online `/docs` page is also generated from this file; do
+not create a second copy of the authoring guide in an Angular template.
 
 Run these checks before publishing:
 
@@ -583,7 +586,9 @@ Review the rendered post at desktop and mobile widths. Check at least:
 
 | Error or symptom | Likely cause | Resolution |
 | --- | --- | --- |
-| `must have exactly one source file` | Both `<slug>.md` and `<slug>.html` exist, or neither exists. | Keep exactly one content source. |
+| `Loose post sources are not supported` | A legacy `.md` or `.html` file is directly under `content/posts/`. | Move it to `<slug>/index.md` or `<slug>/index.html`. |
+| `must have exactly one source file` | Both `index.md` and `index.html` exist in a post directory, or neither exists. | Keep exactly one index source. |
+| Front matter validation fails | YAML is missing or malformed, a field is missing or unknown, or the date is invalid. | Put valid `title`, quoted `date`, and `description` front matter at the very start of the index source. |
 | Fragment remains unresolved or generation fails | The fragment is not a local `.html` file or its path is wrong. | Put it under `content/posts/<slug>/` and use a relative path. |
 | `Blog controller does not exist` | `data-blog-controller` points to a missing file. | Add the local `.js`/`.mjs` module or correct the relative path. |
 | Interactive content shows an error message | The module failed to import or `mount(host)` threw. | Check the browser console and make the initial HTML a useful fallback. |

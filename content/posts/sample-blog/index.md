@@ -1,3 +1,10 @@
+---
+title: 'A Multimodal Hello World'
+date: '2026-08-04'
+description: >-
+  A compact smoke test for Markdown, equations, code highlighting, tables, and local images.
+---
+
 This is a deliberately small sample post. It exercises the main pieces of the
 publishing pipeline without trying to tell a complete research story.
 
@@ -11,7 +18,7 @@ and `inline code` in an ordinary paragraph.
 The same source can also express structured content:
 
 1. Write the post in Markdown.
-2. Add metadata for the title, date, and description.
+2. Add front matter for the title, date, and description.
 3. Run the generator and let Angular prerender the result.
 
 | Modality | Example representation |

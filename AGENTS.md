@@ -30,10 +30,10 @@ Project guidance for agents working in this repository.
 ## Content
 
 - Blog posts live under `content/posts`.
-- Each post has matching metadata at `content/config/<slug>.json` and exactly
-  one source at `content/posts/<slug>.md` or `content/posts/<slug>.html`.
-- Post-local assets live under `content/posts/<slug>/` and use relative paths
-  from the Markdown file.
+- Each post is a self-contained `content/posts/<slug>/` directory with exactly
+  one `index.md` or `index.html` source. The directory name is the post slug.
+- Put `title`, `date`, and `description` in YAML front matter at the start of
+  the index source. Keep post-local assets beside it and use relative paths.
 - Add an AI summary image button beside a heading with
   `<ai-img>relative-image.avif</ai-img>`.
 - Add native interactive content with a post-local `<html-fragment>` and a local
