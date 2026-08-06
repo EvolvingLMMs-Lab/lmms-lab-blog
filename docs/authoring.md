@@ -111,6 +111,7 @@ the Escape key.
 Reader position is preserved across browser refreshes and back/forward
 navigation. A newly opened URL with a heading fragment still jumps to that
 heading; refreshing after further scrolling restores the exact viewport instead.
+Static-route URLs with and without a trailing slash share the same saved position.
 Selecting a contents entry updates only the fragment, preserving the current
 post pathname and query parameters.
 

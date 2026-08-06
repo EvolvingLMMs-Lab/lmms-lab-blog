@@ -10,6 +10,8 @@ describe('ScrollRestorationService', () => {
   let scrollY: number;
   let nextFrameId: number;
   let frameCallbacks: FrameRequestCallback[];
+  let originalHistoryState: unknown;
+  let originalUrl: string;
 
   beforeEach(() => {
     navigationType = 'navigate';
@@ -18,6 +20,8 @@ describe('ScrollRestorationService', () => {
     scrollY = 0;
     nextFrameId = 1;
     frameCallbacks = [];
+    originalHistoryState = window.history.state;
+    originalUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
 
     window.sessionStorage.clear();
     vi.useFakeTimers();
@@ -50,6 +54,7 @@ describe('ScrollRestorationService', () => {
 
   afterEach(() => {
     window.sessionStorage.clear();
+    window.history.replaceState(originalHistoryState, '', originalUrl);
     vi.useRealTimers();
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
@@ -89,6 +94,25 @@ describe('ScrollRestorationService', () => {
     flushFrame();
 
     expect(window.scrollTo).toHaveBeenLastCalledWith(0, 720);
+    service.ngOnDestroy();
+  });
+
+  it('matches a saved route while static hydration still exposes a trailing slash', () => {
+    window.history.replaceState(null, '', '/sample-blog/');
+    window.sessionStorage.setItem(
+      'lmms-lab-blog:scroll-position:/sample-blog',
+      JSON.stringify({ url: '/sample-blog', x: 0, y: 900 }),
+    );
+    navigationType = 'reload';
+    const service = new ScrollRestorationService();
+
+    service.initialize();
+    vi.runAllTimers();
+    flushFrame();
+    flushFrame();
+
+    expect(window.scrollTo).toHaveBeenLastCalledWith(0, 900);
+    expect(window.sessionStorage.length).toBe(0);
     service.ngOnDestroy();
   });
 

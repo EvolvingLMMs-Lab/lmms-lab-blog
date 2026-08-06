@@ -161,7 +161,8 @@ export class ScrollRestorationService implements OnDestroy {
   }
 
   private currentUrl(): string {
-    return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
+    return `${pathname}${window.location.search}${window.location.hash}`;
   }
 
   private storageKey(url: string): string {
