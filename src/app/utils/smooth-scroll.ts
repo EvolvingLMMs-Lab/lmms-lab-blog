@@ -3,9 +3,23 @@ export interface SmoothScrollHandle {
 }
 
 const DEFAULT_DURATION_MS = 420;
+const INSTANT_SCROLL_BEHAVIOR = 'instant' as ScrollBehavior;
+
+export function jumpScrollTo(top: number, left = 0): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.scrollTo({ top, left, behavior: INSTANT_SCROLL_BEHAVIOR });
+}
 
 export function smoothScrollTo(targetY: number, durationMs = DEFAULT_DURATION_MS): SmoothScrollHandle {
   if (typeof window === 'undefined') {
+    return { cancel() {} };
+  }
+
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    jumpScrollTo(targetY);
     return { cancel() {} };
   }
 
@@ -13,7 +27,7 @@ export function smoothScrollTo(targetY: number, durationMs = DEFAULT_DURATION_MS
   const deltaY = targetY - startY;
 
   if (Math.abs(deltaY) < 1) {
-    window.scrollTo(0, targetY);
+    jumpScrollTo(targetY);
     return { cancel() {} };
   }
 
@@ -26,7 +40,7 @@ export function smoothScrollTo(targetY: number, durationMs = DEFAULT_DURATION_MS
   const tick = (now: number): void => {
     const progress = Math.min((now - startTime) / durationMs, 1);
     const eased = easeInOutCubic(progress);
-    window.scrollTo(0, startY + deltaY * eased);
+    jumpScrollTo(startY + deltaY * eased);
 
     if (progress < 1) {
       frameId = window.requestAnimationFrame(tick);

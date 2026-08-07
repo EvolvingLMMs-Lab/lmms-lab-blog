@@ -98,22 +98,37 @@ Use `##` for major sections and `###` for subsections:
 ### Training objective
 ```
 
-Level-two and level-three headings are added to the table of contents. Heading
-IDs are generated from their visible text and duplicate IDs receive a numeric
-suffix. An explicit HTML `id` is preserved when possible.
+At generation time, level-two and level-three headings become a semantic
+two-level contents tree: each `h3` is nested beneath its preceding `h2`.
+Heading IDs are generated from their visible text with Unicode preserved, and
+duplicate IDs receive a numeric suffix. An explicit HTML `id` is preserved when
+possible. Controls inside a heading, including `<ai-img>`, are excluded from its
+contents label. In HTML-first content, add `data-toc-ignore` to any other child
+that should not contribute to that label.
 
-The contents panel follows the active section as the reader scrolls. Long
-contents lists scroll inside the panel, so the title and four-corner frame stay
-fixed. On narrow screens it opens as an accessible drawer: focus remains inside
+Every generated heading also receives a small permanent-link control. The link
+contains the full post pathname and an encoded fragment, so copying it or
+opening a contents entry in a new tab stays on the current article.
+
+The contents panel shows article reading progress and follows the active section
+as the reader scrolls. When an `h3` is active, its parent `h2` remains visually
+marked for context. Long contents trees scroll only inside the list, and the
+active entry is brought back into view without moving the article. The title,
+progress indicator, and four-corner frame remain fixed. Heading positions are
+remeasured after viewport, font, image, and math layout changes.
+
+On narrow screens the panel opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or
-the Escape key.
+the Escape key. Selecting a heading moves keyboard focus to that heading; the
+responsive scroll margin keeps it below the mobile toolbar.
 
 Reader position is preserved across browser refreshes and back/forward
 navigation. A newly opened URL with a heading fragment still jumps to that
 heading; refreshing after further scrolling restores the exact viewport instead.
 Static-route URLs with and without a trailing slash share the same saved position.
 Selecting a contents entry updates only the fragment, preserving the current
-post pathname and query parameters.
+post pathname and query parameters. Modified clicks and middle clicks keep their
+native browser behavior.
 
 Use deeper headings only for local structure. They are rendered normally but
 are not included in the table of contents.

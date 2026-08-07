@@ -1,21 +1,22 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
+  ElementRef,
   OnDestroy,
   ViewEncapsulation,
   inject,
   signal,
-  ChangeDetectionStrategy,
+  viewChild,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { BackToTopComponent } from '../../components/back-to-top/back-to-top';
-import { AUTHORING_DOCS_HTML } from '../../data/authoring-docs';
+import { AUTHORING_DOCS_HTML, AUTHORING_DOCS_TOC } from '../../data/authoring-docs';
 import { ToolbarExtensionService } from '../../services/toolbar-extension.service';
 import { HeadingObserver } from '../../utils/heading-observer';
 import { initCodeCopyButtons } from '../../utils/post-content-hooks';
-import { SmoothScrollHandle, smoothScrollTo } from '../../utils/smooth-scroll';
-import { buildContentWithToc } from '../../utils/toc-builder';
+import { jumpScrollTo, SmoothScrollHandle, smoothScrollTo } from '../../utils/smooth-scroll';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 import { replaceLocationHash } from '../../utils/location-hash';
 
@@ -40,14 +41,15 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly toolbarExt = inject(ToolbarExtensionService);
   private readonly headingObserver = new HeadingObserver();
-  private readonly processedContent = buildContentWithToc(AUTHORING_DOCS_HTML);
+  private readonly docsBody = viewChild<ElementRef<HTMLElement>>('docsBody');
   private scrollHandle: SmoothScrollHandle | null = null;
   private setupTimer: number | null = null;
 
   readonly tocOpen = signal(false);
   readonly activeHeadingId = this.headingObserver.activeHeadingId;
-  readonly tocItems = this.processedContent.toc;
-  readonly safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.processedContent.html);
+  readonly readingProgress = this.headingObserver.readingProgress;
+  readonly tocItems = AUTHORING_DOCS_TOC;
+  readonly safeHtml = this.sanitizer.bypassSecurityTrustHtml(AUTHORING_DOCS_HTML);
 
   constructor() {
     this.toolbarExt.mobileTitle.set('Docs');
@@ -59,6 +61,8 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
         title: 'Table of Contents',
         action: () => this.toggleToc(),
         isToggled: () => this.tocOpen(),
+        ariaControls: 'docs-toc',
+        isExpanded: () => this.tocOpen(),
       },
     ]);
   }
@@ -71,7 +75,10 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
     this.setupTimer = window.setTimeout(() => {
       this.setupTimer = null;
       initCodeCopyButtons();
-      this.setupHeadingObserver();
+      const docsBody = this.docsBody()?.nativeElement;
+      if (docsBody) {
+        this.setupHeadingObserver(docsBody);
+      }
     });
   }
 
@@ -89,42 +96,50 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   }
 
   onTocHeadingSelected(id: string): void {
-    this.scrollToHeading(id, true);
+    this.scrollToHeading(id, true, true);
   }
 
-  private setupHeadingObserver(): void {
+  private setupHeadingObserver(docsBody: HTMLElement): void {
     const hashId = this.readHashId();
-    this.headingObserver.observe(this.tocItems, hashId);
+    this.headingObserver.observe(docsBody, this.tocItems, hashId);
 
     if (hashId) {
       this.scrollToHeading(hashId, false);
     }
   }
 
-  private scrollToHeading(id: string, smooth: boolean): void {
+  private scrollToHeading(id: string, smooth: boolean, focus = false): void {
     if (typeof document === 'undefined' || typeof window === 'undefined') {
       return;
     }
 
-    const heading = document.getElementById(id);
+    const heading = Array.from(
+      this.docsBody()?.nativeElement.querySelectorAll<HTMLElement>('h2[id], h3[id]') ?? [],
+    ).find((candidate) => candidate.id === id);
     if (!heading) {
       return;
     }
 
+    const scrollMargin = Number.parseFloat(getComputedStyle(heading).scrollMarginTop);
+    const scrollOffset = Number.isFinite(scrollMargin) ? scrollMargin : HEADING_SCROLL_OFFSET_PX;
     const targetY = Math.max(
       0,
-      window.scrollY + heading.getBoundingClientRect().top - HEADING_SCROLL_OFFSET_PX,
+      window.scrollY + heading.getBoundingClientRect().top - scrollOffset,
     );
 
     this.scrollHandle?.cancel();
     if (smooth) {
       this.scrollHandle = smoothScrollTo(targetY);
     } else {
-      window.scrollTo(0, targetY);
+      jumpScrollTo(targetY);
     }
 
     this.activeHeadingId.set(id);
     replaceLocationHash(id);
+
+    if (focus) {
+      window.requestAnimationFrame(() => heading.focus({ preventScroll: true }));
+    }
   }
 
   private readHashId(): string | null {

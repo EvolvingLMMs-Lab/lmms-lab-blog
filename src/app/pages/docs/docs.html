@@ -2,6 +2,8 @@
   <app-table-of-contents
     [items]="tocItems"
     [activeHeadingId]="activeHeadingId()"
+    [postPath]="'/docs'"
+    [progress]="readingProgress()"
     [open]="tocOpen()"
     tocId="docs-toc"
     label="Documentation table of contents"
@@ -31,6 +33,6 @@
   <span>Published from <code>docs/authoring.md</code></span>
 </header>
 
-<article class="post-body docs-body" [innerHTML]="safeHtml"></article>
+<article #docsBody class="post-body docs-body" [innerHTML]="safeHtml"></article>
 
 <app-back-to-top />

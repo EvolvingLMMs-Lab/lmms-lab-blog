@@ -78,7 +78,11 @@ describe('ScrollRestorationService', () => {
     flushFrame();
     flushFrame();
 
-    expect(window.scrollTo).toHaveBeenLastCalledWith(12, 640);
+    expect(window.scrollTo).toHaveBeenLastCalledWith({
+      top: 640,
+      left: 12,
+      behavior: 'instant',
+    });
     expect(window.sessionStorage.length).toBe(0);
     restorer.ngOnDestroy();
   });
@@ -93,7 +97,7 @@ describe('ScrollRestorationService', () => {
     flushFrame();
     flushFrame();
 
-    expect(window.scrollTo).toHaveBeenLastCalledWith(0, 720);
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 720, left: 0, behavior: 'instant' });
     service.ngOnDestroy();
   });
 
@@ -111,7 +115,7 @@ describe('ScrollRestorationService', () => {
     flushFrame();
     flushFrame();
 
-    expect(window.scrollTo).toHaveBeenLastCalledWith(0, 900);
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 900, left: 0, behavior: 'instant' });
     expect(window.sessionStorage.length).toBe(0);
     service.ngOnDestroy();
   });
@@ -137,11 +141,11 @@ describe('ScrollRestorationService', () => {
     service.initialize();
     vi.runAllTimers();
     flushFrame();
-    expect(window.scrollTo).toHaveBeenLastCalledWith(0, 100);
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 100, left: 0, behavior: 'instant' });
 
     scrollHeight = 2200;
     flushFrame();
-    expect(window.scrollTo).toHaveBeenLastCalledWith(0, 1000);
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 1000, left: 0, behavior: 'instant' });
     expect(frameCallbacks).toHaveLength(0);
     service.ngOnDestroy();
   });

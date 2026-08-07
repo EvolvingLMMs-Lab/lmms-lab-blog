@@ -2,7 +2,9 @@
   @if (tocItems().length) {
     <app-table-of-contents
       [items]="tocItems()"
+      [postPath]="postPath()"
       [activeHeadingId]="activeHeadingId()"
+      [progress]="readingProgress()"
       [open]="tocOpen()"
       (openChange)="tocOpen.set($event)"
       (headingSelected)="onTocHeadingSelected($event)"
@@ -11,7 +13,7 @@
 
   <app-post-header [title]="post.title" [date]="post.date" />
 
-  <article class="post-body" [innerHTML]="safeHtml()"></article>
+  <article class="post-body" #postBody [innerHTML]="safeHtml()"></article>
 
   <section class="giscus-wrapper" aria-labelledby="discussion-title">
     <header class="discussion-heading">

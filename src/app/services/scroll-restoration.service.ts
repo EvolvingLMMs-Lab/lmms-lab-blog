@@ -1,4 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
+import { jumpScrollTo } from '../utils/smooth-scroll';
 
 const STORAGE_KEY_PREFIX = 'lmms-lab-blog:scroll-position:';
 const MIN_RESTORE_FRAMES = 2;
@@ -145,7 +146,7 @@ export class ScrollRestorationService implements OnDestroy {
       document.body?.scrollHeight ?? 0,
     );
     const maximumY = Math.max(0, scrollHeight - window.innerHeight);
-    window.scrollTo(position.x, Math.min(position.y, maximumY));
+    jumpScrollTo(Math.min(position.y, maximumY), position.x);
 
     this.restoreAttempts += 1;
     const contentCanReachPosition = maximumY >= position.y;

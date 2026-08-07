@@ -15,7 +15,7 @@ import {
   viewChild,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { TocItem } from '../../utils/toc-builder';
+import { TocItem } from '../../models/post.model';
 
 const WIDE_QUERY = '(min-width: 1440px)';
 const ACTIVE_LINK_PADDING_PX = 8;
@@ -41,7 +41,9 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
   private focusFrame: number | null = null;
 
   readonly items = input.required<readonly TocItem[]>();
+  readonly postPath = input.required<string>();
   readonly activeHeadingId = input('');
+  readonly progress = input(0);
   readonly tocId = input('post-toc');
   readonly label = input('Table of contents');
   readonly title = input('Contents');
@@ -51,6 +53,10 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
   readonly isWide = signal(false);
   readonly drawerOpen = computed(() => this.open() && !this.isWide());
   readonly titleId = computed(() => `${this.tocId()}-title`);
+  readonly progressPercent = computed(() =>
+    Math.round(Math.min(1, Math.max(0, this.progress())) * 100),
+  );
+  readonly normalizedProgress = computed(() => Math.min(1, Math.max(0, this.progress())));
 
   constructor() {
     effect((onCleanup) => {
@@ -99,7 +105,27 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
     this.open.set(false);
   }
 
-  selectHeading(event: Event, id: string): void {
+  hrefFor(id: string): string {
+    return `${this.postPath()}#${encodeURIComponent(id)}`;
+  }
+
+  containsActiveItem(item: TocItem): boolean {
+    const activeId = this.activeHeadingId();
+    return item.id === activeId || item.children.some((child) => child.id === activeId);
+  }
+
+  selectHeading(event: MouseEvent, id: string): void {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
     event.preventDefault();
     this.headingSelected.emit(id);
 
@@ -170,10 +196,15 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
     const visibleBottom = viewportRect.bottom - ACTIVE_LINK_PADDING_PX;
 
     if (linkRect.top < visibleTop) {
-      viewport.scrollTop -= visibleTop - linkRect.top;
+      this.scrollToc(viewport, viewport.scrollTop - (visibleTop - linkRect.top));
     } else if (linkRect.bottom > visibleBottom) {
-      viewport.scrollTop += linkRect.bottom - visibleBottom;
+      this.scrollToc(viewport, viewport.scrollTop + (linkRect.bottom - visibleBottom));
     }
+  }
+
+  private scrollToc(viewport: HTMLElement, top: number): void {
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    viewport.scrollTo({ top, behavior: reduceMotion ? 'auto' : 'smooth' });
   }
 
   private openDrawer(): void {

@@ -2,6 +2,7 @@ import {
   ApplicationRef,
   Component,
   ComponentRef,
+  ElementRef,
   EnvironmentInjector,
   OnDestroy,
   ViewEncapsulation,
@@ -32,8 +33,7 @@ import {
   optimizeContentImages,
 } from '../../utils/post-content-hooks';
 import { typesetMath } from '../../utils/mathjax';
-import { smoothScrollTo, SmoothScrollHandle } from '../../utils/smooth-scroll';
-import { buildContentWithToc, TocItem } from '../../utils/toc-builder';
+import { jumpScrollTo, smoothScrollTo, SmoothScrollHandle } from '../../utils/smooth-scroll';
 import { HeadingObserver } from '../../utils/heading-observer';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 import { replaceLocationHash } from '../../utils/location-hash';
@@ -73,24 +73,25 @@ export class PostComponent implements OnDestroy {
   private scrollHandle: SmoothScrollHandle | null = null;
 
   private readonly giscus = viewChild(GiscusCommentsComponent);
+  private readonly postBody = viewChild<ElementRef<HTMLElement>>('postBody');
 
   readonly tocOpen = signal(false);
   readonly activeHeadingId = this.headingObserver.activeHeadingId;
+  readonly readingProgress = this.headingObserver.readingProgress;
 
   readonly post = computed(() => {
     const s = this.slug();
     return POSTS.find((p) => p.slug === s);
   });
 
-  private readonly processedContent = computed(() => {
-    const p = this.post();
-    return p ? buildContentWithToc(p.contentHtml) : { html: '', toc: [] as TocItem[] };
+  readonly tocItems = computed(() => this.post()?.toc ?? []);
+  readonly postPath = computed(() => {
+    const post = this.post();
+    return post ? `/${encodeURIComponent(post.slug)}` : '/';
   });
 
-  readonly tocItems = computed(() => this.processedContent().toc);
-
   readonly safeHtml = computed(() =>
-    this.sanitizer.bypassSecurityTrustHtml(this.processedContent().html),
+    this.sanitizer.bypassSecurityTrustHtml(this.post()?.contentHtml ?? ''),
   );
 
   constructor() {
@@ -121,7 +122,7 @@ export class PostComponent implements OnDestroy {
               return;
             }
 
-            const postBody = document.querySelector<HTMLElement>('.post-body');
+            const postBody = this.postBody()?.nativeElement;
             if (!postBody || postBody.childElementCount === 0) {
               if (attempt < 20) {
                 runPostHooks(attempt + 1);
@@ -134,6 +135,7 @@ export class PostComponent implements OnDestroy {
                 cleanup();
               } else {
                 cleanupMath = cleanup;
+                this.headingObserver.refresh();
               }
             });
             initCodeCopyButtons();
@@ -143,7 +145,7 @@ export class PostComponent implements OnDestroy {
             cleanupContentImageZoom = initContentImageZoom(postBody);
             cleanupContentVideos = initContentVideos(postBody);
             cleanupHtmlControllers = initHtmlControllers(postBody);
-            this.setupHeadingObserver();
+            this.setupHeadingObserver(postBody);
             this.giscus()?.load();
           },
           attempt === 0 ? 0 : 25,
@@ -180,46 +182,58 @@ export class PostComponent implements OnDestroy {
   }
 
   onTocHeadingSelected(id: string): void {
-    this.scrollToHeading(id, true);
+    this.scrollToHeading(id, true, true);
   }
 
   private setupToolbarExtension(): void {
     this.toolbarExt.mobileTitle.set('Reading');
-    this.toolbarExt.leadingButtons.set([
-      {
-        icon: 'ph-list',
-        toggleIcon: 'ph-x',
-        ariaLabel: 'Toggle table of contents',
-        title: 'Table of Contents',
-        action: () => this.toggleToc(),
-        isToggled: () => this.tocOpen(),
-      },
-    ]);
+    effect(() => {
+      this.toolbarExt.leadingButtons.set(
+        this.tocItems().length
+          ? [
+              {
+                icon: 'ph-list',
+                toggleIcon: 'ph-x',
+                ariaLabel: 'Toggle table of contents',
+                title: 'Table of Contents',
+                action: () => this.toggleToc(),
+                isToggled: () => this.tocOpen(),
+                ariaControls: 'post-toc',
+                isExpanded: () => this.tocOpen(),
+              },
+            ]
+          : [],
+      );
+    });
   }
 
-  private setupHeadingObserver(): void {
+  private setupHeadingObserver(postBody: HTMLElement): void {
     const toc = this.tocItems();
     const hashId = this.readHashId();
-    this.headingObserver.observe(toc, hashId);
+    this.headingObserver.observe(postBody, toc, hashId);
 
     if (hashId) {
       this.scrollToHeading(hashId, false);
     }
   }
 
-  private scrollToHeading(id: string, smooth: boolean): void {
+  private scrollToHeading(id: string, smooth: boolean, focus = false): void {
     if (typeof document === 'undefined' || typeof window === 'undefined') {
       return;
     }
 
-    const heading = document.getElementById(id);
+    const heading = Array.from(
+      this.postBody()?.nativeElement.querySelectorAll<HTMLElement>('h2[id], h3[id]') ?? [],
+    ).find((candidate) => candidate.id === id);
     if (!heading) {
       return;
     }
 
+    const scrollMargin = Number.parseFloat(getComputedStyle(heading).scrollMarginTop);
+    const scrollOffset = Number.isFinite(scrollMargin) ? scrollMargin : HEADING_SCROLL_OFFSET_PX;
     const targetY = Math.max(
       0,
-      window.scrollY + heading.getBoundingClientRect().top - HEADING_SCROLL_OFFSET_PX,
+      window.scrollY + heading.getBoundingClientRect().top - scrollOffset,
     );
 
     if (smooth) {
@@ -227,11 +241,15 @@ export class PostComponent implements OnDestroy {
       this.scrollHandle = smoothScrollTo(targetY);
     } else {
       this.scrollHandle?.cancel();
-      window.scrollTo(0, targetY);
+      jumpScrollTo(targetY);
     }
 
     this.activeHeadingId.set(id);
     replaceLocationHash(id);
+
+    if (focus) {
+      window.requestAnimationFrame(() => heading.focus({ preventScroll: true }));
+    }
   }
 
   private readHashId(): string | null {
