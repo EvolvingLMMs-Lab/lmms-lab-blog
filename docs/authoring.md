@@ -524,7 +524,10 @@ does not receive a second inset. Prefer the semantic site variables:
 The screen layout is intentionally flat: the page and content canvas share one
 blue surface, with corner marks indicating the content boundary instead of a
 filled card, border, or drop shadow. The table of contents uses the same corner
-treatment and flat active-section markers. The Giscus discussion area uses the
+treatment and flat active-section markers. On wide screens, a dedicated gutter
+keeps its corner frame visually separate from the paper boundary; at the desktop
+breakpoint the contents column narrows before that gutter is allowed to collapse.
+The Giscus discussion area uses the
 site-owned `public/giscus.css` theme within matching corner marks and is omitted
 from print output. Keep that stylesheet available at `/giscus.css` with its
 `https://giscus.app` CORS rule in `public/_headers`. Its stable Roboto, Space
