@@ -339,7 +339,9 @@ Audio continues to use native semantic HTML:
 
 Giscus comments are appended automatically to every valid post. Authors should
 not add a Giscus script to article content. The blog maps discussions by
-pathname and uses the site-owned blue theme. Fenced code in comments and comment
+pathname and uses the site-owned blue theme. Its comments header supplies the
+single divider above a frameless composer; the Discussion section's four-corner
+frame is the only enclosing boundary. Fenced code in comments and comment
 previews is rendered on a framed, horizontally scrollable dark-blue surface;
 inline code receives a smaller matching frame.
 

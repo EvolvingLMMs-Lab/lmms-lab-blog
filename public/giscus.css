@@ -196,9 +196,14 @@ main {
   gap: 1.35rem;
 }
 
-#__next .gsc-comment > .color-bg-primary,
-#__next .gsc-comment-box {
+#__next .gsc-comment > .color-bg-primary {
   border-width: 1px 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+#__next .gsc-comment-box {
+  border: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -350,7 +355,7 @@ main {
 }
 
 #__next .gsc-comment-box-tabs {
-  border-bottom-width: 1px;
+  border-bottom-width: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -372,14 +377,15 @@ main {
 
 #__next .gsc-comment-box-write {
   overflow: hidden;
-  border: 1px solid rgb(254 215 170 / 34%);
-  border-radius: 6px;
+  border: 0;
+  border-radius: 0;
   background: rgb(1 47 73 / 26%);
+  transition: background-color 160ms ease;
 }
 
 #__next .gsc-comment-box-write:focus-within {
-  border-color: rgb(255 255 255 / 72%);
-  box-shadow: 0 0 0 2px rgb(255 255 255 / 12%);
+  background: rgb(1 47 73 / 38%);
+  box-shadow: none;
 }
 
 #__next .gsc-comment-box-textarea,
@@ -400,7 +406,7 @@ main {
 }
 
 #__next .gsc-comment-box-textarea-extras {
-  border-top: 1px dashed rgb(254 215 170 / 24%);
+  border-top-width: 0;
 }
 
 #__next .gsc-comment-box-bottom {
