@@ -37,6 +37,7 @@ import { jumpScrollTo, smoothScrollTo, SmoothScrollHandle } from '../../utils/sm
 import { HeadingObserver } from '../../utils/heading-observer';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 import { replaceLocationHash } from '../../utils/location-hash';
+import { SeoService } from '../../services/seo.service';
 
 const HEADING_SCROLL_OFFSET_PX = 20;
 
@@ -68,6 +69,7 @@ export class PostComponent implements OnDestroy {
   private readonly toolbarExt = inject(ToolbarExtensionService);
   private readonly appRef = inject(ApplicationRef);
   private readonly environmentInjector = inject(EnvironmentInjector);
+  private readonly seo = inject(SeoService);
   private readonly slug = toSignal(this.route.paramMap.pipe(map((p) => p.get('slug'))));
   private readonly headingObserver = new HeadingObserver();
   private scrollHandle: SmoothScrollHandle | null = null;
@@ -87,7 +89,7 @@ export class PostComponent implements OnDestroy {
   readonly tocItems = computed(() => this.post()?.toc ?? []);
   readonly postPath = computed(() => {
     const post = this.post();
-    return post ? `/${encodeURIComponent(post.slug)}` : '/';
+    return post ? `/blog/${encodeURIComponent(post.slug)}` : '/blog';
   });
 
   readonly safeHtml = computed(() =>
@@ -96,6 +98,18 @@ export class PostComponent implements OnDestroy {
 
   constructor() {
     this.setupToolbarExtension();
+
+    effect(() => {
+      const post = this.post();
+      if (post) {
+        this.seo.setPage({
+          title: post.title,
+          description: post.description,
+          path: `/blog/${encodeURIComponent(post.slug)}`,
+          type: 'article',
+        });
+      }
+    });
 
     effect((onCleanup) => {
       this.safeHtml();

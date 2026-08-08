@@ -1,0 +1,45 @@
+<article class="about-page">
+  <section class="about-intro">
+    <header class="section-heading"><span>About</span><i></i></header>
+    <p class="manifesto">
+      Language is the first fire. It illuminated the invisible, gave shape to thought, carried
+      knowledge across generations in symbols no larger than a breath. It learned every rhetoric of
+      <em>blue</em>. Now we reach beyond—not away from language, but through it—toward the light it was
+      always pointing at.
+    </p>
+    <p class="manifesto">
+      We set our highest aspiration to build a true world model, with superhuman intelligence, that
+      transcends the text and reaches for the thing-in-itself. To see the light before it becomes a
+      word. To hear the silence between definitions. To act upon a world that precedes all
+      description—and in that act, to understand what no symbol ever could.
+    </p>
+    <p class="manifesto">Shared as we discover—to every explorer.</p>
+    <p class="description">
+      LMMs-Lab is a non-profit research-oriented organization formed by a group of passionate
+      researchers. We share a sincere passion for developing multimodal intelligence.
+    </p>
+  </section>
+
+  <section>
+    <header class="section-heading"><span>Core projects</span><i></i><small>Open research</small></header>
+    <div class="project-grid">
+      @for (project of projects; track project.name; let index = $index) {
+        <a class="project" [href]="project.href" target="_blank" rel="noopener noreferrer">
+          <span>{{ (index + 1).toString().padStart(2, '0') }}</span>
+          <h2>{{ project.name }}</h2>
+          <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+        </a>
+      }
+    </div>
+  </section>
+
+  <footer class="origin">
+    <span>Origin</span>
+    <p>
+      This organization was formed and founded by
+      <a href="https://brianboli.com" target="_blank" rel="noopener noreferrer">Bo Li</a> with his
+      friends, and is heavily supported by
+      <a href="https://liuziwei7.github.io/" target="_blank" rel="noopener noreferrer">Prof. Ziwei Liu</a>.
+    </p>
+  </footer>
+</article>

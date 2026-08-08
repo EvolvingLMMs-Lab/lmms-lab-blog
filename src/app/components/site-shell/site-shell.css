@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.site-frame {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1;
+}

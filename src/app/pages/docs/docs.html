@@ -2,7 +2,7 @@
   <app-table-of-contents
     [items]="tocItems"
     [activeHeadingId]="activeHeadingId()"
-    [postPath]="'/docs'"
+    [postPath]="'/blog/docs'"
     [progress]="readingProgress()"
     [open]="tocOpen()"
     tocId="docs-toc"
@@ -14,7 +14,7 @@
 
 <header class="docs-meta">
   <div class="docs-meta-actions">
-    <a routerLink="/">
+    <a routerLink="/blog">
       <i class="ph ph-arrow-left" aria-hidden="true"></i>
       All posts
     </a>

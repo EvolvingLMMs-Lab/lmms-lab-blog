@@ -2,15 +2,8 @@
   <a class="toolbar-desktop-btn" routerLink="/" aria-label="Home" title="Home">
     <i class="ph ph-house" aria-hidden="true"></i>
   </a>
-  <a
-    class="toolbar-desktop-btn"
-    href="https://www.lmms-lab.com/"
-    aria-label="LMMs-Lab website"
-    title="LMMs-Lab"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <i class="ph ph-globe" aria-hidden="true"></i>
+  <a class="toolbar-desktop-btn" routerLink="/blog" aria-label="Blog index" title="Blog index">
+    <i class="ph ph-article" aria-hidden="true"></i>
   </a>
 </div>
 
@@ -29,8 +22,8 @@
       <a class="toolbar-mobile-btn" routerLink="/" aria-label="Home" title="Home">
         <i class="ph ph-house" aria-hidden="true"></i>
       </a>
-      <a class="toolbar-mobile-btn" href="https://www.lmms-lab.com/" aria-label="LMMs-Lab website" title="LMMs-Lab" target="_blank" rel="noopener noreferrer">
-        <i class="ph ph-globe" aria-hidden="true"></i>
+      <a class="toolbar-mobile-btn" routerLink="/blog" aria-label="Blog index" title="Blog index">
+        <i class="ph ph-article" aria-hidden="true"></i>
       </a>
       @for (btn of toolbarExt.leadingButtons(); track btn.ariaLabel) {
         <button

@@ -40,6 +40,11 @@ describe('generated content data', () => {
       expect(post.contentHtml).not.toContain('<iframe');
       expect(flattenIds(post.toc)).toEqual(headingIds(post.contentHtml));
       expect(new Set(flattenIds(post.toc)).size).toBe(flattenIds(post.toc).length);
+      for (const permalink of new DOMParser()
+        .parseFromString(post.contentHtml, 'text/html')
+        .querySelectorAll<HTMLAnchorElement>('.heading-permalink')) {
+        expect(permalink.getAttribute('href')?.startsWith(`/blog/${post.slug}#`)).toBe(true);
+      }
       slugs.add(post.slug);
     }
 

@@ -1,0 +1,53 @@
+# Current blog routes before the integrated site
+/docs /blog/docs 301
+/sample-blog /blog/sample-blog 301
+/onevision-encoder /blog/onevision-encoder 301
+
+# Routes from the former Next.js LMMs-Lab website
+/posts /blog 301
+/posts/aero_audio /blog/aero-audio 301
+/posts/highres_visual_reasoning /blog/highres-visual-reasoning 301
+/posts/llava_critic_r1 /blog/llava-critic-r1 301
+/posts/llava_next_video /blog/llava-next-video 301
+/posts/llava_onevision /blog/llava-onevision 301
+/posts/llava_onevision_1.5_rl /blog/llava-onevision-1-5-rl 301
+/posts/llava_onevision_1_5 /blog/llava-onevision-1-5 301
+/posts/llava_onevision_2 /blog/llava-onevision-2 301
+/posts/lmms_eval /blog/lmms-eval 301
+/posts/longva /blog/longva 301
+/posts/longvt /blog/longvt 301
+/posts/mmsearch_r1 /blog/mmsearch-r1 301
+/posts/mmsearch_r1_improved /blog/mmsearch-r1-improved 301
+/posts/multimodal_sae /blog/multimodal-sae 301
+/posts/onevision_encoder /blog/onevision-encoder 301
+/posts/openmmreasoner /blog/openmmreasoner 301
+/posts/sae_made_easy /blog/sae-made-easy 301
+/posts/videommmu /blog/videommmu 301
+/notes /blog 301
+/notes/dllm /blog/diffusion-language-models 301
+/notes/wake-up /blog/digital-tide 301
+
+# Clean article slugs used by the standalone Angular blog
+/aero-audio /blog/aero-audio 301
+/diffusion-language-models /blog/diffusion-language-models 301
+/digital-tide /blog/digital-tide 301
+/highres-visual-reasoning /blog/highres-visual-reasoning 301
+/llava-critic-r1 /blog/llava-critic-r1 301
+/llava-next-video /blog/llava-next-video 301
+/llava-onevision /blog/llava-onevision 301
+/llava-onevision-1-5 /blog/llava-onevision-1-5 301
+/llava-onevision-1-5-rl /blog/llava-onevision-1-5-rl 301
+/llava-onevision-2 /blog/llava-onevision-2 301
+/lmms-eval /blog/lmms-eval 301
+/longva /blog/longva 301
+/longvt /blog/longvt 301
+/mmsearch-r1 /blog/mmsearch-r1 301
+/mmsearch-r1-improved /blog/mmsearch-r1-improved 301
+/multimodal-sae /blog/multimodal-sae 301
+/openmmreasoner /blog/openmmreasoner 301
+/sae-made-easy /blog/sae-made-easy 301
+/videommmu /blog/videommmu 301
+
+# Fallbacks for unknown legacy slugs must remain after every static rule
+/posts/:slug /blog/:slug 301
+/notes/:slug /blog/:slug 301

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 
 @Component({
   selector: 'app-giscus-comments',
@@ -7,6 +7,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   template: '<div class="giscus"></div>',
 })
 export class GiscusCommentsComponent {
+  readonly term = input.required<string>();
+
   load(): void {
     if (typeof document === 'undefined') {
       return;
@@ -25,12 +27,15 @@ export class GiscusCommentsComponent {
     script.setAttribute('data-repo-id', 'R_kgDOTtSfxw');
     script.setAttribute('data-category', 'General');
     script.setAttribute('data-category-id', 'DIC_kwDOTtSfx84DCoCP');
-    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-mapping', 'specific');
+    script.setAttribute('data-term', this.term());
     script.setAttribute('data-strict', '0');
     script.setAttribute('data-reactions-enabled', '1');
     script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'https://blog.lmms-lab.com/giscus.css?v=20260808');
+    const publicAssetOrigin =
+      window.location.protocol === 'https:' ? window.location.origin : 'https://blog.lmms-lab.com';
+    script.setAttribute('data-theme', `${publicAssetOrigin}/giscus.css?v=20260809`);
     script.setAttribute('data-lang', 'en');
     script.crossOrigin = 'anonymous';
     script.async = true;

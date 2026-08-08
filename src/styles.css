@@ -4,6 +4,10 @@ body.landing-active {
   background: var(--background);
 }
 
+body.site-menu-open {
+  overflow: hidden;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--ctp-peach) 26%, var(--ctp-transparent));
   color: var(--ctp-text);

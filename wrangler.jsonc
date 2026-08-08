@@ -11,6 +11,17 @@
   ],
   "assets": {
     "directory": "./dist/lmms-lab-blog/browser",
+    "html_handling": "drop-trailing-slash",
     "not_found_handling": "single-page-application"
+  },
+  "env": {
+    "production": {
+      "routes": [
+        {
+          "pattern": "www.lmms-lab.com",
+          "custom_domain": true
+        }
+      ]
+    }
   }
 }

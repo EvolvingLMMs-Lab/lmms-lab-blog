@@ -27,7 +27,7 @@
       Browse the journal
       <i class="ph ph-arrow-down" aria-hidden="true"></i>
     </a>
-    <a routerLink="/docs">
+    <a routerLink="/blog/docs">
       Authoring guide
       <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
     </a>
@@ -52,7 +52,7 @@
     <ol class="post-list">
       @for (post of posts; track post.slug) {
         <li class="post-item">
-          <a class="post-entry" [routerLink]="['/', post.slug]">
+          <a class="post-entry" [routerLink]="['/blog', post.slug]">
             <span class="post-number" aria-hidden="true"></span>
             <time class="post-date" [attr.datetime]="post.date">{{ post.date }}</time>
             <article class="post-entry-content">

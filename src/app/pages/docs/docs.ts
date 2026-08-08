@@ -19,6 +19,7 @@ import { initCodeCopyButtons } from '../../utils/post-content-hooks';
 import { jumpScrollTo, SmoothScrollHandle, smoothScrollTo } from '../../utils/smooth-scroll';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 import { replaceLocationHash } from '../../utils/location-hash';
+import { SeoService } from '../../services/seo.service';
 
 const HEADING_SCROLL_OFFSET_PX = 20;
 
@@ -52,6 +53,11 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   readonly safeHtml = this.sanitizer.bypassSecurityTrustHtml(AUTHORING_DOCS_HTML);
 
   constructor() {
+    inject(SeoService).setPage({
+      title: 'Blog authoring guide',
+      description: 'The publishing and authoring reference for the LMMs-Lab blog.',
+      path: '/blog/docs',
+    });
     this.toolbarExt.mobileTitle.set('Docs');
     this.toolbarExt.leadingButtons.set([
       {

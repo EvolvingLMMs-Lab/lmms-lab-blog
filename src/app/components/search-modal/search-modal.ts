@@ -78,7 +78,7 @@ export class SearchModalComponent implements OnDestroy {
 
   goTo(result: SearchResult) {
     this.close();
-    this.router.navigate(['/', result.slug]);
+    this.router.navigate(['/blog', result.slug]);
   }
 
   onBackdropClick(event: MouseEvent) {

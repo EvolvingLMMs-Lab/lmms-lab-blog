@@ -23,13 +23,13 @@
       </div>
       <p class="discussion-intro">Questions, corrections, and ideas are welcome.</p>
     </header>
-    <app-giscus-comments />
+    <app-giscus-comments [term]="post.slug" />
   </section>
 
   <app-back-to-top />
 } @else {
   <div class="not-found">
     <h1>Post not found</h1>
-    <a routerLink="/"><i class="ph ph-arrow-left" aria-hidden="true"></i> Back to all posts</a>
+    <a routerLink="/blog"><i class="ph ph-arrow-left" aria-hidden="true"></i> Back to all posts</a>
   </div>
 }

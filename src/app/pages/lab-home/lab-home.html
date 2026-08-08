@@ -1,0 +1,74 @@
+<section class="lab-hero" aria-labelledby="lab-hero-title">
+  <div class="hero-copy">
+    <p class="hero-coordinate">LMMs / Open multimodal research</p>
+    <h1 id="lab-hero-title">
+      <span class="visible">{{ phrases[phraseIndex()] }}</span>
+      @if (phraseIndex() === 2) {
+        <small class="visible">the way to multimodal intelligence.</small>
+      }
+    </h1>
+    <p class="hero-description">
+      Open research on multimodal models, evaluation, benchmarks, and lmms-eval tooling—shared as
+      we discover.
+    </p>
+    <div class="hero-actions">
+      <a class="action action-primary" routerLink="/blog">Explore research</a>
+      <a class="action action-secondary" routerLink="/about">About the lab</a>
+    </div>
+  </div>
+
+  <div class="hero-display" aria-label="LMMs-Lab visual terminal">
+    <video autoplay loop muted playsinline preload="metadata">
+      <source
+        src="https://wqrxkrduisy4rnf0.public.blob.vercel-storage.com/videos/hero-promo.mp4"
+        type="video/mp4"
+      />
+    </video>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="terminal-label" aria-hidden="true">
+      <span>LMMS-LAB // PERCEPTION FEED</span><i></i><span>LIVE</span>
+    </div>
+  </div>
+</section>
+
+@if (featured; as post) {
+  <section class="featured" aria-labelledby="featured-title">
+    <header class="section-heading">
+      <span>Featured research</span><i></i><span>01 / Featured</span>
+    </header>
+    <a class="featured-link" [routerLink]="['/blog', post.slug]">
+      <div class="featured-image" role="img" [attr.aria-label]="post.title"></div>
+      <div class="featured-copy">
+        <time [attr.datetime]="post.date">{{ formatDate(post.date) }}</time>
+        <h2 id="featured-title">{{ post.title }}</h2>
+        <p>{{ post.description }}</p>
+        <span class="read-link">Read publication <i class="ph ph-arrow-right"></i></span>
+      </div>
+    </a>
+  </section>
+}
+
+<section class="publications" aria-labelledby="publications-title">
+  <header class="section-heading">
+    <span id="publications-title">Latest publications</span><i></i>
+    <a routerLink="/blog">View archive <span aria-hidden="true">→</span></a>
+  </header>
+  <div class="publication-grid">
+    @for (post of publications; track post.slug; let index = $index) {
+      <a class="publication" [routerLink]="['/blog', post.slug]">
+        <span class="publication-index">[{{ (index + 1).toString().padStart(2, '0') }}]</span>
+        <div
+          class="publication-image"
+          role="img"
+          [attr.aria-label]="post.title"
+          [style.background-image]="'url(' + post.image + ')'"
+        ></div>
+        <div class="publication-copy">
+          <time [attr.datetime]="post.date">{{ formatDate(post.date, true) }}</time>
+          <h3>{{ post.title }}</h3>
+          <span>Research note</span>
+        </div>
+      </a>
+    }
+  </div>
+</section>

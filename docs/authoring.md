@@ -3,7 +3,7 @@
 This is the canonical reference for writing content for the LMMs-Lab Blog.
 When the publishing pipeline gains, removes, or changes an author-facing
 feature, update this guide in the same change. The same file is published at
-[blog.lmms-lab.com/docs](https://blog.lmms-lab.com/docs), so the repository and
+[www.lmms-lab.com/blog/docs](https://www.lmms-lab.com/blog/docs), so the repository and
 online references cannot drift apart.
 
 ## Quick start
@@ -37,7 +37,7 @@ Start the development server with:
 pnpm start
 ```
 
-The post is available at `http://localhost:4200/<slug>`.
+The post is available at `http://localhost:4200/blog/<slug>`.
 
 ## Blog-specific syntax at a glance
 
@@ -338,8 +338,9 @@ Audio continues to use native semantic HTML:
 ### Comments
 
 Giscus comments are appended automatically to every valid post. Authors should
-not add a Giscus script to article content. The blog maps discussions by
-pathname and uses the site-owned blue theme. Its comments header supplies the
+not add a Giscus script to article content. The blog maps discussions to the
+stable post slug, so changing the surrounding site route does not create a new
+thread, and uses the site-owned blue theme. Its comments header supplies the
 single divider above a frameless composer; the Discussion section's four-corner
 frame is the only enclosing boundary. Fenced code in comments and comment
 previews is rendered on a framed, horizontally scrollable dark-blue surface;
@@ -535,8 +536,10 @@ from print output. Keep that stylesheet available at `/giscus.css` with its
 `https://giscus.app` CORS rule in `public/_headers`. Its stable Roboto, Space
 Grotesk, and Google Sans Code webfont assets are copied from the installed
 Fontsource packages into `/fonts`; those responses need the same Giscus CORS
-rule. The embed references the versioned canonical HTTPS theme asset so the
-cross-origin iframe uses the same typography and styling in local previews.
+rule. The embed references a versioned theme asset on the current HTTPS host,
+so `blog.lmms-lab.com` previews and the final `www.lmms-lab.com` deployment use
+the same typography and styling. Local HTTP development falls back to the HTTPS
+preview asset because Giscus loads the stylesheet cross-origin.
 
 Article text sits in a stable reading column, uses left-aligned paragraphs, and
 widens only for explicitly marked wide fragments. Major headings, quotations,
@@ -587,7 +590,7 @@ Keep selectors under the fragment's unique root class.
 
 Generated TypeScript under `src/app/data/` is ignored. Never edit or commit it.
 The source of truth is each `content/posts/<slug>/` directory and its `index.md`
-or `index.html`. The online `/docs` page is also generated from this file; do
+or `index.html`. The online `/blog/docs` page is also generated from this file; do
 not create a second copy of the authoring guide in an Angular template.
 
 Run these checks before publishing:
