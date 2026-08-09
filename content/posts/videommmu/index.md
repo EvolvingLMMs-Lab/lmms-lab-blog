@@ -2,33 +2,50 @@
 title: "Video-MMMU: Evaluating Knowledge Acquisition from Educational Videos"
 date: "2025-01-13"
 description: "A benchmark that asks: If a model 'goes to class,' can it learn from lectures and apply knowledge to MMMU-style exam problems?"
+authors:
+  - name: "Kairui Hu"
+    main: true
+  - name: "Penghao Wu"
+    main: true
+  - name: "Fanyi Pu"
+  - name: "Wang Xiao"
+  - name: "Xiang Yue"
+  - name: "Yuanhan Zhang"
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+tags:
+  - "benchmarks"
+  - "evaluation"
+  - "multimodal"
 ---
-**Authors:** Kairui Hu · Penghao Wu · Fanyi Pu · Wang Xiao · Xiang Yue · Yuanhan Zhang · [Bo Li](https://brianboli.com/) · [Ziwei Liu](https://liuziwei7.github.io/)
-
 <figure>
 <img src="./legacy/images/videommmu_images/figure1.avif" alt="Video-MMMU Overview" loading="lazy" decoding="async">
 <figcaption>Video-MMMU: A comprehensive benchmark for evaluating knowledge acquisition from educational videos across multiple disciplines</figcaption>
 </figure>
 
 
-  <a
-    href="https://videommmu.github.io/"
-    style="display: inline-block; margin: 0 6px;"
-  >
-    <img src="https://img.shields.io/badge/🎓-Website-red" alt="Website" loading="lazy" decoding="async">
-  </a>
-  <a
-    href="https://arxiv.org/abs/2501.13826"
-    style="display: inline-block; margin: 0 6px;"
-  >
-    <img src="https://img.shields.io/badge/📝-Paper-blue" alt="Paper" loading="lazy" decoding="async">
-  </a>
-  <a
-    href="https://huggingface.co/datasets/lmms-lab/VideoMMMU"
-    style="display: inline-block; margin: 0 6px;"
-  >
-    <img src="https://img.shields.io/badge/🤗-Dataset-yellow" alt="Dataset" loading="lazy" decoding="async">
-  </a>
+<p class="legacy-badge-row">
+<a
+  href="https://videommmu.github.io/"
+  style="display: inline-block; margin: 0 6px;"
+>
+  <img src="https://img.shields.io/badge/🎓-Website-red" alt="Website" loading="lazy" decoding="async">
+</a>
+<a
+  href="https://arxiv.org/abs/2501.13826"
+  style="display: inline-block; margin: 0 6px;"
+>
+  <img src="https://img.shields.io/badge/📝-Paper-blue" alt="Paper" loading="lazy" decoding="async">
+</a>
+<a
+  href="https://huggingface.co/datasets/lmms-lab/VideoMMMU"
+  style="display: inline-block; margin: 0 6px;"
+>
+  <img src="https://img.shields.io/badge/🤗-Dataset-yellow" alt="Dataset" loading="lazy" decoding="async">
+</a>
+</p>
 
 
 > **Video-MMMU asks a fundamental question:**
@@ -112,7 +129,7 @@ A core innovation in Video-MMMU is its shift from measuring only final performan
 #### Δknowledge Formula
 
 
-```
+```text copy=false
 Δknowledge = (Acc_after_video - Acc_before_video) / (100% - Acc_before_video) × 100%
 ```
 
@@ -131,7 +148,7 @@ If the model succeeds after watching, it demonstrates successful knowledge acqui
 This setup mirrors a human's natural educational process:
 
 
-```
+```text copy=false
 Don't know → Learn by watching → Apply the knowledge
 ```
 
@@ -210,14 +227,33 @@ Video-MMMU represents a **paradigm shift** from traditional video understanding 
 - **Transfer Learning** - Improving cross-domain knowledge application
 
 
-### Video-MMMU Resources
-
-Complete benchmark resources including dataset, evaluation tools, research paper, and project information
-
-- [Project Website](https://videommmu.github.io/)
-- [Research Paper](https://arxiv.org/abs/2501.13826)
-- [Video-MMMU Dataset](https://huggingface.co/datasets/lmms-lab/VideoMMMU)
-- [GitHub Repository](https://github.com/EvolvingLMMs-Lab/VideoMMMU)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Video-MMMU Resources</h3>
+    <p>Complete benchmark resources including dataset, evaluation tools, research paper, and project information</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="link" href="https://videommmu.github.io/" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Project Website</span>
+  <span class="research-resource-description">Comprehensive benchmark information</span>
+</a>
+<a class="research-resource-link" data-resource-type="paper" href="https://arxiv.org/abs/2501.13826" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Paper]</span>
+  <span class="research-resource-name">Research Paper</span>
+  <span class="research-resource-description">Detailed methodology and analysis</span>
+</a>
+<a class="research-resource-link" data-resource-type="dataset" href="https://huggingface.co/datasets/lmms-lab/VideoMMMU" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Data]</span>
+  <span class="research-resource-name">Video-MMMU Dataset</span>
+  <span class="research-resource-description">Complete benchmark dataset</span>
+</a>
+<a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/VideoMMMU" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">GitHub Repository</span>
+  <span class="research-resource-description">Evaluation code and tools</span>
+</a></section>
+</section>
 
 
 ## 🎯 Getting Started

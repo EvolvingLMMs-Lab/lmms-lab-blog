@@ -61,6 +61,29 @@
   color: var(--text-secondary);
 }
 
+.post-body .code-heading {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+
+.post-body .code-title {
+  overflow: hidden;
+  color: var(--text-color);
+  font-family: var(--font-heading);
+  font-size: 0.77rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-body .code-heading .code-lang {
+  color: var(--ctp-overlay2);
+  font-size: 0.59rem;
+}
+
 .post-body .code-lang::before {
   content: '';
   width: 0.5rem;

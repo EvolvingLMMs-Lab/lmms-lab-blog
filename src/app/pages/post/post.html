@@ -1,5 +1,5 @@
 @if (post(); as post) {
-  @if (tocItems().length) {
+  @if (post.layout === 'standard' && tocItems().length) {
     <app-table-of-contents
       [items]="tocItems()"
       [postPath]="postPath()"
@@ -11,9 +11,22 @@
     />
   }
 
-  <app-post-header [title]="post.title" [date]="post.date" />
+  @if (post.layout === 'standard') {
+    <app-post-header
+      [title]="post.title"
+      [date]="post.date"
+      [description]="post.description"
+      [authors]="post.authors"
+      [tags]="post.tags"
+    />
+  }
 
-  <article class="post-body" #postBody [innerHTML]="safeHtml()"></article>
+  <article
+    class="post-body"
+    [class.post-body-showcase]="post.layout === 'showcase'"
+    #postBody
+    [innerHTML]="safeHtml()"
+  ></article>
 
   <section class="giscus-wrapper" aria-labelledby="discussion-title">
     <header class="discussion-heading">

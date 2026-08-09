@@ -4,9 +4,7 @@ date: "2025-07-18"
 description: "Assessing masked diffusion language models viability for multi‑token prediction, diagnosing their efficiency and learning challenges, and surveying emerging solutions within the broader multi‑token prediction landscape."
 ---
 <p align="center">
-  <video autoplay loop muted playsinline preload="metadata" aria-label="image">
-  <source src="./remote-media/vecteezy-colorful-illustrative-3d-animation-of-neural-network-de-212ab6bf.webm" type="video/webm">
-</video>
+  <img src="https://i.postimg.cc/bwbxLD8n/vecteezy-colorful-illustrative-3d-animation-of-neural-network-deep-42719737.gif" alt="image" loading="lazy" decoding="async">
 </p>
 
 > Assessing masked diffusion language models viability for multi‑token prediction, diagnosing their efficiency and learning challenges, and surveying emerging solutions within the broader multi‑token prediction landscape.

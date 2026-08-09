@@ -2,9 +2,25 @@
 title: "LongVA: Long Context Transfer from Language to Vision"
 date: "2024-06-24"
 description: "Long Context Transfer from Language to Vision - An innovative solution towards long video LMM, leveraging long context capabilities of language models"
+authors:
+  - name: "Peiyuan Zhang"
+    main: true
+  - name: "Kaichen Zhang"
+    main: true
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+  - name: "Guangtao Zeng"
+  - name: "Jingkang Yang"
+  - name: "Yuanhan Zhang"
+  - name: "Ziyue Wang"
+  - name: "Haoran Tan"
+  - name: "Chunyuan Li"
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** Peiyuan Zhang · Kaichen Zhang · [Bo Li](https://brianboli.com/) · Guangtao Zeng · Jingkang Yang · Yuanhan Zhang · Ziyue Wang · Haoran Tan · Chunyuan Li · [Ziwei Liu](https://liuziwei7.github.io/)
-
 <figure>
 <img src="./remote-media/heatmap-00d6ad28.avif" alt="LongVA Visual Needle-in-a-Haystack Heatmap" loading="lazy" decoding="async">
 <figcaption>LongVA</figcaption>
@@ -98,13 +114,28 @@ LongVA establishes a foundation for:
 4. **Benchmark Development** - Creating more comprehensive evaluation metrics
 
 
-### LongVA Resources
-
-Complete resources for LongVA including source code, evaluation benchmark, and pre-trained models
-
-- [GitHub Repository](https://github.com/EvolvingLMMs-Lab/LongVA)
-- [V-NIAH Benchmark](https://github.com/EvolvingLMMs-Lab/LongVA)
-- [Model Checkpoints](https://github.com/EvolvingLMMs-Lab/LongVA)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>LongVA Resources</h3>
+    <p>Complete resources for LongVA including source code, evaluation benchmark, and pre-trained models</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/LongVA" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">GitHub Repository</span>
+  <span class="research-resource-description">Source code and implementation</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://github.com/EvolvingLMMs-Lab/LongVA" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">V-NIAH Benchmark</span>
+  <span class="research-resource-description">Evaluation framework</span>
+</a>
+<a class="research-resource-link" data-resource-type="model" href="https://github.com/EvolvingLMMs-Lab/LongVA" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">Model Checkpoints</span>
+  <span class="research-resource-description">Pre-trained models for research and development</span>
+</a></section>
+</section>
 
 ## Acknowledgements
 

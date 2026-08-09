@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="./pipeline.css">
+
+<figure class="ov-pipeline" data-blog-controller="./pipeline.mjs">
+  <div class="ov-pipeline__labels" aria-hidden="true">
+    <span>Original video</span>
+    <span>Uniform sampling</span>
+    <span>Temporal saliency</span>
+    <span>Codec patches</span>
+  </div>
+
+  <div class="ov-pipeline__viewport">
+    <video
+      data-pipeline-video
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="metadata"
+      aria-label="OneVision Encoder video processing pipeline, case 1"
+    >
+      <source
+        src="https://wqrxkrduisy4rnf0.public.blob.vercel-storage.com/onevision-encoder/images/case1.webm"
+        type="video/webm"
+      >
+    </video>
+  </div>
+
+  <div class="ov-pipeline__navigation" aria-label="Pipeline examples">
+    <button type="button" data-pipeline-previous aria-label="Previous pipeline example">
+      <i class="ph ph-caret-left" aria-hidden="true"></i>
+    </button>
+    <div class="ov-pipeline__dots" data-pipeline-dots></div>
+    <button type="button" data-pipeline-next aria-label="Next pipeline example">
+      <i class="ph ph-caret-right" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <figcaption data-pipeline-caption>
+    Case 1 of 7 · Complete video processing pipeline from the original clip to a
+    codec-style sparse representation.
+  </figcaption>
+</figure>

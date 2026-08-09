@@ -6,7 +6,7 @@ const FRONT_MATTER_START = /^---[ \t]*\r?\n/;
 const FRONT_MATTER_END = /^---[ \t]*(?:\r?\n|$)/m;
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-const METADATA_FIELDS = ['title', 'date', 'description'];
+const METADATA_FIELDS = ['title', 'date', 'description', 'authors', 'tags', 'layout'];
 
 function sourceError(sourcePath, message) {
   return new Error(`Post source "${sourcePath}" ${message}`);
@@ -22,6 +22,74 @@ function validateDate(value, sourcePath) {
     throw sourceError(sourcePath, `has an invalid calendar date: ${value}`);
   }
 
+  return value;
+}
+
+function validateAuthors(value, sourcePath) {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) {
+    throw sourceError(sourcePath, 'must define "authors" as a YAML sequence');
+  }
+
+  return value.map((author, index) => {
+    if (!author || typeof author !== 'object' || Array.isArray(author)) {
+      throw sourceError(sourcePath, `author ${index + 1} must be a YAML mapping`);
+    }
+
+    const unknownFields = Object.keys(author).filter(
+      (field) => !['name', 'url', 'main'].includes(field),
+    );
+    if (unknownFields.length) {
+      throw sourceError(
+        sourcePath,
+        `author ${index + 1} has unknown field(s): ${unknownFields.join(', ')}`,
+      );
+    }
+
+    const name = typeof author.name === 'string' ? author.name.trim() : '';
+    if (!name) {
+      throw sourceError(sourcePath, `author ${index + 1} must define a non-empty "name" string`);
+    }
+    if (author.url !== undefined && (typeof author.url !== 'string' || !author.url.trim())) {
+      throw sourceError(sourcePath, `author ${index + 1} must define "url" as a non-empty string`);
+    }
+    if (author.main !== undefined && typeof author.main !== 'boolean') {
+      throw sourceError(sourcePath, `author ${index + 1} must define "main" as a boolean`);
+    }
+
+    return {
+      name,
+      ...(author.url ? { url: author.url.trim() } : {}),
+      ...(author.main === true ? { main: true } : {}),
+    };
+  });
+}
+
+function validateTags(value, sourcePath) {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) {
+    throw sourceError(sourcePath, 'must define "tags" as a YAML sequence');
+  }
+
+  const tags = value.map((tag, index) => {
+    const normalized = typeof tag === 'string' ? tag.trim() : '';
+    if (!normalized) {
+      throw sourceError(sourcePath, `tag ${index + 1} must be a non-empty string`);
+    }
+    return normalized;
+  });
+
+  if (new Set(tags).size !== tags.length) {
+    throw sourceError(sourcePath, 'must not define duplicate tags');
+  }
+  return tags;
+}
+
+function validateLayout(value, sourcePath) {
+  if (value === undefined) return 'standard';
+  if (value !== 'standard' && value !== 'showcase') {
+    throw sourceError(sourcePath, 'must define "layout" as "standard" or "showcase"');
+  }
   return value;
 }
 
@@ -48,6 +116,9 @@ function validateMetadata(value, sourcePath) {
     title,
     date: validateDate(value.date, sourcePath),
     description,
+    authors: validateAuthors(value.authors, sourcePath),
+    tags: validateTags(value.tags, sourcePath),
+    layout: validateLayout(value.layout, sourcePath),
   };
 }
 

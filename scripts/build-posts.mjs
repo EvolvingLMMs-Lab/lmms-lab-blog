@@ -64,8 +64,11 @@ function renderSitemap(posts) {
 function collectLangs(posts) {
   const langs = new Set();
   for (const md of posts) {
-    for (const match of md.matchAll(/```(\w+)/g)) {
-      langs.add(match[1]);
+    for (const match of md.matchAll(/```([^\r\n]*)/g)) {
+      const language = match[1].trim().split(/\s+/, 1)[0];
+      if (/^[a-z0-9_-]+$/i.test(language)) {
+        langs.add(language);
+      }
     }
   }
   return [...langs];

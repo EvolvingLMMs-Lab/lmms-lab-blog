@@ -2,9 +2,24 @@
 title: "OpenMMReasoner: Pushing the Frontiers for Multimodal Reasoning with an Open and General Recipe"
 date: "2025-11-21"
 description: "OpenMMReasoner introduces a systematic study on constructing high-quality SFT and RL datasets for multimodal reasoning, demonstrating that both source diversity and answer diversity are crucial for building reliable supervision signals."
+authors:
+  - name: "Kaichen Zhang"
+    main: true
+  - name: "Keming Wu"
+    main: true
+  - name: "Zuhao Yang"
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+  - name: "Kairui Hu"
+  - name: "Bin Wang"
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+  - name: "Xingxuan Li"
+  - name: "Lidong Bing"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** Kaichen Zhang · Keming Wu · Zuhao Yang · [Bo Li](https://brianboli.com/) · Kairui Hu · Bin Wang · [Ziwei Liu](https://liuziwei7.github.io/) · Xingxuan Li · Lidong Bing
-
 [Paper](https://arxiv.org/abs/2511.16334) | [Code](https://github.com/EvolvingLMMs-Lab/OpenMMReasoner) | [SFT Data](https://huggingface.co/datasets/OpenMMReasoner/OpenMMReasoner-SFT-874K) | [RL Data](https://huggingface.co/datasets/OpenMMReasoner/OpenMMReasoner-RL-74K) | [Model](https://huggingface.co/OpenMMReasoner/OpenMMReasoner-RL) | [Project Page](https://evolvinglmms-lab.github.io/OpenMMReasoner/)
 
 
@@ -184,14 +199,46 @@ Gains in reasoning during training consistently translate into stronger performa
 ---
 
 
-### Open-Source Resources
-
-We open-source OpenMMReasoner to facilitate future development of multimodal reasoning in the community
-
-- [Code Repository](https://github.com/EvolvingLMMs-Lab/OpenMMReasoner)
-- [Technical Report](https://arxiv.org/abs/2511.16334)
-- [Model Checkpoint](https://huggingface.co/OpenMMReasoner/OpenMMReasoner-RL)
-- [Training Datasets](https://huggingface.co/datasets/OpenMMReasoner/OpenMMReasoner-SFT-874K)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Open-Source Resources</h3>
+    <p>We open-source OpenMMReasoner to facilitate future development of multimodal reasoning in the community</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/OpenMMReasoner" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">Code Repository</span>
+  <span class="research-resource-description">Complete training and evaluation code for OpenMMReasoner</span>
+</a>
+<a class="research-resource-link" data-resource-type="paper" href="https://arxiv.org/abs/2511.16334" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Paper]</span>
+  <span class="research-resource-name">Technical Report</span>
+  <span class="research-resource-description">Read our paper on arXiv</span>
+</a></section>
+  <section class="research-resource-groups"><section class="research-resource-group">
+  <h4><span>[Model]</span> Model Checkpoint</h4>
+  <p class="research-resource-group-description">Pre-trained model with RL optimization</p>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="model" href="https://huggingface.co/OpenMMReasoner/OpenMMReasoner-RL" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">OpenMMReasoner-RL</span>
+  <span class="research-resource-metadata">7B</span>
+</a></section>
+</section>
+<section class="research-resource-group">
+  <h4><span>[Data]</span> Training Datasets</h4>
+  <p class="research-resource-group-description">High-quality SFT and RL datasets</p>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="dataset" href="https://huggingface.co/datasets/OpenMMReasoner/OpenMMReasoner-SFT-874K" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Data]</span>
+  <span class="research-resource-name">OpenMMReasoner-SFT-874K</span>
+  <span class="research-resource-metadata">874K</span>
+</a>
+<a class="research-resource-link" data-resource-type="dataset" href="https://huggingface.co/datasets/OpenMMReasoner/OpenMMReasoner-RL-74K" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Data]</span>
+  <span class="research-resource-name">OpenMMReasoner-RL-74K</span>
+  <span class="research-resource-metadata">74K</span>
+</a></section>
+</section></section>
+</section>
 
 ## BibTeX
 

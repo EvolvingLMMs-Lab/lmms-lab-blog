@@ -2,9 +2,25 @@
 title: "LLaVA-OneVision: Easy Visual Task Transfer"
 date: "2024-08-05"
 description: "The first single model that can simultaneously push the performance boundaries of open LMMs in three important computer vision scenarios: single-image, multi-image, and video"
+authors:
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+    main: true
+  - name: "Yuanhan Zhang"
+    main: true
+  - name: "Dong Guo"
+  - name: "Renrui Zhang"
+  - name: "Feng Li"
+  - name: "Hao Zhang"
+  - name: "Kaichen Zhang"
+  - name: "Yanwei Li"
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+  - name: "Chunyuan Li"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** [Bo Li](https://brianboli.com/) · Yuanhan Zhang · Dong Guo · Renrui Zhang · Feng Li · Hao Zhang · Kaichen Zhang · Yanwei Li · [Ziwei Liu](https://liuziwei7.github.io/) · Chunyuan Li
-
 <figure>
 <img src="./remote-media/fig1-4be41620.avif" alt="LLaVA-OneVision" loading="lazy" decoding="async">
 <figcaption>LLaVA-OneVision: A unified model for single-image, multi-image, and video understanding</figcaption>
@@ -53,14 +69,33 @@ Seamlessly process and understand content across single images, multiple images,
 Importantly, the design of LLaVA-OneVision allows strong transfer learning across different modalities/scenarios. In particular, strong video understanding and cross-scenario capabilities are demonstrated through task transfer from images to videos, showcasing the model's ability to generalize learned representations across visual domains.
 
 
-### Open-Source Resources
-
-Complete LLaVA-OneVision resources to facilitate future development of LMMs in the community
-
-- [Training Code](https://github.com/LLaVA-VL/LLaVA-NeXT)
-- [Model Checkpoints](https://huggingface.co/collections/lmms-lab/llava-onevision-66a259c3526e15166d6bba37)
-- [Training Datasets](https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data)
-- [Live Demo](https://llava-vl.github.io/blog/2024-08-05-llava-onevision/)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Open-Source Resources</h3>
+    <p>Complete LLaVA-OneVision resources to facilitate future development of LMMs in the community</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/LLaVA-VL/LLaVA-NeXT" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">Training Code</span>
+  <span class="research-resource-description">Cook a SOTA model with our released training code and reproduction scripts</span>
+</a>
+<a class="research-resource-link" data-resource-type="model" href="https://huggingface.co/collections/lmms-lab/llava-onevision-66a259c3526e15166d6bba37" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">Model Checkpoints</span>
+  <span class="research-resource-description">Access pre-trained model checkpoints in all three sizes (0.5B, 7B, 72B)</span>
+</a>
+<a class="research-resource-link" data-resource-type="dataset" href="https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Data]</span>
+  <span class="research-resource-name">Training Datasets</span>
+  <span class="research-resource-description">Explore comprehensive training datasets for Single-Image and OneVision stages</span>
+</a>
+<a class="research-resource-link" data-resource-type="demo" href="https://llava-vl.github.io/blog/2024-08-05-llava-onevision/" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Demo]</span>
+  <span class="research-resource-name">Live Demo</span>
+  <span class="research-resource-description">Try LLaVA-OneVision directly in your browser</span>
+</a></section>
+</section>
 
 
 ## Development Roadmap

@@ -2,20 +2,38 @@
 title: "High-Resolution Visual Reasoning via Multi-Turn Grounding-Based Reinforcement Learning"
 date: "2025-05-28"
 description: "MGPO enables LMMs to iteratively focus on key image regions through automatic grounding, achieving superior performance on high-resolution visual tasks without requiring grounding annotations"
+authors:
+  - name: "Xinyu Huang"
+    main: true
+  - name: "Yuhao Dong"
+  - name: "Wei Li"
+  - name: "Jinming Wu"
+  - name: "Zihao Deng"
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+  - name: "Zejun Ma"
+tags:
+  - "research"
+  - "multimodal"
 ---
-**Authors:** Xinyu Huang · Yuhao Dong · Wei Li · Jinming Wu · Zihao Deng · [Bo Li](https://brianboli.com/) · Zejun Ma
-
 <figure>
 <img src="./remote-media/v2-0ae2cec95c7e5a2b67fd74203c5f5120-1440w-628c07c1.avif" alt="MGPO High-Resolution Visual Reasoning" loading="lazy" decoding="async">
 <figcaption>MGPO: Multi-Turn Grounding-Based Policy Optimization for high-resolution visual reasoning</figcaption>
 </figure>
 
 
-### Project Resources
-
-Access the complete MGPO implementation and research materials
-
-- [MGPO Repository](https://github.com/EvolvingLMMs-Lab/MGPO)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Project Resources</h3>
+    <p>Access the complete MGPO implementation and research materials</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/MGPO" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">MGPO Repository</span>
+  <span class="research-resource-description">Complete implementation of Multi-turn Grounding-based Policy Optimization</span>
+</a></section>
+</section>
 
 
 ## 1. Introduction

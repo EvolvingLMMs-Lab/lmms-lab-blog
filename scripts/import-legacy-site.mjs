@@ -6,6 +6,8 @@ import { parse } from 'yaml';
 const PROJECT_ROOT = resolve(new URL('..', import.meta.url).pathname);
 const TARGET_POSTS_DIR = join(PROJECT_ROOT, 'content/posts');
 const LEGACY_ROOT = resolve(process.argv[2] || '');
+const SYNC_METADATA = process.argv.includes('--sync-metadata');
+const SYNC_CONTENT = process.argv.includes('--sync-content');
 const LEGACY_POSTS_DIR = join(LEGACY_ROOT, 'content/posts');
 const LEGACY_NOTES_DIR = join(LEGACY_ROOT, 'content/notes');
 const SITE_ASSETS_DIR = join(PROJECT_ROOT, 'public/site');
@@ -21,6 +23,7 @@ const LEGACY_AUTHOR_URLS = new Map([
 
 const imported = [];
 const resumed = [];
+const synchronized = [];
 const warnings = [];
 
 function repairMultilineQuotedField(yamlSource, field) {
@@ -124,11 +127,31 @@ function outputFrontMatter(meta, body) {
     throw new Error(`Cannot normalize metadata for legacy post: ${title || '<untitled>'}`);
   }
 
+  const authors = Array.isArray(meta.authors)
+    ? meta.authors
+        .map((entry) => {
+          const author = typeof entry === 'string' ? { name: entry } : entry;
+          if (!author?.name) return '';
+          const lines = [`  - name: ${JSON.stringify(String(author.name))}`];
+          const url = author.url || LEGACY_AUTHOR_URLS.get(author.name);
+          if (url) lines.push(`    url: ${JSON.stringify(String(url))}`);
+          if (author.main === true) lines.push('    main: true');
+          return lines.join('\n');
+        })
+        .filter(Boolean)
+    : [];
+  const tags = [...new Set([...(meta.mainTags || []), ...(meta.tags || [])])]
+    .map((tag) => String(tag).trim())
+    .filter(Boolean);
+
   return [
     '---',
     `title: ${JSON.stringify(title)}`,
     `date: ${JSON.stringify(date)}`,
     `description: ${JSON.stringify(description)}`,
+    ...(authors.length ? ['authors:', ...authors] : []),
+    ...(tags.length ? ['tags:', ...tags.map((tag) => `  - ${JSON.stringify(tag)}`)] : []),
+    ...(meta.layout === 'showcase' ? ['layout: showcase'] : []),
     '---',
     '',
   ].join('\n');
@@ -137,6 +160,38 @@ function outputFrontMatter(meta, body) {
 function attribute(source, name) {
   const match = new RegExp(`\\b${name}\\s*=\\s*["']([^"']*)["']`).exec(source);
   return match?.[1]?.trim() || '';
+}
+
+function expressionAttribute(source, name) {
+  const startMatch = new RegExp(`\\b${name}\\s*=\\s*\\{`).exec(source);
+  if (!startMatch) return undefined;
+
+  const openingBrace = startMatch.index + startMatch[0].lastIndexOf('{');
+  let depth = 0;
+  let quote = '';
+  let escaped = false;
+  for (let index = openingBrace; index < source.length; index += 1) {
+    const character = source[index];
+    if (quote) {
+      if (escaped) escaped = false;
+      else if (character === '\\') escaped = true;
+      else if (character === quote) quote = '';
+      continue;
+    }
+    if (character === '"' || character === "'" || character === '`') {
+      quote = character;
+      continue;
+    }
+    if (character === '{') depth += 1;
+    if (character !== '}') continue;
+    depth -= 1;
+    if (depth === 0) {
+      const expression = source.slice(openingBrace + 1, index);
+      return Function(`"use strict"; return (${expression});`)();
+    }
+  }
+
+  return undefined;
 }
 
 function outputAssetPath(legacyRelative, postDir) {
@@ -247,35 +302,163 @@ function renderMedia(media, alt, caption = '') {
   return `<figure>\n${content}\n<figcaption>${escapeHtml(caption)}</figcaption>\n</figure>`;
 }
 
-function renderResourceCard(attributes) {
-  const resourcesIndex = attributes.search(/\bresources\s*=/);
-  const cardAttributes = resourcesIndex >= 0 ? attributes.slice(0, resourcesIndex) : attributes;
-  const resourcesSource = resourcesIndex >= 0 ? attributes.slice(resourcesIndex) : '';
-  const title = attribute(cardAttributes, 'title') || 'Resources';
-  const description = attribute(cardAttributes, 'description');
-  const links = [];
-  const linkPattern = /title\s*:\s*["']([^"']+)["'][\s\S]*?url\s*:\s*["']([^"']+)["']/g;
-
-  for (const match of resourcesSource.matchAll(linkPattern)) {
-    links.push(`- [${match[1]}](${match[2]})`);
-  }
-
-  return [`### ${title}`, description, links.length ? links.join('\n') : '']
-    .filter(Boolean)
-    .join('\n\n');
+function mediaKey(block) {
+  return /\b(?:alt|aria-label)=["']([^"']+)["']/.exec(block)?.[1] || '';
 }
 
-function renderAuthors(meta) {
-  if (!Array.isArray(meta.authors) || meta.authors.length === 0) {
-    return '';
+function preserveMaterializedMedia(existingBody, generatedBody) {
+  const media = new Map();
+  for (const match of existingBody.matchAll(/<img\b[^>]*>|<video\b[^>]*>[\s\S]*?<\/video>/g)) {
+    const key = mediaKey(match[0]);
+    if (key) media.set(key, match[0]);
   }
 
-  const authors = meta.authors.map((entry) => {
-    const name = typeof entry === 'string' ? entry : entry?.name;
-    const url = entry?.url || LEGACY_AUTHOR_URLS.get(name);
-    return url ? `[${name}](${url})` : name;
-  });
-  return `**Authors:** ${authors.join(' · ')}\n\n`;
+  return generatedBody.replace(
+    /<img\b[^>]*>|<video\b[^>]*>[\s\S]*?<\/video>/g,
+    (block) => media.get(mediaKey(block)) || block,
+  );
+}
+
+const RESOURCE_LABELS = {
+  github: 'Code',
+  paper: 'Paper',
+  model: 'Model',
+  dataset: 'Data',
+  demo: 'Demo',
+  link: 'Link',
+};
+
+function renderResourceLink(resource) {
+  if (!resource?.title || !resource?.url) return '';
+  const type = String(resource.type || 'link').toLowerCase();
+  const label = RESOURCE_LABELS[type] || 'Link';
+  return `<a class="research-resource-link" data-resource-type="${escapeHtml(type)}" href="${escapeHtml(resource.url)}" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[${escapeHtml(label)}]</span>
+  <span class="research-resource-name">${escapeHtml(resource.title)}</span>${
+    resource.metadata
+      ? `\n  <span class="research-resource-metadata">${escapeHtml(resource.metadata)}</span>`
+      : ''
+  }${
+    resource.description
+      ? `\n  <span class="research-resource-description">${escapeHtml(resource.description)}</span>`
+      : ''
+  }
+</a>`;
+}
+
+function renderResourceCard(attributes) {
+  const title = attribute(attributes, 'title') || 'Resources';
+  const description = attribute(attributes, 'description');
+  const resources = expressionAttribute(attributes, 'resources') || [];
+  const groups = expressionAttribute(attributes, 'groups') || [];
+  const resourceLinks = resources.map(renderResourceLink).filter(Boolean).join('\n');
+  const renderedGroups = groups
+    .map((group) => {
+      const type = String(group.type || 'link').toLowerCase();
+      const label = RESOURCE_LABELS[type] || 'Link';
+      const items = (group.items || [])
+        .map((item) => renderResourceLink({ ...item, title: item.name, type }))
+        .filter(Boolean)
+        .join('\n');
+      return `<section class="research-resource-group">
+  <h4><span>[${escapeHtml(label)}]</span> ${escapeHtml(group.title || label)}</h4>${
+    group.description
+      ? `\n  <p class="research-resource-group-description">${escapeHtml(group.description)}</p>`
+      : ''
+  }
+  <section class="research-resource-links">${items}</section>
+</section>`;
+    })
+    .join('\n');
+
+  return `<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>${escapeHtml(title)}</h3>${description ? `\n    <p>${escapeHtml(description)}</p>` : ''}
+  </header>${resourceLinks ? `\n  <section class="research-resource-links">${resourceLinks}</section>` : ''}${
+    renderedGroups
+      ? `\n  <section class="research-resource-groups">${renderedGroups}</section>`
+      : ''
+  }
+</section>`;
+}
+
+function renderRlDonutCharts(caption) {
+  const charts = [
+    {
+      title: 'LLaVA-OneVision-1.5 RL Data',
+      total: '67.0K',
+      slices: [
+        ['STEM', 58],
+        ['Grounding', 22.4],
+        ['Spatial', 6.3],
+        ['Coding', 6],
+        ['Counting', 4.2],
+        ['OCR & Diagram', 2.3],
+      ],
+    },
+    {
+      title: 'Stage 1 · Answer-only',
+      total: '19.9K',
+      slices: [
+        ['Grounding', 75],
+        ['OCR & Diagram', 10.9],
+        ['Counting', 14.1],
+      ],
+    },
+    {
+      title: 'Stage 2 · Chain-of-Thought',
+      total: '49.2K',
+      slices: [
+        ['STEM', 79],
+        ['OCR & Diagram', 0.8],
+        ['Counting', 0.6],
+        ['Coding', 8.1],
+        ['Spatial', 8.5],
+        ['Grounding', 3],
+      ],
+    },
+  ];
+  const colors = ['peach', 'sapphire', 'mauve', 'green', 'pink', 'yellow'];
+
+  const rendered = charts
+    .map((chart, chartIndex) => {
+      let cursor = 0;
+      const stops = chart.slices.map(([, value], index) => {
+        const start = cursor;
+        cursor += value;
+        return `var(--ctp-${colors[index]}) ${start}% ${cursor}%`;
+      });
+      const legend = chart.slices
+        .map(
+          ([label, value], index) =>
+            `<li><span style="--legend-color: var(--ctp-${colors[index]})"></span>${escapeHtml(label)} <b>${value}%</b></li>`,
+        )
+        .join('');
+      return `<section class="rl-donut-chart">
+  <span class="rl-donut" style="--donut-fill: ${stops.join(', ')}" role="img" aria-label="${escapeHtml(chart.title)}, total ${chart.total}">
+    <span><b>${chart.total}</b><small>Total</small></span>
+  </span>
+  <h4>${escapeHtml(chart.title)}</h4>
+  <ul>${legend}</ul>
+  <span class="rl-chart-letter">(${String.fromCharCode(97 + chartIndex)})</span>
+</section>`;
+    })
+    .join('\n');
+
+  return `<figure class="rl-distribution-figure">
+  <section class="rl-donut-grid">${rendered}</section>
+  <figcaption>${escapeHtml(caption || 'Distribution of task categories in the RL training data.')}</figcaption>
+</figure>`;
+}
+
+function dedentBlock(source) {
+  const lines = source.replace(/^\s*\n|\n\s*$/g, '').split(/\r?\n/);
+  const indentation = lines
+    .filter((line) => line.trim())
+    .map((line) => /^\s*/.exec(line)?.[0].length ?? 0);
+  const minimum = indentation.length ? Math.min(...indentation) : 0;
+  return lines.map((line) => line.slice(minimum)).join('\n');
 }
 
 function transformBody(body, sourceDir, postDir, meta) {
@@ -284,6 +467,22 @@ function transformBody(body, sourceDir, postDir, meta) {
   transformed = transformed.replace(
     /^import[\s\S]*?from\s+["']@\/components\/mdx(?:\/components)?["'];\s*/gm,
     '',
+  );
+
+  // MDX parses Markdown inside JSX divs, while CommonMark treats a div as one
+  // raw HTML block. Unwrap the two table-scroller layers and remove their
+  // inherited indentation before Marked sees them.
+  transformed = transformed.replace(
+    /<div\s+class=["']overflow-x-auto["']>\s*<div\s+class=["']min-w-fit["']>([\s\S]*?)<\/div>\s*<\/div>/g,
+    (_, content) => `\n\n<section class="table-wrapper">\n${dedentBlock(content)}\n</section>\n\n`,
+  );
+
+  // Preserve the only legacy div whose visual grouping is meaningful and
+  // whose children are already native HTML. Using a paragraph keeps the badge
+  // row valid after the remaining presentation-only divs are unwrapped.
+  transformed = transformed.replace(
+    /<div\b[^>]*style=["'][^"']*text-align:\s*center[^"']*margin:\s*2rem\s+0[^"']*["'][^>]*>([\s\S]*?)<\/div>/g,
+    (_, content) => `\n\n<p class="legacy-badge-row">\n${dedentBlock(content)}\n</p>\n\n`,
   );
 
   transformed = transformed.replace(/<ResponsiveImage\b([\s\S]*?)\/>/g, (_, attributes) => {
@@ -299,21 +498,43 @@ function transformBody(body, sourceDir, postDir, meta) {
     (_, attributes) => `\n\n${renderResourceCard(attributes)}\n\n`,
   );
 
-  transformed = transformed.replace(/<CodeDemo\b([^>]*)>/g, (_, attributes) => {
-    const title = attribute(attributes, 'title');
-    return title ? `\n\n**${title}**\n\n` : '\n\n';
-  });
-  transformed = transformed.replace(/<\/CodeDemo>/g, '\n\n');
+  transformed = transformed.replace(
+    /<CodeDemo\b([^>]*)>([\s\S]*?)<\/CodeDemo>/g,
+    (_, attributes, content) => {
+      const title = attribute(attributes, 'title');
+      const showCopy = !/\bshowCopy\s*=\s*\{false\}/.test(attributes);
+      if (!title && showCopy) return `\n\n${content.trim()}\n\n`;
+      const nextContent = content.replace(/```([^\r\n]*)/, (fence, info) => {
+        const language = info.trim() || (!title && !showCopy ? 'text' : '');
+        const metadata = [
+          language,
+          title ? `title=${JSON.stringify(title)}` : '',
+          !showCopy ? 'copy=false' : '',
+        ]
+          .filter(Boolean)
+          .join(' ');
+        return `\`\`\`${metadata}`;
+      });
+      return `\n\n${nextContent.trim()}\n\n`;
+    },
+  );
 
-  transformed = transformed.replace(/<Collapsible\b([^>]*)>/g, (_, attributes) => {
-    const summary = attribute(attributes, 'summary') || 'Details';
-    return `\n\n#### ${summary}\n\n`;
-  });
-  transformed = transformed.replace(/<\/Collapsible>/g, '\n\n');
+  transformed = transformed.replace(
+    /<Collapsible\b([^>]*)>([\s\S]*?)<\/Collapsible>/g,
+    (_, attributes, content) => {
+      const summary = attribute(attributes, 'summary') || 'Details';
+      const paragraphs = content
+        .trim()
+        .split(/\n\s*\n/)
+        .map((paragraph) => `<p>${escapeHtml(paragraph.replace(/\s+/g, ' ').trim())}</p>`)
+        .join('\n');
+      return `\n\n<details class="research-collapsible">\n<summary>${escapeHtml(summary)}</summary>\n${paragraphs}\n</details>\n\n`;
+    },
+  );
 
   transformed = transformed.replace(/<RLDonutCharts\b([\s\S]*?)\/>/g, (_, attributes) => {
     const caption = attribute(attributes, 'caption');
-    return `\n\n> ${caption || 'Distribution of task categories in the RL training data.'}\n\n`;
+    return `\n\n${renderRlDonutCharts(caption)}\n\n`;
   });
 
   transformed = transformed.replace(
@@ -355,14 +576,14 @@ function transformBody(body, sourceDir, postDir, meta) {
     appendix.push(`## BibTeX\n\n\`\`\`bibtex\n${String(meta.bibtex).trim()}\n\`\`\``);
   }
 
-  return `${renderAuthors(meta)}${transformed}${appendix.length ? `\n\n${appendix.join('\n\n')}` : ''}\n`;
+  return `${transformed}${appendix.length ? `\n\n${appendix.join('\n\n')}` : ''}\n`;
 }
 
 function llavaOneVisionTwoBody(postDir, meta) {
   const roadmap = materializeAsset('/posts/llava_onevision_2/roadmap.png', LEGACY_ROOT, postDir);
   const architecture = materializeAsset('/posts/llava_onevision_2/arch.png', LEGACY_ROOT, postDir);
 
-  return `${renderAuthors(meta)}[Code](https://github.com/EvolvingLMMs-Lab/LLaVA-OneVision-2) · [Models](https://huggingface.co/lmms-lab-encoder/LLaVA-OneVision-2-8B-Instruct) · [Training data](https://huggingface.co/datasets/mvp-lab/LLaVA-OneVision-2-Data) · [Online demo](https://huggingface.co/collections/mvp-lab/llava-onevision-2)
+  return `[Code](https://github.com/EvolvingLMMs-Lab/LLaVA-OneVision-2) · [Models](https://huggingface.co/lmms-lab-encoder/LLaVA-OneVision-2-8B-Instruct) · [Training data](https://huggingface.co/datasets/mvp-lab/LLaVA-OneVision-2-Data) · [Online demo](https://huggingface.co/collections/mvp-lab/llava-onevision-2)
 
 ## Overview
 
@@ -452,6 +673,25 @@ function importSource(sourcePath, requestedSlug) {
   const indexPath = join(postDir, 'index.md');
 
   if (existsSync(indexPath)) {
+    if (SYNC_METADATA || SYNC_CONTENT) {
+      const current = readFileSync(indexPath, 'utf8');
+      const currentFrontMatter = /^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n/.exec(current);
+      if (!currentFrontMatter) {
+        throw new Error(`Current source ${indexPath} has no YAML front matter`);
+      }
+      const existingBody = current.slice(currentFrontMatter[0].length);
+      const currentBody = SYNC_CONTENT
+        ? preserveMaterializedMedia(
+            existingBody,
+            slug === 'llava-onevision-2'
+              ? llavaOneVisionTwoBody(postDir, meta)
+              : transformBody(body, dirname(sourcePath), postDir, meta),
+          )
+        : existingBody.replace(/^\*\*Authors:\*\*[^\n]*\r?\n(?:\r?\n)*/, '').replace(/^\s+/, '');
+      writeFileSync(indexPath, `${outputFrontMatter(meta, currentBody)}${currentBody}`, 'utf8');
+      synchronized.push(slug);
+      return;
+    }
     resumed.push(slug);
     return;
   }
@@ -521,6 +761,9 @@ for (const [source, target] of [
 }
 
 console.log(`Imported ${imported.length} legacy posts: ${imported.join(', ')}`);
+if (synchronized.length) {
+  console.log(`Synchronized metadata for ${synchronized.length} posts: ${synchronized.join(', ')}`);
+}
 if (resumed.length) {
   console.log(`Kept ${resumed.length} existing imports: ${resumed.join(', ')}`);
 }

@@ -7,6 +7,18 @@
   hyphens: none;
 }
 
+.post-body.post-body-showcase {
+  width: 100%;
+  max-width: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.post-body.post-body-showcase > .html-fragment--wide {
+  width: min(1180px, calc(100vw - 3rem));
+  margin-block: 0;
+}
+
 .post-body h2 {
   position: relative;
   font-family: var(--font-heading);

@@ -2,17 +2,51 @@
 title: "LLaVA-Video"
 date: "2024-09-30"
 description: "LLaVA-Video: Video Instruction Tuning With Synthetic Data"
+authors:
+  - name: "Yuanhan Zhang"
+    main: true
+  - name: "Jinming Wu"
+    main: true
+  - name: "Wei Li"
+    main: true
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+    main: true
+  - name: "Zejun Ma"
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+  - name: "Chunyuan Li"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** Yuanhan Zhang · Jinming Wu · Wei Li · [Bo Li](https://brianboli.com/) · Zejun Ma · [Ziwei Liu](https://liuziwei7.github.io/) · Chunyuan Li
-
-### LLaVA-Video Resources
-
-Complete implementation, interactive demos, models, evaluation results, and documentation for LLaVA-Video
-
-- [GitHub Repository](https://github.com/LLaVA-VL/LLaVA-NeXT/)
-- [Model Checkpoints](https://huggingface.co/lmms-lab/LLaVA-Video-7B-Qwen2)
-- [Dataset Link](https://huggingface.co/datasets/lmms-lab/LLaVA-Video-178K)
-- [Documentation](https://github.com/LLaVA-VL/LLaVA-NeXT/blob/main/docs/LLaVA_Video_1003.md)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>LLaVA-Video Resources</h3>
+    <p>Complete implementation, interactive demos, models, evaluation results, and documentation for LLaVA-Video</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/LLaVA-VL/LLaVA-NeXT/" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">GitHub Repository</span>
+  <span class="research-resource-description">Complete implementation and source code</span>
+</a>
+<a class="research-resource-link" data-resource-type="model" href="https://huggingface.co/lmms-lab/LLaVA-Video-7B-Qwen2" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">Model Checkpoints</span>
+  <span class="research-resource-description">LLaVA-Video-7B models</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://huggingface.co/datasets/lmms-lab/LLaVA-Video-178K" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Dataset Link</span>
+  <span class="research-resource-description">LLaVA-Video-178K Dataset</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://github.com/LLaVA-VL/LLaVA-NeXT/blob/main/docs/LLaVA_Video_1003.md" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Documentation</span>
+  <span class="research-resource-description">Complete usage cookbook and guides</span>
+</a></section>
+</section>
 
 
 The development of video large multimodal models (LMMs) has been hindered by the difficulty of curating large amounts of high-quality raw data from the web. To address this, we consider an alternative approach, creating a high-quality synthetic dataset specifically for video instruction-following, namely LLaVA-Video-178K. This dataset includes key tasks such as detailed captioning, open-ended question-answering (QA), and multiple-choice QA. By training on this proposed dataset, in combination with existing visual instruction tuning data, we introduce LLaVA-Video, a new video LMM. Our experiments demonstrate that LLaVA-Video achieves strong performance across various video benchmarks, highlighting the effectiveness of our dataset. We plan to release the dataset, its generation pipeline, and the model checkpoints.

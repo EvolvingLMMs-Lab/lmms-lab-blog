@@ -7,11 +7,20 @@ export interface TocItem {
   children: TocItem[];
 }
 
+export interface PostAuthor {
+  name: string;
+  url?: string;
+  main?: boolean;
+}
+
 export interface Post {
   slug: string;
   title: string;
   date: string;
   description: string;
+  authors: PostAuthor[];
+  tags: string[];
+  layout: 'standard' | 'showcase';
   contentHtml: string;
   toc: TocItem[];
 }

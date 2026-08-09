@@ -193,6 +193,15 @@ body > .vds-video-layout {
   overflow-x: auto;
 }
 
+@media (max-width: 720px) {
+  .post-body .math-inline {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    vertical-align: middle;
+  }
+}
+
 /* HR separator — fading line with center ornament */
 .post-body hr {
   border: none;

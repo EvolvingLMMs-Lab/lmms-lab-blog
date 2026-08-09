@@ -98,6 +98,10 @@ export function normalizeHtmlAssets(
   for (const [selector, attribute] of assetAttributes) {
     for (const element of Array.from(document.querySelectorAll(selector))) {
       const rawHref = element.getAttribute(attribute) ?? '';
+      if (element.tagName === 'A' && rawHref.startsWith('#') && rawHref !== '#') {
+        element.setAttribute(attribute, `/blog/${slug}${rawHref}`);
+        continue;
+      }
       const resolved = resolveLocalReference(rawHref, { baseDir, postDir, slug });
       if (resolved.href) {
         element.setAttribute(attribute, resolved.href);

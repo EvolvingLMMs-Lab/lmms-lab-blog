@@ -2,9 +2,21 @@
 title: "MMSearch-R1: Multimodal Search with Reinforcement Learning"
 date: "2025-06-01"
 description: "The first end-to-end RL-based solution designed to equip LMMs with the capability to perform search on demand in real-world internet environments"
+authors:
+  - name: "Jinming Wu"
+    main: true
+  - name: "Zihao Deng"
+    main: true
+  - name: "Wei Li"
+  - name: "Yiding Liu"
+  - name: "Bo You"
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+  - name: "Zejun Ma"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** Jinming Wu · Zihao Deng · Wei Li · Yiding Liu · Bo You · [Bo Li](https://brianboli.com/) · Zejun Ma
-
 <figure>
 <img src="./remote-media/istockphoto-1519732762-612x612-7b08df3f.avif" alt="MMSearch-R1 Thumbnail" loading="lazy" decoding="async">
 <figcaption>MMSearch-R1: Bridging the gap between internal knowledge and external search</figcaption>
@@ -85,7 +97,7 @@ Our framework equips models with two types of search tools:
 Our reward system consists of two components:
 
 
-```
+```text copy=false
 reward = (1 - α) × Acc_Score × Search_Penalty + α × Format_Score
 ```
 
@@ -173,14 +185,33 @@ MMSearch-R1 represents a significant advancement in multimodal AI, learning to:
 Our framework outperforms same-sized RAG baselines and approaches larger model performance while requiring significantly fewer search calls. This work lays the groundwork for building multimodal agents that are both adaptive and interactive, paving the way for the next major advancement in multimodal intelligence.
 
 
-### Project Resources
-
-Complete implementation, research paper, models, and datasets for MMSearch-R1
-
-- [GitHub Repository](https://github.com/EvolvingLMMs-Lab/multimodal-search-r1)
-- [Research Paper](https://arxiv.org/abs/2506.20670)
-- [Model Checkpoints](https://huggingface.co/EvolvingLMMs-Lab/MMSearch-R1-7B)
-- [FVQA Dataset](https://huggingface.co/datasets/EvolvingLMMs-Lab/FVQA)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Project Resources</h3>
+    <p>Complete implementation, research paper, models, and datasets for MMSearch-R1</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/multimodal-search-r1" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">GitHub Repository</span>
+  <span class="research-resource-description">Complete implementation</span>
+</a>
+<a class="research-resource-link" data-resource-type="paper" href="https://arxiv.org/abs/2506.20670" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Paper]</span>
+  <span class="research-resource-name">Research Paper</span>
+  <span class="research-resource-description">Detailed methodology and results</span>
+</a>
+<a class="research-resource-link" data-resource-type="model" href="https://huggingface.co/EvolvingLMMs-Lab/MMSearch-R1-7B" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">Model Checkpoints</span>
+  <span class="research-resource-description">Pre-trained models</span>
+</a>
+<a class="research-resource-link" data-resource-type="dataset" href="https://huggingface.co/datasets/EvolvingLMMs-Lab/FVQA" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Data]</span>
+  <span class="research-resource-name">FVQA Dataset</span>
+  <span class="research-resource-description">Training and evaluation data</span>
+</a></section>
+</section>
 
 ## Acknowledgements
 

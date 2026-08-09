@@ -2,16 +2,56 @@
   <div class="post-kicker">
     <span>LMMs-Lab</span>
     <span class="post-kicker-rule" aria-hidden="true"></span>
-    <span>Field note</span>
+    <span>{{ tags().length ? tags()[0] : 'Field note' }}</span>
   </div>
 
   <div class="title-wrapper">
     <h1 class="title" [class.title-long]="title().length > 64">{{ title() }}</h1>
   </div>
 
-  <div class="post-meta">
-    <time [attr.datetime]="date()">{{ date() }}</time>
-    <span class="post-meta-rule" aria-hidden="true"></span>
-    <span>Multimodal intelligence</span>
+  <p class="post-deck">{{ description() }}</p>
+
+  <div class="post-meta-grid">
+    <div class="post-meta-cell post-meta-date">
+      <span class="post-meta-label">Published</span>
+      <time [attr.datetime]="date()">{{ date() }}</time>
+    </div>
+
+    @if (tags().length) {
+      <div class="post-meta-cell post-meta-topics">
+        <span class="post-meta-label">Topics</span>
+        <ul class="post-tag-list" aria-label="Article topics">
+          @for (tag of tags(); track tag) {
+            <li>{{ tag }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (authors().length) {
+      <div class="post-meta-cell post-meta-authors">
+        <span class="post-meta-label">Authors</span>
+        <ul class="post-author-list" aria-label="Article authors">
+          @for (author of authors(); track author.name; let last = $last) {
+            <li>
+              @if (author.url) {
+                <a [href]="author.url" target="_blank" rel="noopener noreferrer">{{ author.name }}</a>
+              } @else {
+                <span>{{ author.name }}</span>
+              }
+              @if (author.main) {
+                <sup title="Lead author">*</sup>
+              }
+              @if (!last) {
+                <span class="author-separator" aria-hidden="true">·</span>
+              }
+            </li>
+          }
+        </ul>
+        @if (hasMainAuthor()) {
+          <span class="lead-author-note">* Lead author</span>
+        }
+      </div>
+    }
   </div>
 </header>

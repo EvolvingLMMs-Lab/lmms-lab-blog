@@ -2,6 +2,9 @@
 title: "Improved MM-Search-R1: Reasoning and Action in Multimodal Search"
 date: "2025-08-06"
 description: "We improve MMSearch-R1 by integrating improved reasoning capabilities into the model"
+tags:
+  - "research"
+  - "multimodal"
 ---
 Our previous work, MMSearch-R1, represents a paradigm shift in multimodal AI as the first framework to employ end-to-end reinforcement learning for autonomous tool invocation in large multimodal models (LMMs). By enabling models to independently determine when and how to leverage external search tools, MMSearch-R1 achieves both high efficiency and state-of-the-art performance on open-world tasks, marking a significant advance in practical AI deployment.
 
@@ -48,71 +51,70 @@ This design prioritizes computational verification for efficiency while leveragi
 Based on this foundation, we can build a very strong STEM-focused reasoning model that surpasses the rest of open models.
 
 
-
-
-    <table class="mx-auto">
-      <thead>
-        <tr>
-          <th>Models</th>
-          <th>MMK12</th>
-          <th>MathVerse (testmini)</th>
-          <th>MathVision (testmini)</th>
-          <th>MathVista (testmini)</th>
-          <th>MMMU (val)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Qwen2.5-VL-7B</td>
-          <td>34.4</td>
-          <td>46.2</td>
-          <td>24.0</td>
-          <td>66.6</td>
-          <td>49.8</td>
-        </tr>
-        <tr>
-          <td>OpenVL-Thinker</td>
-          <td>31.0</td>
-          <td>45.2</td>
-          <td>24.0</td>
-          <td>70.2</td>
-          <td>52.3</td>
-        </tr>
-        <tr>
-          <td>R1-OneVision</td>
-          <td>30.6</td>
-          <td>44.1</td>
-          <td>24.0</td>
-          <td>64.1</td>
-          <td>49.2</td>
-        </tr>
-        <tr>
-          <td>MM-Eureka-7B</td>
-          <td>27.0</td>
-          <td>50.3</td>
-          <td>26.9</td>
-          <td>73.0</td>
-          <td>50.7</td>
-        </tr>
-        <tr>
-          <td>General STEM</td>
-          <td>46.2</td>
-          <td>51.4</td>
-          <td>28.4</td>
-          <td>73.6</td>
-          <td>57.3</td>
-        </tr>
-        <tr>
-          <td>General STEM -> Search (Two Stage)</td>
-          <td>43.0</td>
-          <td>51.9</td>
-          <td>28.0</td>
-          <td>72.4</td>
-          <td>57.9</td>
-        </tr>
-      </tbody>
-    </table>
-
+<section class="table-wrapper">
+<table class="mx-auto">
+  <thead>
+    <tr>
+      <th>Models</th>
+      <th>MMK12</th>
+      <th>MathVerse (testmini)</th>
+      <th>MathVision (testmini)</th>
+      <th>MathVista (testmini)</th>
+      <th>MMMU (val)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qwen2.5-VL-7B</td>
+      <td>34.4</td>
+      <td>46.2</td>
+      <td>24.0</td>
+      <td>66.6</td>
+      <td>49.8</td>
+    </tr>
+    <tr>
+      <td>OpenVL-Thinker</td>
+      <td>31.0</td>
+      <td>45.2</td>
+      <td>24.0</td>
+      <td>70.2</td>
+      <td>52.3</td>
+    </tr>
+    <tr>
+      <td>R1-OneVision</td>
+      <td>30.6</td>
+      <td>44.1</td>
+      <td>24.0</td>
+      <td>64.1</td>
+      <td>49.2</td>
+    </tr>
+    <tr>
+      <td>MM-Eureka-7B</td>
+      <td>27.0</td>
+      <td>50.3</td>
+      <td>26.9</td>
+      <td>73.0</td>
+      <td>50.7</td>
+    </tr>
+    <tr>
+      <td>General STEM</td>
+      <td>46.2</td>
+      <td>51.4</td>
+      <td>28.4</td>
+      <td>73.6</td>
+      <td>57.3</td>
+    </tr>
+    <tr>
+      <td>General STEM -> Search (Two Stage)</td>
+      <td>43.0</td>
+      <td>51.9</td>
+      <td>28.0</td>
+      <td>72.4</td>
+      <td>57.9</td>
+    </tr>
+  </tbody>
+</table>
+</section>
 
 
 With this reasoning foundation, we can go further to improve the model's search abilities. We first implemented a two-stage training process to seamlessly integrate search capabilities. This approach ensures that search becomes a natural extension of the model's reasoning process rather than a separate module.
@@ -158,100 +160,99 @@ We evaluated both our two-stage and unified (one-stage) models across a broad su
 The General STEM model showed that enhancing reasoning capabilities alone can lead to significant gains. In contrast, the General Search model revealed the multiplicative benefits of integrating reasoning with targeted search strategies. Notably, these improvements were not simply incremental - they represent fundamental advances in how models address complex, multimodal problems.
 
 
-
-
-    <table class="mx-auto">
-      <thead>
-        <tr>
-          <th>Models</th>
-          <th>MMK12</th>
-          <th>MathVerse (testmini)</th>
-          <th>MathVision (testmini)</th>
-          <th>MathVista (testmini)</th>
-          <th>MMMU (val)</th>
-          <th>AI2D</th>
-          <th>ChartQA</th>
-          <th>MME</th>
-          <th>RealworldQA</th>
-          <th>OCRBench</th>
-          <th>DocVQA</th>
-          <th>MMBench</th>
-          <th>MMStar</th>
-          <th>MiaBench</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Qwen2.5-VL-7B</td>
-          <td>34.4</td>
-          <td>46.2</td>
-          <td>24.0</td>
-          <td>66.6</td>
-          <td>49.8</td>
-          <td>93.3</td>
-          <td>94.4</td>
-          <td>630.4/1685.2</td>
-          <td>68.5</td>
-          <td>85.2</td>
-          <td>94.6</td>
-          <td>82.9</td>
-          <td>62.6</td>
-          <td>81.7</td>
-        </tr>
-        <tr>
-          <td>General STEM</td>
-          <td>46.2</td>
-          <td>51.4</td>
-          <td>28.4</td>
-          <td>73.6</td>
-          <td>57.3</td>
-          <td>94.4</td>
-          <td>91.4</td>
-          <td>700.7/1662.1</td>
-          <td>67.5</td>
-          <td>83.7</td>
-          <td>92.1</td>
-          <td>83.8</td>
-          <td>65.5</td>
-          <td>76.0</td>
-        </tr>
-        <tr>
-          <td>Reason -&gt; Search</td>
-          <td>43.2</td>
-          <td>51.7</td>
-          <td>25.0</td>
-          <td>71.8</td>
-          <td>57.9</td>
-          <td>94.0</td>
-          <td>93.6</td>
-          <td>652.5/1688.3</td>
-          <td>67.5</td>
-          <td>81.7</td>
-          <td>93.5</td>
-          <td>83.2</td>
-          <td>63.1</td>
-          <td>47.6</td>
-        </tr>
-        <tr>
-          <td>General Search</td>
-          <td>43.6</td>
-          <td>52.0</td>
-          <td>27.3</td>
-          <td>74.7</td>
-          <td>56.1</td>
-          <td>94.6</td>
-          <td>94.0</td>
-          <td>718.9/1775.3</td>
-          <td>65.5</td>
-          <td>77.8</td>
-          <td>89.4</td>
-          <td>84.0</td>
-          <td>60.4</td>
-          <td>44.4</td>
-        </tr>
-      </tbody>
-    </table>
-
+<section class="table-wrapper">
+<table class="mx-auto">
+  <thead>
+    <tr>
+      <th>Models</th>
+      <th>MMK12</th>
+      <th>MathVerse (testmini)</th>
+      <th>MathVision (testmini)</th>
+      <th>MathVista (testmini)</th>
+      <th>MMMU (val)</th>
+      <th>AI2D</th>
+      <th>ChartQA</th>
+      <th>MME</th>
+      <th>RealworldQA</th>
+      <th>OCRBench</th>
+      <th>DocVQA</th>
+      <th>MMBench</th>
+      <th>MMStar</th>
+      <th>MiaBench</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qwen2.5-VL-7B</td>
+      <td>34.4</td>
+      <td>46.2</td>
+      <td>24.0</td>
+      <td>66.6</td>
+      <td>49.8</td>
+      <td>93.3</td>
+      <td>94.4</td>
+      <td>630.4/1685.2</td>
+      <td>68.5</td>
+      <td>85.2</td>
+      <td>94.6</td>
+      <td>82.9</td>
+      <td>62.6</td>
+      <td>81.7</td>
+    </tr>
+    <tr>
+      <td>General STEM</td>
+      <td>46.2</td>
+      <td>51.4</td>
+      <td>28.4</td>
+      <td>73.6</td>
+      <td>57.3</td>
+      <td>94.4</td>
+      <td>91.4</td>
+      <td>700.7/1662.1</td>
+      <td>67.5</td>
+      <td>83.7</td>
+      <td>92.1</td>
+      <td>83.8</td>
+      <td>65.5</td>
+      <td>76.0</td>
+    </tr>
+    <tr>
+      <td>Reason -&gt; Search</td>
+      <td>43.2</td>
+      <td>51.7</td>
+      <td>25.0</td>
+      <td>71.8</td>
+      <td>57.9</td>
+      <td>94.0</td>
+      <td>93.6</td>
+      <td>652.5/1688.3</td>
+      <td>67.5</td>
+      <td>81.7</td>
+      <td>93.5</td>
+      <td>83.2</td>
+      <td>63.1</td>
+      <td>47.6</td>
+    </tr>
+    <tr>
+      <td>General Search</td>
+      <td>43.6</td>
+      <td>52.0</td>
+      <td>27.3</td>
+      <td>74.7</td>
+      <td>56.1</td>
+      <td>94.6</td>
+      <td>94.0</td>
+      <td>718.9/1775.3</td>
+      <td>65.5</td>
+      <td>77.8</td>
+      <td>89.4</td>
+      <td>84.0</td>
+      <td>60.4</td>
+      <td>44.4</td>
+    </tr>
+  </tbody>
+</table>
+</section>
 
 
 ---
@@ -317,28 +318,19 @@ In this case, the model is tasked with composing an email to Abdullah Shahid Sia
 # Appendix
 
 
-**Reasoning Template**
-
-
-```bash
+```bash title="Reasoning Template"
 {question}
 Please reason step by step. Output the thinking process within <think> </think> tags and final answer within <answer> </answer> tags.
 ```
 
 
-**Search Template**
-
-
-```bash
+```bash title="Search Template"
 Answer the user's question based on the provided image. Examine the image carefully and identify any recognizable entities, such as faces, objects, locations, events, logos, or text. Determine whether you have sufficient knowledge to confidently recognize the main visual element and answer the user's question. If so, first explain your reasoning, then provide a clear and direct answer.\nIf you are unable to confidently identify the visual element, stop and invoke the image search tool by appending the string <search></search> at the end of your response. This will trigger a Google Lens search using the original image to retrieve relevant information that can help you confirm the visual content.\nOnce you have sufficient visual understanding, combine it with the user's question and assess whether you can confidently answer. If so, answer the question directly using your own knowledge. If not, invoke the text search tool by generating a concise and specific query, and output it in the format <text_search>your query here</text_search> at the end of your response. Carefully craft your query to accurately retrieve the information needed to help answer the question. The text search tool will then use Google Search to return relevant information based on your query.\nYou must include your reasoning inside <reason>...</reason> before taking any action, whether it is calling the image search tool, generating a text search query, or providing a final answer. The reasoning may involve analysis of the original image and question, interpretation of search results, or logical steps leading to the final answer.\nAll search results will be placed inside <information> and </information> and returned to you. When you are ready to answer the question, wrap your final answer between <answer> and </answer>, without detailed illustrations. For example: <answer>Titanic</answer>.\nHere is the image and the question:\n<image>
 {question}
 ```
 
 
-**ReACT Template**
-
-
-```bash
+```bash title="ReACT Template"
 # System Message
 You are a helpful assistant. You should strictly follow reason-to-act thinking process to answer user provided question. Namely, you should first analyze the question & observation (e.g., user provided image or search results) and then inform the following action. The thinking process should be within <reason> and </reason> tags. The actions you can choose are:
 <answer>xxxxx</answer>:  which returns the answer within <answer> and </answer> tags, and finishes the task.

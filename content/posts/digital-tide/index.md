@@ -3,7 +3,7 @@ title: "The Dream of the Digital Tide"
 date: "2023-08-20"
 description: "Created by GPT 4.5 to think about the future relationship between humans and machines."
 ---
-![image](./remote-media/image-2a172ee6.avif)
+![image](https://i.postimg.cc/vBwdVW1L/image.png)
 
 > Created by [GPT-4.5](https://chatgpt.com) to think about the future relationship between humans and machines.
 

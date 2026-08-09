@@ -2,9 +2,19 @@
 title: "SAE Made Easy: Simplified Sparse Autoencoder Integration"
 date: "2025-07-12"
 description: "A framework that allows you to apply Sparse AutoEncoder on any models - inspired by PEFT design for seamless integration"
+authors:
+  - name: "Kaichen Zhang"
+    main: true
+  - name: "Yifei Shen"
+    main: true
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+tags:
+  - "tools"
+  - "multimodal"
 ---
-**Authors:** Kaichen Zhang · Yifei Shen · [Bo Li](https://brianboli.com/) · [Ziwei Liu](https://liuziwei7.github.io/)
-
 <figure>
 <img src="./remote-media/59bf4ef7-e14c-4464-be3a-ba6fbf16ae48-884313e3.avif" alt="SAE Made Easy Framework Overview" loading="lazy" decoding="async">
 <figcaption>SAE Made Easy: A comprehensive framework for integrating Sparse Autoencoders into any neural network model</figcaption>
@@ -220,13 +230,28 @@ Accelerate mechanistic interpretability research with production-ready tools and
 **SAE Made Easy** democratizes access to sparse autoencoder research, enabling researchers and practitioners to easily integrate interpretability tools into their workflows.
 
 
-### Open Source Resources
-
-Comprehensive resources for the research community to reproduce and extend our multimodal SAE work
-
-- [GitHub Repository](https://github.com/EvolvingLMMs-Lab/sae)
-- [Training Scripts](https://github.com/EvolvingLMMs-Lab/sae/tree/main/examples)
-- [Interpretation Tools](https://github.com/EvolvingLMMs-Lab/multimodal-sae)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Open Source Resources</h3>
+    <p>Comprehensive resources for the research community to reproduce and extend our multimodal SAE work</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/sae" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">GitHub Repository</span>
+  <span class="research-resource-description">Complete implementation and code</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://github.com/EvolvingLMMs-Lab/sae/tree/main/examples" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Training Scripts</span>
+  <span class="research-resource-description">SAE training and integration pipelines</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://github.com/EvolvingLMMs-Lab/multimodal-sae" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Interpretation Tools</span>
+  <span class="research-resource-description">Auto-explanation pipeline implementation</span>
+</a></section>
+</section>
 
 ## BibTeX
 

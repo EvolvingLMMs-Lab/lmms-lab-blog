@@ -58,6 +58,7 @@ const HEADING_SCROLL_OFFSET_PX = 20;
     './styles/code-blocks.css',
     './styles/tables.css',
     './styles/media.css',
+    './styles/research-blocks.css',
     './styles/native-html.css',
     './styles/layout.css',
   ],

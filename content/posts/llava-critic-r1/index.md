@@ -2,9 +2,18 @@
 title: "LLaVA-Critic-R1: Unified Critic and Policy Model Through Reinforcement Learning"
 date: "2025-08-29"
 description: "A family of generative critic VLM trained through GRPO using pairwise critic data, achieving SoTA policy performance at 7B scale while excelling at both evaluation and generation"
+authors:
+  - name: "Xiyao Wang"
+  - name: "Chunyuan Li"
+  - name: "Jianwei Yang"
+  - name: "Kai Zhang"
+  - name: "Bo Liu"
+  - name: "Tianyi Xiong"
+  - name: "Furong Huang"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** Xiyao Wang · Chunyuan Li · Jianwei Yang · Kai Zhang · Bo Liu · Tianyi Xiong · Furong Huang
-
 <figure>
 <img src="./legacy/images/llava_critic_r1_images/llava-critic-r1.avif" alt="LLaVA-Critic-R1 Performance" loading="lazy" decoding="async">
 <figcaption>Figure 1: LLaVA-Critic-R1 is trained on top of the base model Qwen-2.5-VL-7B. Building upon a stronger reasoning VLM, ThinkLite-VL-7B, we further develop LLaVA-Critic-R1+ by applying the same RL critic training procedure. **Left**: Performance comparison of LLaVA-Critic-R1 with other base and reasoning VLMs on multiple visual reasoning, visual understanding, and visual reward benchmarks. LLaVA-Critic-R1 not only significantly outperforms other models in critic performance, but also demonstrates stronger policy capabilities. **Right**: Performance improvement of critic training and test-time self-critic scaling on five common visual reasoning and visual understanding benchmarks. Critic training alone significantly improves the base model</figcaption>
@@ -55,13 +64,28 @@ The model comes in two variants:
 Our results reveal that RL training on critic data can produce a unified model excelling at both evaluation and generation, offering a simple path toward scalable, self-improving multimodal systems. This work demonstrates that the traditional separation between critics and policies is not necessary—a single model can excel at both tasks simultaneously.
 
 
-### Project Resources
-
-Access code, models, and research paper for LLaVA-Critic-R1
-
-- [Code Repository](https://github.com/LLaVA-VL/LLaVA-NeXT/tree/main/LLaVA-Critic-R1)
-- [Model Collection](https://huggingface.co/collections/lmms-lab/llava-critic-r1-68922484e5822b89fab4aca1)
-- [Research Paper](https://arxiv.org/abs/2509.00676)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Project Resources</h3>
+    <p>Access code, models, and research paper for LLaVA-Critic-R1</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/LLaVA-VL/LLaVA-NeXT/tree/main/LLaVA-Critic-R1" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">Code Repository</span>
+  <span class="research-resource-description">Access training code and implementation details</span>
+</a>
+<a class="research-resource-link" data-resource-type="model" href="https://huggingface.co/collections/lmms-lab/llava-critic-r1-68922484e5822b89fab4aca1" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">Model Collection</span>
+  <span class="research-resource-description">Download pre-trained model checkpoints</span>
+</a>
+<a class="research-resource-link" data-resource-type="paper" href="https://arxiv.org/abs/2509.00676" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Paper]</span>
+  <span class="research-resource-name">Research Paper</span>
+  <span class="research-resource-description">Read the full technical paper on arXiv</span>
+</a></section>
+</section>
 
 ## Acknowledgements
 

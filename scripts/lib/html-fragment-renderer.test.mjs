@@ -105,6 +105,12 @@ test('inlines a fragment-local stylesheet into the document flow', (t) => {
   assert.equal(body.querySelector('link[rel="stylesheet"]'), null);
 });
 
+test('keeps fragment links on the canonical article route', (t) => {
+  const body = render(t, '<nav><a href="#results">Results</a></nav><h2 id="results">Results</h2>');
+
+  assert.equal(body.querySelector('a')?.getAttribute('href'), '/blog/example#results');
+});
+
 test('rewrites post-local video sources, posters, and caption tracks', (t) => {
   const body = render(
     t,

@@ -66,6 +66,14 @@ title: 'A descriptive post title'
 date: '2026-08-04'
 description: >-
   A concise summary used on the blog index.
+authors:
+  - name: 'Primary Author'
+    url: 'https://example.com'
+    main: true
+  - name: 'Second Author'
+tags:
+  - research
+  - multimodal
 ---
 ```
 
@@ -74,14 +82,27 @@ description: >-
 | `title` | Yes | Displayed as the article title and on the blog index. |
 | `date` | Yes | Use `YYYY-MM-DD`. Posts are sorted newest first. |
 | `description` | Yes | Keep it short enough to scan on the index page. |
+| `authors` | No | Ordered author objects with `name`, optional `url`, and optional `main: true`. |
+| `tags` | No | Ordered topic labels shown in the article metadata. Duplicate labels are rejected. |
+| `layout` | No | `standard` by default; use `showcase` only when the source owns its complete presentation. |
 
 The opening delimiter must be the first line of the file. Quote the date so its
 string type is explicit. Unknown fields, malformed YAML, invalid calendar dates,
 missing fields, and empty article bodies fail generation with the source path in
 the error. Front matter is removed before Markdown or HTML rendering.
 
-Do not add the title as an `h1` in the content source. The blog shell already
-renders the title and date.
+The standard header renders the description, date, topic labels, linked author
+names, and a lead-author marker inside the site's flat four-corner metadata
+frame. Keep author order identical to the publication. Use `main: true` only for
+the lead or equal-contribution authors; do not encode asterisks in `name`.
+
+Do not add the title as an `h1` in a standard post. The blog shell already
+renders it. A `layout: showcase` post is the exception: its body owns the `h1`,
+hero, author treatment, and any embedded contents navigation, while the Angular
+route, comments, lifecycle, and accessibility hooks remain shared. Showcase
+posts therefore do not receive the standard header or the floating site table
+of contents. Use this mode for a deliberate project-page migration, not merely
+to change colors or spacing in an ordinary article.
 
 ## Markdown features
 
@@ -167,7 +188,13 @@ Write a standard Markdown table:
 
 Tables use a booktabs-style presentation and are automatically placed in a
 horizontally scrollable wrapper on narrow screens. Markdown alignment markers
-are preserved.
+are preserved. For a native HTML table, add the same wrapper explicitly:
+
+```html
+<div class="table-wrapper">
+  <table>...</table>
+</div>
+```
 
 ### Code
 
@@ -193,6 +220,22 @@ score = evaluate(sparse)  # [!code highlight]
 ```
 ````
 
+Add a concise file or task label with `title`, and suppress the copy control
+only when the block is explanatory notation rather than reusable code:
+
+````markdown
+```bash title="Installation with uv"
+uv pip install -e ".[all]"
+```
+
+```text copy=false
+input → encoder → representation
+```
+````
+
+Fence metadata is parsed separately from the language identifier. Quoted titles
+may contain spaces; `copy=false` is the only supported copy override.
+
 ### Mathematics
 
 Use single-dollar delimiters for inline math:
@@ -214,7 +257,9 @@ The generator marks both forms and loads MathJax 4.1.3 only after an article
 containing mathematics is mounted. Articles without mathematics do not download
 MathJax. HTML-first posts may author `\\(...\\)` and `\\[...\\]` delimiters directly;
 the on-demand loader recognizes those forms as well. Display equations are centered
-and become horizontally scrollable when necessary.
+and become horizontally scrollable when necessary. On narrow screens, a long
+inline expression moves to the next line as one unit and gains local horizontal
+scrolling instead of widening the article canvas.
 
 ### Images
 
@@ -433,6 +478,14 @@ HTML-first posts use the same asset normalization, native controller lifecycle,
 table of contents, image behavior, comments, and site shell as Markdown posts.
 Use `h2` and `h3` for headings that should appear in the table of contents.
 
+When migrating a standalone HTML project page, copy the article body rather
+than its whole document shell. Remove `doctype`, `html`, `head`, duplicate site
+navigation, analytics, remote font loaders, and inline scripts. Move scoped CSS
+to a local stylesheet and translate each interaction into a local controller.
+This preserves the original content and composition without nesting a second
+website inside the Angular application. Keep the original page's source mode as
+`index.html`; do not convert it to Markdown merely for consistency.
+
 ## Interactive controllers
 
 Inline `<script>` tags are deliberately rejected. Interactive native HTML uses
@@ -501,7 +554,10 @@ The generator rewrites these attributes when they point to post-local files:
 - `link[href]`; and
 - `a[href]`.
 
-Root-relative paths, fragment links, protocol URLs, and HTTPS URLs are left as
+Fragment-only article links such as `#results` are rewritten to the canonical
+`/blog/<slug>#results` URL. This is necessary because the Angular document uses
+`<base href="/">`; leaving the fragment bare would otherwise resolve it against
+the site root. Root-relative paths, protocol URLs, and HTTPS URLs are left as
 written. Keep authored local paths inside the post asset directory.
 
 The content generator rejects:
@@ -580,7 +636,10 @@ Frequently useful variables include:
 The font variables use self-hosted Roboto, Space Grotesk, and Google Sans Code.
 Fragments should inherit them instead of loading remote web fonts. Heading and
 monospace stacks fall back to the self-hosted Roboto face when a specialized
-face is unavailable, so content and controls remain readable.
+face is unavailable, so content and controls remain readable. The legacy
+showcase importer also maps Source Sans, Source Serif, JetBrains Mono, SF Mono,
+and Times New Roman roles onto those bundled variable faces; do not remove that
+mapping unless the replacement fonts are shipped and registered by the host.
 
 Use `color-mix()` with theme variables instead of hard-coded light backgrounds.
 Check mobile widths, print layout, keyboard focus, reduced motion, and overflow.

@@ -41,9 +41,32 @@ function replaceInlineCatppuccinColors(html) {
   });
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function parseCodeInfo(info) {
+  const source = String(info || '').trim();
+  const firstToken = source.match(/^[^\s]+/)?.[0] || '';
+  const language = firstToken && !firstToken.includes('=') ? firstToken : 'text';
+  const title = /\btitle=(?:"([^"]*)"|'([^']*)'|([^\s]+))/.exec(source);
+  return {
+    language,
+    title: title?.[1] ?? title?.[2] ?? title?.[3] ?? '',
+    showCopy: !/\bcopy=false\b/.test(source),
+  };
+}
+
 export function createCodeRenderer(highlighter) {
   return function code({ text, lang }) {
-    const language = lang && highlighter.getLoadedLanguages().includes(lang) ? lang : 'text';
+    const info = parseCodeInfo(lang);
+    const language = highlighter.getLoadedLanguages().includes(info.language)
+      ? info.language
+      : 'text';
     const html = replaceInlineCatppuccinColors(
       highlighter.codeToHtml(text, {
         lang: language,
@@ -52,6 +75,12 @@ export function createCodeRenderer(highlighter) {
       }),
     );
     const langLabel = language !== 'text' ? language : 'code';
-    return `<div class="code-block"><div class="code-header"><span class="code-lang">${langLabel}</span><button class="code-copy" type="button" aria-label="Copy code">Copy</button></div>${html}</div>`;
+    const heading = info.title
+      ? `<span class="code-heading"><span class="code-title">${escapeHtml(info.title)}</span><span class="code-lang">${escapeHtml(langLabel)}</span></span>`
+      : `<span class="code-lang">${escapeHtml(langLabel)}</span>`;
+    const copy = info.showCopy
+      ? '<button class="code-copy" type="button" aria-label="Copy code">Copy</button>'
+      : '';
+    return `<div class="code-block"><div class="code-header">${heading}${copy}</div>${html}</div>`;
   };
 }

@@ -17,6 +17,12 @@ title: A test post
 date: '2026-08-06'
 description: >-
   A multiline description that is folded into one string.
+authors:
+  - name: Ada Lovelace
+    url: https://example.com/ada
+    main: true
+  - name: Alan Turing
+tags: [research, models]
 ---
 
 ${body}`;
@@ -29,6 +35,12 @@ test('parses strict YAML front matter and removes it from the article body', () 
     title: 'A test post',
     date: '2026-08-06',
     description: 'A multiline description that is folded into one string.',
+    authors: [
+      { name: 'Ada Lovelace', url: 'https://example.com/ada', main: true },
+      { name: 'Alan Turing' },
+    ],
+    tags: ['research', 'models'],
+    layout: 'standard',
   });
   assert.doesNotMatch(parsed.source, /title: A test post/);
   assert.match(parsed.source, /^\n## Introduction/);
@@ -92,5 +104,38 @@ test('rejects missing, malformed, and unknown metadata', () => {
   assert.throws(
     () => parsePostSource(source().replace('title: A test post', 'title: [broken')),
     /invalid YAML front matter/,
+  );
+});
+
+test('defaults optional authors and tags to empty sequences', () => {
+  const parsed = parsePostSource(
+    source().replace(/authors:[\s\S]*?tags: \[research, models\]\n/, ''),
+    'index.md',
+  );
+
+  assert.deepEqual(parsed.meta.authors, []);
+  assert.deepEqual(parsed.meta.tags, []);
+});
+
+test('rejects malformed author and tag metadata', () => {
+  assert.throws(
+    () => parsePostSource(source().replace('main: true', 'main: yes')),
+    /must define "main" as a boolean/,
+  );
+  assert.throws(
+    () => parsePostSource(source().replace('tags: [research, models]', 'tags: research')),
+    /must define "tags" as a YAML sequence/,
+  );
+  assert.throws(
+    () =>
+      parsePostSource(source().replace('tags: [research, models]', 'tags: [research, research]')),
+    /must not define duplicate tags/,
+  );
+  assert.throws(
+    () =>
+      parsePostSource(
+        source().replace('tags: [research, models]', 'layout: immersive\ntags: [research, models]'),
+      ),
+    /must define "layout" as "standard" or "showcase"/,
   );
 });

@@ -1,8 +1,8 @@
 .title-block {
   position: relative;
   max-width: var(--reading-width);
-  margin: 0 auto 3.4rem;
-  padding: 0.25rem 0 2.15rem;
+  margin: 0 auto 3.65rem;
+  padding: 0.25rem 0 2.35rem;
   border-bottom: 1px solid var(--line-soft);
   text-align: left;
 }
@@ -37,7 +37,7 @@
 }
 
 .title-wrapper {
-  margin: 1.15rem 0 1.3rem;
+  margin: 1.15rem 0 1.15rem;
 }
 
 .title {
@@ -57,23 +57,145 @@
   line-height: 1.02;
 }
 
-.post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.55rem;
+.post-deck {
+  max-width: 58rem;
+  margin: 0 0 1.8rem;
   color: var(--text-secondary);
+  font-size: clamp(0.96rem, 1.8vw, 1.08rem);
+  line-height: 1.62;
+}
+
+.post-meta-grid {
+  --meta-corner: color-mix(in srgb, var(--ctp-peach) 54%, var(--ctp-transparent));
+  --meta-corner-size: 0.85rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.72fr) minmax(10rem, 1fr);
+  margin-top: 0.25rem;
+  padding: 1.05rem 1rem 0.95rem;
+  background:
+    linear-gradient(var(--meta-corner), var(--meta-corner)) left top /
+      var(--meta-corner-size) 1px no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) left top /
+      1px var(--meta-corner-size) no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) right top /
+      var(--meta-corner-size) 1px no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) right top /
+      1px var(--meta-corner-size) no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) left bottom /
+      var(--meta-corner-size) 1px no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) left bottom /
+      1px var(--meta-corner-size) no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) right bottom /
+      var(--meta-corner-size) 1px no-repeat,
+    linear-gradient(var(--meta-corner), var(--meta-corner)) right bottom /
+      1px var(--meta-corner-size) no-repeat;
+}
+
+.post-meta-cell {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.32rem;
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.79rem;
+  line-height: 1.5;
+}
+
+.post-meta-date {
+  padding-right: 1rem;
+}
+
+.post-meta-topics {
+  padding-left: 1rem;
+  border-left: 1px solid var(--line-faint);
+}
+
+.post-meta-authors {
+  grid-column: 1 / -1;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line-faint);
+}
+
+.post-meta-label {
+  color: var(--ctp-overlay2);
   font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.07em;
-  line-height: 1.3;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-.post-meta-rule {
-  width: 1.1rem;
+.post-tag-list,
+.post-author-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-tag-list {
+  gap: 0.35rem 0.75rem;
+}
+
+.post-tag-list li {
+  position: relative;
+  padding-left: 0.65rem;
+  color: var(--text-color);
+}
+
+.post-tag-list li::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 0.28rem;
   height: 1px;
-  background: var(--line-soft);
+  background: var(--line-accent);
+}
+
+.post-author-list li {
+  display: inline;
+}
+
+.post-author-list a,
+.post-author-list span:not(.author-separator) {
+  color: var(--text-color);
+}
+
+.post-author-list a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--link-color) 34%, var(--ctp-transparent));
+  text-underline-offset: 3px;
+}
+
+.post-author-list a:hover {
+  color: var(--link-hover-color);
+  text-decoration-color: currentColor;
+}
+
+.post-author-list sup {
+  margin-left: 0.08rem;
+  color: var(--ctp-peach);
+  font-family: var(--font-mono);
+  font-size: 0.66em;
+}
+
+.author-separator {
+  margin: 0 0.42rem;
+  color: var(--ctp-overlay1);
+}
+
+.lead-author-note {
+  color: var(--ctp-overlay2);
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 600px) {
@@ -103,8 +225,27 @@
     margin-block: 1rem 1.1rem;
   }
 
-  .post-meta {
-    font-size: 0.6rem;
+  .post-deck {
+    margin-bottom: 1.45rem;
+    font-size: 0.92rem;
+  }
+
+  .post-meta-grid {
+    display: block;
+    padding: 0.9rem 0.8rem;
+  }
+
+  .post-meta-date,
+  .post-meta-topics {
+    padding: 0;
+    border: 0;
+  }
+
+  .post-meta-topics,
+  .post-meta-authors {
+    margin-top: 0.72rem;
+    padding-top: 0.72rem;
+    border-top: 1px solid var(--line-faint);
   }
 }
 
@@ -120,5 +261,9 @@
     max-width: none;
     font-size: 26pt;
     line-height: 1.08;
+  }
+
+  .post-meta-grid {
+    break-inside: avoid;
   }
 }

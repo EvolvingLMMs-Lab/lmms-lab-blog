@@ -2,9 +2,31 @@
 title: "Aero-1-Audio"
 date: "2025-04-29"
 description: "Aero-1-Audio is a 1.5B compact audio model capable of handling a range of audio tasks, including speech recognition, audio understanding, and audio instructions following."
+authors:
+  - name: "Bo Li"
+    url: "https://brianboli.com/"
+    main: true
+  - name: "Chen Change Loy"
+  - name: "Fanyi Pu"
+  - name: "Jingkang Yang"
+  - name: "Kaichen Zhang"
+    main: true
+  - name: "Kairui Hu"
+  - name: "Luu Minh Thang"
+    main: true
+  - name: "Nguyen Quang Trung"
+    main: true
+  - name: "Pham Ba Cong"
+    main: true
+  - name: "Shuai Liu"
+  - name: "Yezhen Wang"
+    main: true
+  - name: "Ziwei Liu"
+    url: "https://liuziwei7.github.io/"
+tags:
+  - "models"
+  - "multimodal"
 ---
-**Authors:** [Bo Li](https://brianboli.com/) · Chen Change Loy · Fanyi Pu · Jingkang Yang · Kaichen Zhang · Kairui Hu · Luu Minh Thang · Nguyen Quang Trung · Pham Ba Cong · Shuai Liu · Yezhen Wang · [Ziwei Liu](https://liuziwei7.github.io/)
-
 <figure>
 <video autoplay loop muted playsinline preload="metadata" aria-label="Aero-1-Audio demonstration">
   <source src="./remote-media/pix-pin-2025-04-28-12-16-06-7f2c8c7d.webm" type="video/webm">
@@ -16,15 +38,38 @@ description: "Aero-1-Audio is a 1.5B compact audio model capable of handling a r
 ## What is Aero Audio?
 
 
-### Aero-1-Audio Resources
-
-Complete implementation, interactive demos, models, evaluation results, and documentation for Aero-1-Audio
-
-- [GitHub Repository](https://github.com/EvolvingLMMs-Lab/Aero-1/blob/main/README.md)
-- [Interactive Playground](https://huggingface.co/spaces/lmms-lab/Aero-1-Audio-Demo)
-- [Model Checkpoints](https://huggingface.co/lmms-lab/Aero-1-Audio-1.5B)
-- [Evaluation Results](https://github.com/EvolvingLMMs-Lab/lmms-eval/pull/658)
-- [Documentation](https://www.lmms-lab.com/posts/lmms-lab-docs/aero_audio/)
+<section class="research-resource-card">
+  <header class="research-resource-header">
+    <p class="research-block-kicker">Open research</p>
+    <h3>Aero-1-Audio Resources</h3>
+    <p>Complete implementation, interactive demos, models, evaluation results, and documentation for Aero-1-Audio</p>
+  </header>
+  <section class="research-resource-links"><a class="research-resource-link" data-resource-type="github" href="https://github.com/EvolvingLMMs-Lab/Aero-1/blob/main/README.md" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Code]</span>
+  <span class="research-resource-name">GitHub Repository</span>
+  <span class="research-resource-description">Complete implementation and source code</span>
+</a>
+<a class="research-resource-link" data-resource-type="demo" href="https://huggingface.co/spaces/lmms-lab/Aero-1-Audio-Demo" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Demo]</span>
+  <span class="research-resource-name">Interactive Playground</span>
+  <span class="research-resource-description">Try Aero-1-Audio live demo</span>
+</a>
+<a class="research-resource-link" data-resource-type="model" href="https://huggingface.co/lmms-lab/Aero-1-Audio-1.5B" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Model]</span>
+  <span class="research-resource-name">Model Checkpoints</span>
+  <span class="research-resource-description">Pre-trained Aero-1-Audio models</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://github.com/EvolvingLMMs-Lab/lmms-eval/pull/658" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Evaluation Results</span>
+  <span class="research-resource-description">Comprehensive evaluation benchmarks</span>
+</a>
+<a class="research-resource-link" data-resource-type="link" href="https://www.lmms-lab.com/posts/lmms-lab-docs/aero_audio/" target="_blank" rel="noopener noreferrer">
+  <span class="research-resource-type">[Link]</span>
+  <span class="research-resource-name">Documentation</span>
+  <span class="research-resource-description">Complete usage cookbook and guides</span>
+</a></section>
+</section>
 
 
 `Aero-1-Audio` is a compact audio model adept at various audio tasks, including speech recognition, audio understanding, and following audio instructions. It is part of the `Aero-1` series, the first generation of lightweight multimodal models developed by LMMs-Lab, with future expansions planned across additional modalities.
@@ -82,8 +127,6 @@ In this release, our primary focus is on developing an audio model capable of ha
 ### Long ASR
 
 
-
-
 [Watch the embedded media](https://www.youtube.com/embed/uYyoEB6Xu58)
 
 
@@ -107,16 +150,10 @@ _Note: The ground truth is derived from the auto-generated subtitles downloaded 
 When processing the audio in 12-minute chunks, Qwen-Omni failed to recognize the full speech content and was only able to capture portions of the audio.
 
 
-#### Qwen Omni (12 minutes chunk)
-
-
-  that's like what's going on why does itfocused on um ai and parallel
-  parallelizable workloads but it's still general to an extent it's not as use
-  case specific as something like grock with a queue that's really designed to
-  you know spit out tokens as fast as possible and that like is a goldilocks
-  zone where it's flexible enough to handle different workloads but not um but
-  still much faster than um a traditional cpu and that google is one of the only
-  companies that has a scaled internal custom silicon effort
+<details class="research-collapsible">
+<summary>Qwen Omni (12 minutes chunk)</summary>
+<p>that's like what's going on why does itfocused on um ai and parallel parallelizable workloads but it's still general to an extent it's not as use case specific as something like grock with a queue that's really designed to you know spit out tokens as fast as possible and that like is a goldilocks zone where it's flexible enough to handle different workloads but not um but still much faster than um a traditional cpu and that google is one of the only companies that has a scaled internal custom silicon effort</p>
+</details>
 
 
 <ins>**Phi-4-Multimodal (full chunk)**</ins>
@@ -124,12 +161,10 @@ When processing the audio in 12-minute chunks, Qwen-Omni failed to recognize the
 When processing the full audio without splitting, the Phi-4-Multimodal model began to ignore the instructions and instead generated an overall summary of the audio.
 
 
-#### Phi-4-Multimodal (full chunk)
-
-
-  The conversation covered Nvidia's focus on inference over training, the
-  partnership with GM, the release of GUT-N1 for humanoid robotics, and the
-  impact of China's AI initiatives on global chip demand.
+<details class="research-collapsible">
+<summary>Phi-4-Multimodal (full chunk)</summary>
+<p>The conversation covered Nvidia's focus on inference over training, the partnership with GM, the release of GUT-N1 for humanoid robotics, and the impact of China's AI initiatives on global chip demand.</p>
+</details>
 
 
 <ins>**Aero (full chunk)**</ins>
@@ -137,14 +172,12 @@ When processing the full audio without splitting, the Phi-4-Multimodal model beg
 Aero Audio is able to generate the complete ASR output and accurately identify the full transcript.
 
 
-#### Aero (full chunk)
-
-
-Welcome to the brainstorm episode eighty two frank downing joining us recap of nvidia's gtc conference that is the gpu technology conference frank what happened what were the big takeaways i on my side i saw a gm and in video partnering but we can circle back to that what was
-
-...
-
-right nice timing good timing all right we'll see everyone next week see everyone thank you
+<details class="research-collapsible">
+<summary>Aero (full chunk)</summary>
+<p>Welcome to the brainstorm episode eighty two frank downing joining us recap of nvidia's gtc conference that is the gpu technology conference frank what happened what were the big takeaways i on my side i saw a gm and in video partnering but we can circle back to that what was</p>
+<p>...</p>
+<p>right nice timing good timing all right we'll see everyone next week see everyone thank you</p>
+</details>
 
 
 #### Results on LibriSpeech Unchunked
