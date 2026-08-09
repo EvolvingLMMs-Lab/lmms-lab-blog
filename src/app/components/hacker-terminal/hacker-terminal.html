@@ -1,0 +1,59 @@
+<div class="crtScreen" role="img" aria-label="AI Lab display terminal">
+  <div class="phosphorGlow"></div>
+
+  <video
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="metadata"
+    class="videoLayer"
+    [class.hidden]="phase() !== 'video'"
+  >
+    <source [src]="videoUrl" type="video/mp4" />
+  </video>
+
+  <div class="terminalLayer" [class.visible]="terminalVisible()">
+    <div class="terminalHeader">
+      <div class="terminalHeaderLeft">
+        <span class="terminalTitle">LMMS-LAB // BREACH ACTIVE</span>
+        <span class="terminalEffect">{{ effectLabel() }}</span>
+      </div>
+      <div class="terminalStatus">
+        <span class="effectCounter">{{ effectIndex() + 1 }}/{{ effectCount }}</span>
+        <span class="statusDot"></span>
+        <span>LIVE</span>
+      </div>
+    </div>
+
+    <div class="terminalContent">
+      <div class="output">
+        @for (line of lines(); track $index) {
+          <div class="line" [innerHTML]="line"></div>
+        }
+        <span class="cursor">_</span>
+      </div>
+    </div>
+
+    <div class="aiMessageContainer">
+      @for (line of aiLines(); track $index) {
+        <div class="aiLine">
+          @if (line.prefix === 'thinking') {
+            <span class="thinkingPrefix">thinking:</span>
+          } @else {
+            <span class="aiPrefix">&gt;</span>
+          }
+          <span>{{ line.text }}</span>
+        </div>
+      }
+      <span class="cursor">_</span>
+    </div>
+  </div>
+
+  <div class="scanlines"></div>
+  <div class="rgbShift"></div>
+  <div class="vignette"></div>
+  <div class="curvature"></div>
+  <div class="reflection"></div>
+  <div class="noise"></div>
+</div>
