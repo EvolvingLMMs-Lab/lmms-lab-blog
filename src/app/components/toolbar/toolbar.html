@@ -8,7 +8,23 @@
 </div>
 
 <div class="toolbar">
-  <div class="toolbar-desktop">
+  <div class="toolbar-desktop" role="toolbar" aria-label="Reading actions">
+    @for (btn of toolbarExt.leadingButtons(); track btn.ariaLabel) {
+      <button
+        type="button"
+        (click)="btn.action()"
+        [attr.aria-label]="btn.ariaLabel"
+        [attr.aria-controls]="btn.ariaControls ?? null"
+        [attr.aria-expanded]="btn.isExpanded?.() ?? null"
+        [title]="btn.title"
+      >
+        @if (btn.toggleIcon && btn.isToggled?.()) {
+          <i [class]="'ph ' + btn.toggleIcon" aria-hidden="true"></i>
+        } @else {
+          <i [class]="'ph ' + btn.icon" aria-hidden="true"></i>
+        }
+      </button>
+    }
     <button (click)="searchOpen.set(true)" aria-label="Search" title="Search posts (Ctrl+K)">
       <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
     </button>

@@ -15,7 +15,7 @@ tags:
   - multimodal
   - research
 ---
-<nav class="research-resource-card" aria-label="OneVision Encoder resources">
+<nav class="research-resource-card research-resource-card--compact post-wide" aria-label="OneVision Encoder resources">
   <div class="research-resource-header">
     <p class="research-block-kicker">Project links</p>
     <p class="research-resource-title">Resources</p>
@@ -82,7 +82,7 @@ These results demonstrate that codec-aligned, patch-level sparsity is not an
 optimization trick, but a foundational principle for next-generation visual
 generalists, positioning OneVision-Encoder as a scalable engine for universal
 multimodal intelligence.</p>
-<p><img src="./method.avif" alt="OneVision Encoder method overview." loading="lazy" decoding="async"></p>
+<figure class="media-figure post-wide"><img src="./method.avif" alt="OneVision Encoder method overview." loading="lazy" decoding="async"></figure>
 <h2>Codec-Style Patch Selection</h2>
 <p>Traditional video understanding models process frames by uniform temporal
 sampling—selecting evenly-spaced frames regardless of content. This approach
@@ -98,7 +98,7 @@ semantically-rich regions while discarding redundant static content.</p>
 showing consecutive frames (t=2,3,4 → t=5,6,7 → ...), cycling through t=2 to
 t=64. Each frame shows only salient patches at their spatial positions. The
 result: <strong>75-98% fewer patches</strong> while retaining the information that matters.</p>
-<html-fragment src="./codec-visualization.html"></html-fragment>
+<html-fragment src="./codec-visualization.html" wide></html-fragment>
 
 
 <h3>Traditional Frame Sampling</h3>
@@ -106,7 +106,7 @@ result: <strong>75-98% fewer patches</strong> while retaining the information th
 redundancy: static backgrounds, repeated textures, and unchanging regions are
 processed multiple times across frames—wasting computation on pixels that add
 no new information.</p>
-<html-fragment src="./uniform-visualization.html"></html-fragment>
+<html-fragment src="./uniform-visualization.html" wide></html-fragment>
 
 
 <h2>Video Processing Pipeline</h2>
@@ -128,10 +128,12 @@ representations. Our approach maintains a <strong>global concept bank of 2M clus
 centers</strong>, enabling each training sample to contrast against a diverse,
 representative set of negatives regardless of batch composition. This produces
 more discriminative embeddings with better-separated semantic clusters.</p>
-<video controls autoplay loop muted playsinline preload="metadata" aria-label="Global contrastive learning comparison">
-  <source src="https://wqrxkrduisy4rnf0.public.blob.vercel-storage.com/onevision-encoder/images/global_contrastive_comparison.webm" type="video/webm">
-  Your browser does not support WebM video.
-</video>
+<div class="post-wide">
+  <video controls autoplay loop muted playsinline preload="metadata" aria-label="Global contrastive learning comparison">
+    <source src="https://wqrxkrduisy4rnf0.public.blob.vercel-storage.com/onevision-encoder/images/global_contrastive_comparison.webm" type="video/webm">
+    Your browser does not support WebM video.
+  </video>
+</div>
 <h2>LMM Probe Results</h2>
 <p><strong>Comparison of different vision encoders on multimodal benchmarks.</strong> All
 models are evaluated on a unified multimodal setting using Qwen3-4B-Instruct2507
@@ -144,7 +146,7 @@ indicate the best performance under the same evaluation setting. Results
 reported in the left columns correspond to encoders trained with caption
 supervision, whereas results in the right columns correspond to encoders trained
 without caption supervision.</p>
-<div class="table-wrapper" role="region" aria-label="Multimodal benchmark comparison" tabindex="0"><table><thead><tr><th rowspan="2" scope="col">Task</th><th rowspan="2" scope="col">Benchmark</th><th colspan="5" scope="colgroup" align="center">Qwen3-4B-Instruct2507</th></tr><tr><th scope="col" align="right">OV-Encoder-Lang<br>(Codec)</th><th scope="col" align="right">Qwen3-ViT<br>(Frame)</th><th scope="col" align="right">OV-Encoder<br>(Codec)</th><th scope="col" align="right">OV-Encoder-Frame<br>(Frame)</th><th scope="col" align="right">SigLIP2<br>(Frame)</th></tr></thead><tbody><tr><th rowspan="7" scope="rowgroup">Video</th><td>MVBench</td><td align="right"><strong>53.2</strong></td><td align="right">47.4</td><td align="right"><strong>52.4</strong></td><td align="right">49.8</td><td align="right">47.2</td></tr>
+<div class="table-wrapper post-wide" role="region" aria-label="Multimodal benchmark comparison" tabindex="0"><table><thead><tr><th rowspan="2" scope="col">Task</th><th rowspan="2" scope="col">Benchmark</th><th colspan="5" scope="colgroup" align="center">Qwen3-4B-Instruct2507</th></tr><tr><th scope="col" align="right">OV-Encoder-Lang<br>(Codec)</th><th scope="col" align="right">Qwen3-ViT<br>(Frame)</th><th scope="col" align="right">OV-Encoder<br>(Codec)</th><th scope="col" align="right">OV-Encoder-Frame<br>(Frame)</th><th scope="col" align="right">SigLIP2<br>(Frame)</th></tr></thead><tbody><tr><th rowspan="7" scope="rowgroup">Video</th><td>MVBench</td><td align="right"><strong>53.2</strong></td><td align="right">47.4</td><td align="right"><strong>52.4</strong></td><td align="right">49.8</td><td align="right">47.2</td></tr>
 <tr><td>MLVU-dev</td><td align="right"><strong>47.4</strong></td><td align="right">47.2</td><td align="right">46.3</td><td align="right"><strong>49.4</strong></td><td align="right">48.4</td></tr>
 <tr><td>NExT-QA (MC)</td><td align="right"><strong>76.1</strong></td><td align="right">70.1</td><td align="right"><strong>75.6</strong></td><td align="right">71.9</td><td align="right">70.6</td></tr>
 <tr><td>VideoMME</td><td align="right"><strong>54.1</strong></td><td align="right">47.2</td><td align="right"><strong>53.4</strong></td><td align="right">49.3</td><td align="right">46.8</td></tr>
@@ -173,7 +175,7 @@ setting and token budget, patches are selectively reallocated across the input
 clip based on codec-native motion vectors and residuals, without changing the
 backbone architecture or training protocol. This results in stronger performance
 on motion-sensitive datasets, particularly Diving48 and Perception Test.</p>
-<div class="table-wrapper" role="region" aria-label="Attentive Probe comparison" tabindex="0"><table><thead><tr><th scope="col">Method</th><th scope="col">Arch.</th><th scope="col" align="right">Res.</th><th scope="col" align="right">AVG</th><th scope="col" align="right">SSV2</th><th scope="col" align="right">Diving48</th><th scope="col" align="right">Perce. Test</th><th scope="col" align="right">CharEgo</th><th scope="col" align="right">Epic Verb</th><th scope="col" align="right">Epic Noun</th><th scope="col" align="right">K400</th><th scope="col" align="right">HMDB51</th></tr></thead><tbody><tr class="table-section-row"><th colspan="12" scope="rowgroup">8 Frames</th></tr><tr><td>MetaCLIP2</td><td>ViT-L/14</td><td align="right">224</td><td align="right">50.2</td><td align="right">47.2</td><td align="right">48.0</td><td align="right">47.7</td><td align="right">11.0</td><td align="right">48.0</td><td align="right">40.9</td><td align="right">82.4</td><td align="right">76.3</td></tr>
+<div class="table-wrapper post-wide" role="region" aria-label="Attentive Probe comparison" tabindex="0"><table><thead><tr><th scope="col">Method</th><th scope="col">Arch.</th><th scope="col" align="right">Res.</th><th scope="col" align="right">AVG</th><th scope="col" align="right">SSV2</th><th scope="col" align="right">Diving48</th><th scope="col" align="right">Perce. Test</th><th scope="col" align="right">CharEgo</th><th scope="col" align="right">Epic Verb</th><th scope="col" align="right">Epic Noun</th><th scope="col" align="right">K400</th><th scope="col" align="right">HMDB51</th></tr></thead><tbody><tr class="table-section-row"><th colspan="12" scope="rowgroup">8 Frames</th></tr><tr><td>MetaCLIP2</td><td>ViT-L/14</td><td align="right">224</td><td align="right">50.2</td><td align="right">47.2</td><td align="right">48.0</td><td align="right">47.7</td><td align="right">11.0</td><td align="right">48.0</td><td align="right">40.9</td><td align="right">82.4</td><td align="right">76.3</td></tr>
 <tr><td>AIMv2</td><td>ViT-L/14</td><td align="right">224</td><td align="right">53.8</td><td align="right">55.1</td><td align="right">43.6</td><td align="right">55.1</td><td align="right">12.0</td><td align="right">56.6</td><td align="right">45.6</td><td align="right">81.1</td><td align="right">81.3</td></tr>
 <tr><td>DINOv3</td><td>ViT-L/14</td><td align="right">224</td><td align="right">58.0</td><td align="right">57.4</td><td align="right">58.6</td><td align="right">59.3</td><td align="right"><strong>13.2</strong></td><td align="right"><strong>62.5</strong></td><td align="right">51.7</td><td align="right">82.9</td><td align="right">78.6</td></tr>
 <tr><td>SigLIP2</td><td>ViT-L/16</td><td align="right">256</td><td align="right">53.1</td><td align="right">52.6</td><td align="right">50.1</td><td align="right">52.7</td><td align="right">11.6</td><td align="right">54.2</td><td align="right">43.8</td><td align="right">80.9</td><td align="right">79.1</td></tr>
@@ -201,7 +203,7 @@ corresponds to a contiguous RGB frame. Under a fixed token budget, OV-Encoder
 positions, enabling long-range temporal coverage. As a result, it outperforms
 SigLIP2 on Diving48 and Perception Test while reducing patch processing by
 75.0%–96.9% compared to dense processing of 16,384 patches.</p>
-<div class="table-wrapper" role="region" aria-label="Patch-efficient video understanding comparison" tabindex="0"><table><thead><tr><th scope="col">Dataset</th><th scope="col">Model</th><th scope="col" align="right">512 Patches</th><th scope="col" align="right">1024 Patches</th><th scope="col" align="right">2048 Patches</th><th scope="col" align="right">4096 Patches</th></tr></thead><tbody><tr><th rowspan="2" scope="rowgroup">Diving48</th><td><strong>SigLIP2</strong><br> <small>(ViT-L/16, 256px)<br> Traditional Frame Sampling (dense patch processing)</small></td><td align="right">28.1</td><td align="right">48.7</td><td align="right">50.1</td><td align="right">56.7</td></tr>
+<div class="table-wrapper post-wide" role="region" aria-label="Patch-efficient video understanding comparison" tabindex="0"><table><thead><tr><th scope="col">Dataset</th><th scope="col">Model</th><th scope="col" align="right">512 Patches</th><th scope="col" align="right">1024 Patches</th><th scope="col" align="right">2048 Patches</th><th scope="col" align="right">4096 Patches</th></tr></thead><tbody><tr><th rowspan="2" scope="rowgroup">Diving48</th><td><strong>SigLIP2</strong><br> <small>(ViT-L/16, 256px)<br> Traditional Frame Sampling (dense patch processing)</small></td><td align="right">28.1</td><td align="right">48.7</td><td align="right">50.1</td><td align="right">56.7</td></tr>
 <tr><td><strong>OV-Encoder (Codec)</strong><br> <small>(ViT-L/14, 224px)<br> 16384 patches -&gt; N patches</small></td><td align="right"><strong>46.5</strong><br> <small>96.9% ↓</small></td><td align="right"><strong>54.9</strong><br> <small>93.8% ↓</small></td><td align="right"><strong>67.2</strong><br> <small>87.5% ↓</small></td><td align="right"><strong>69.4</strong><br> <small>75.0% ↓</small></td></tr>
 <tr><th rowspan="2" scope="rowgroup">Perception Test</th><td><strong>SigLIP2</strong><br> <small>(ViT-L/16, 256px)<br> Traditional Frame Sampling (dense patch processing)</small></td><td align="right">38.7</td><td align="right">50.1</td><td align="right">52.7</td><td align="right">53.3</td></tr>
 <tr><td><strong>OV-Encoder (Codec)</strong><br> <small>(ViT-L/14, 224px)<br> 16384 patches -&gt; N patches</small></td><td align="right"><strong>50.5</strong><br> <small>96.9% ↓</small></td><td align="right"><strong>58.6</strong><br> <small>93.8% ↓</small></td><td align="right"><strong>60.0</strong><br> <small>87.5% ↓</small></td><td align="right"><strong>60.9</strong><br> <small>75.0% ↓</small></td></tr></tbody></table></div>

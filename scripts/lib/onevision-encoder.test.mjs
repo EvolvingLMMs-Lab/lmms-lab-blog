@@ -47,10 +47,18 @@ test('preserves the OneVision Encoder source copy and result-table groups', () =
   );
 
   for (const wrapper of article.querySelectorAll('.table-wrapper')) {
+    assert.ok(wrapper.classList.contains('post-wide'));
     assert.equal(wrapper.getAttribute('role'), 'region');
     assert.ok(wrapper.getAttribute('aria-label'));
     assert.equal(wrapper.getAttribute('tabindex'), '0');
   }
+
+  const resources = article.querySelector('.research-resource-card');
+  assert.ok(resources?.classList.contains('research-resource-card--compact'));
+  assert.ok(resources?.classList.contains('post-wide'));
+  assert.equal(article.querySelectorAll('html-fragment[wide]').length, 3);
+  assert.ok(article.querySelector('figure.media-figure.post-wide > img[alt*="method overview"]'));
+  assert.ok(article.querySelector('.post-wide > video[aria-label*="Global contrastive"]'));
 });
 
 test('keeps the complete OneVision Encoder patch and pipeline assets', () => {

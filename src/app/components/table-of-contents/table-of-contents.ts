@@ -97,10 +97,6 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
     this.unlockBodyScroll();
   }
 
-  toggle(): void {
-    this.open.update((value) => !value);
-  }
-
   close(): void {
     this.open.set(false);
   }

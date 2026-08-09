@@ -6,7 +6,13 @@
   </div>
 
   <div class="title-wrapper">
-    <h1 class="title" [class.title-long]="title().length > 64">{{ title() }}</h1>
+    <h1
+      class="title"
+      [class.title-long]="title().length > 64"
+      [class.title-extra-long]="title().length > 84"
+    >
+      {{ title() }}
+    </h1>
   </div>
 
   <p class="post-deck">{{ description() }}</p>

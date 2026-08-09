@@ -50,6 +50,7 @@ extensions for richer content:
 | `<blog-video src="./demo.m3u8"></blog-video>` | Add a Vidstack-enhanced video with sensible defaults. |
 | `<html-fragment src="./demo.html"></html-fragment>` | Insert a post-local native HTML fragment into the Markdown flow. |
 | `<html-fragment src="./demo.html" wide></html-fragment>` | Let a genuinely wide fragment break out of the reading column. |
+| `class="post-wide"` | Give a native figure, video wrapper, or table the same responsive wide layout. |
 | `data-blog-controller="./demo.mjs"` | Progressively enhance native HTML with a local controller module. |
 | `$...$` and `$$...$$` | Typeset inline and display mathematics. |
 
@@ -138,6 +139,11 @@ active entry is brought back into view without moving the article. The title,
 progress indicator, and four-corner frame remain fixed. Heading positions are
 remeasured after viewport, font, image, and math layout changes.
 
+The contents control lives with search and print in the unified reader toolbar,
+instead of occupying a separate floating position. On wide screens the contents
+panel uses the left reading gutter; closing it lets explicitly wide content use
+the released space. The same control appears in the compact mobile toolbar.
+
 On narrow screens the panel opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or
 the Escape key. Selecting a heading moves keyboard focus to that heading; the
@@ -192,6 +198,15 @@ are preserved. For a native HTML table, add the same wrapper explicitly:
 
 ```html
 <div class="table-wrapper">
+  <table>...</table>
+</div>
+```
+
+For a genuinely column-heavy results table, combine the wrapper with
+`post-wide`. It remains locally scrollable on narrow screens:
+
+```html
+<div class="table-wrapper post-wide" role="region" aria-label="Benchmark results" tabindex="0">
   <table>...</table>
 </div>
 ```
@@ -468,6 +483,27 @@ document, styles, theme, and JavaScript lifecycle. Wide content automatically
 leaves room for the desktop table of contents and returns to the viewport width
 on small screens.
 
+### Wide native content
+
+Use `post-wide` when ordinary native content—not a fragment—needs the same
+responsive breakout. Typical cases are research figures, Vidstack video
+wrappers, and result tables:
+
+```html
+<figure class="media-figure post-wide">
+  <img src="./architecture.avif" alt="Architecture overview">
+</figure>
+
+<div class="post-wide">
+  <blog-video src="./comparison.m3u8"></blog-video>
+</div>
+```
+
+Keep prose, code, and ordinary figures in the reading column. The wide utility
+is centered within the paper, reserves the table-of-contents gutter while that
+panel is open, expands when it closes, and resets to normal document flow in
+print output.
+
 ### HTML-first posts
 
 For an HTML-first article, create `content/posts/<slug>/index.html` instead of
@@ -606,7 +642,7 @@ the same typography and styling. Local HTTP development falls back to the HTTPS
 preview asset because Giscus loads the stylesheet cross-origin.
 
 Article text sits in a stable reading column, uses left-aligned paragraphs, and
-widens only for explicitly marked wide fragments. Major headings, quotations,
+widens only for explicitly marked wide fragments or native content. Major headings, quotations,
 tables, code, search, and navigation controls use fine rules and warm corner or
 baseline accents instead of rounded cards. On small screens the reading column
 fills the available canvas without forcing justification, which avoids uneven

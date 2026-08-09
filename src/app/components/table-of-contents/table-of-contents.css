@@ -7,43 +7,6 @@
   --toc-viewport-inset: 1rem;
 }
 
-.toc-toggle {
-  position: fixed;
-  top: 1rem;
-  left: calc(1rem + 38px + 0.4rem + 38px + 0.4rem);
-  z-index: 1001;
-  display: flex;
-  width: 38px;
-  height: 38px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line-soft);
-  border-radius: 0;
-  background: color-mix(in srgb, var(--paper-bg) 82%, var(--ctp-transparent));
-  color: var(--text-color);
-  cursor: pointer;
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  box-shadow: none;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.toc-toggle i {
-  font-size: 20px;
-}
-
-.toc-toggle:hover {
-  border-color: var(--line-accent);
-  background: color-mix(in srgb, var(--ctp-sapphire) 10%, var(--paper-bg));
-}
-
-.toc-toggle:focus-visible {
-  outline: 1px solid var(--text-color);
-  outline-offset: 2px;
-}
-
 .post-toc {
   position: fixed;
   z-index: 100;
@@ -377,10 +340,6 @@
 }
 
 @media (max-width: 768px) {
-  .toc-toggle {
-    display: none;
-  }
-
   .post-toc {
     padding-top: max(4.9rem, calc(4.15rem + env(safe-area-inset-top, 0px)));
   }
@@ -402,7 +361,6 @@
 
 @media print {
   .post-toc,
-  .toc-toggle,
   .toc-backdrop {
     display: none;
   }

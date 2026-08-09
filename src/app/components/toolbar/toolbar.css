@@ -53,6 +53,12 @@
   text-decoration: none;
 }
 
+.toolbar-desktop button[aria-expanded='true'] {
+  border-color: var(--line-accent);
+  background: color-mix(in srgb, var(--ctp-sapphire) 12%, var(--paper-bg));
+  color: var(--text-color);
+}
+
 .toolbar-desktop button:focus-visible,
 .toolbar-desktop-btn:focus-visible {
   outline-offset: 2px;
@@ -139,7 +145,8 @@
   }
 
   .toolbar-mobile-btn:hover,
-  .toolbar-mobile-btn:active {
+  .toolbar-mobile-btn:active,
+  .toolbar-mobile-btn[aria-expanded='true'] {
     color: var(--text-color);
     background: color-mix(in srgb, var(--text-color) 7%, var(--ctp-transparent));
     text-decoration: none;

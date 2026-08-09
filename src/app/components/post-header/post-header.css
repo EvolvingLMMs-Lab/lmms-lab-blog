@@ -57,6 +57,13 @@
   line-height: 1.02;
 }
 
+.title.title-extra-long {
+  max-width: none;
+  font-size: clamp(2.15rem, 3.9vw, 3.05rem);
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
 .post-deck {
   max-width: 58rem;
   margin: 0 0 1.8rem;
@@ -221,6 +228,12 @@
     line-height: 1.05;
   }
 
+  .title.title-extra-long {
+    font-size: clamp(1.72rem, 8.15vw, 2.05rem);
+    letter-spacing: -0.04em;
+    line-height: 1.07;
+  }
+
   .title-wrapper {
     margin-block: 1rem 1.1rem;
   }
@@ -257,7 +270,8 @@
   }
 
   .title,
-  .title.title-long {
+  .title.title-long,
+  .title.title-extra-long {
     max-width: none;
     font-size: 26pt;
     line-height: 1.08;
