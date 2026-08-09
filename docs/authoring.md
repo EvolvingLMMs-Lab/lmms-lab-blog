@@ -142,7 +142,9 @@ remeasured after viewport, font, image, and math layout changes.
 The contents control lives with search and print in the unified reader toolbar,
 instead of occupying a separate floating position. On wide screens the contents
 panel uses the left reading gutter; closing it lets explicitly wide content use
-the released space. The same control appears in the compact mobile toolbar.
+the released space. A fixed safety gap keeps the panel frame below the desktop
+toolbar at every supported root font size. The same control appears in the
+compact mobile toolbar.
 
 On narrow screens the panel opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or

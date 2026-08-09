@@ -5,6 +5,7 @@
   --toc-desktop-width: 208px;
   --toc-paper-gap: 2rem;
   --toc-viewport-inset: 1rem;
+  --toc-desktop-top: calc(1rem + 38px + 1.25rem);
 }
 
 .post-toc {
@@ -288,7 +289,7 @@
 
 @media (min-width: 1440px) {
   .post-toc {
-    top: 4rem;
+    top: var(--toc-desktop-top);
     left: max(
       var(--toc-viewport-inset),
       calc(
@@ -301,10 +302,10 @@
         (100% - var(--page-width)) / 2 - var(--toc-paper-gap) - var(--toc-viewport-inset)
       )
     );
-    max-height: calc(100dvh - 5rem);
+    max-height: calc(100dvh - var(--toc-desktop-top) - var(--toc-viewport-inset));
     padding: 0.9rem 0.8rem;
     background: var(--ctp-transparent);
-    transform: translateY(-10px);
+    transform: translateY(0.6rem);
   }
 
   .post-toc.toc-visible {
