@@ -1,0 +1,8 @@
+/* =============================================================================
+ * Page Content Wrapper (overlays handled by TransitionProvider)
+ * ============================================================================= */
+
+.transitionWrapper {
+  position: relative;
+  width: 100%;
+}

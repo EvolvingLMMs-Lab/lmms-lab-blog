@@ -1,12 +1,4 @@
 import { Routes } from '@angular/router';
-import { POSTS } from './data/posts';
-import { normalizeLegacySlug } from './config/site';
-
-const previousBlogRoutes: Routes = POSTS.map((post) => ({
-  path: post.slug,
-  redirectTo: `/blog/${post.slug}`,
-  pathMatch: 'full',
-}));
 
 export const routes: Routes = [
   {
@@ -26,55 +18,6 @@ export const routes: Routes = [
       {
         path: ':slug',
         loadComponent: () => import('./pages/post/post').then((module) => module.PostComponent),
-      },
-    ],
-  },
-  {
-    path: 'posts',
-    pathMatch: 'full',
-    redirectTo: '/blog',
-  },
-  {
-    path: 'posts/:slug',
-    redirectTo: ({ params }) => `/blog/${normalizeLegacySlug(params['slug'])}`,
-  },
-  {
-    path: 'notes',
-    pathMatch: 'full',
-    redirectTo: '/blog',
-  },
-  {
-    path: 'notes/dllm',
-    redirectTo: '/blog/diffusion-language-models',
-  },
-  {
-    path: 'notes/wake-up',
-    redirectTo: '/blog/digital-tide',
-  },
-  {
-    path: 'docs',
-    redirectTo: '/blog/docs',
-  },
-  ...previousBlogRoutes,
-  {
-    path: '',
-    loadComponent: () =>
-      import('./components/site-shell/site-shell').then((module) => module.SiteShellComponent),
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        loadComponent: () =>
-          import('./pages/lab-home/lab-home').then((module) => module.LabHomeComponent),
-      },
-      {
-        path: 'home',
-        loadComponent: () =>
-          import('./pages/lab-home/lab-home').then((module) => module.LabHomeComponent),
-      },
-      {
-        path: 'about',
-        loadComponent: () => import('./pages/about/about').then((module) => module.AboutComponent),
       },
     ],
   },

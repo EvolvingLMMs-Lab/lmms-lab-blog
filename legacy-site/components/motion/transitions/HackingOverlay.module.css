@@ -1,0 +1,75 @@
+/* =============================================================================
+ * Hacking Terminal Overlay
+ * ============================================================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  background: #000;
+  overflow: hidden;
+  transition: opacity 300ms ease;
+}
+
+.overlay.fading {
+  opacity: 0;
+}
+
+/* --- Terminal container --- */
+.terminal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: 90vw;
+  padding: 24px 32px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* --- Individual line --- */
+.line {
+  white-space: pre;
+  opacity: 0;
+  animation: line-appear 60ms ease forwards;
+}
+
+/* --- Blinking cursor --- */
+.cursor {
+  animation: blink 500ms steps(1) infinite;
+}
+
+/* =============================================================================
+ * Keyframes
+ * ============================================================================= */
+
+@keyframes line-appear {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    animation: none;
+    opacity: 1;
+  }
+
+  .cursor {
+    animation: none;
+    opacity: 1;
+  }
+
+  .overlay {
+    transition: none;
+  }
+}

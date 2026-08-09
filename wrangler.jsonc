@@ -11,8 +11,8 @@
   ],
   "assets": {
     "directory": "./dist/lmms-lab-blog/browser",
-    "html_handling": "drop-trailing-slash",
-    "not_found_handling": "single-page-application"
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
   },
   "env": {
     "production": {

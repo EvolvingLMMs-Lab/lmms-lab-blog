@@ -1,18 +1,24 @@
 # LMMs-Lab Website
 
 The integrated [LMMs-Lab](https://www.lmms-lab.com) website and research blog,
-built with Angular and deployed as static assets on Cloudflare Workers.
+deployed as one static site on Cloudflare Workers. The original Next.js site is
+kept intact for the lab pages, while the Angular publishing system lives under
+`/blog`.
 
 The public route layout is:
 
-- `/` and `/home`: lab homepage;
-- `/about`: lab manifesto and projects;
+- `/`: original lab homepage (`/home` redirects here);
+- `/about`: original lab About page;
+- `/posts` and `/posts/<slug>`: original publication archive and pages;
+- `/notes` and `/notes/<slug>`: original field-note archive and pages;
+- `/onevision-encoder`: original standalone research page;
 - `/blog`: publication index;
 - `/blog/<slug>`: publication pages; and
 - `/blog/docs`: authoring documentation.
 
-Legacy `/posts/...`, `/notes/...`, `/docs`, and standalone-blog article URLs are
-redirected to the new route layout.
+The production build first builds both applications and then overlays the
+legacy static export from `legacy-site` at the root. It merges both sitemaps
+without replacing the Angular output under `/blog`.
 
 ## Development
 
@@ -27,7 +33,10 @@ pnpm install
 pnpm start
 ```
 
-The site is available at <http://localhost:4200>.
+`pnpm start` builds both applications and serves the exact composed site at
+<http://localhost:4200>. Use `pnpm start:blog` or `pnpm start:legacy` when
+working on one application with its framework development server, and use
+`pnpm preview` to serve an existing composed build without rebuilding it.
 
 Useful checks:
 
@@ -48,9 +57,19 @@ and the publishing checklist.
 Keep author-facing behavior in that guide rather than duplicating it here. Any
 publishing feature change must update the guide in the same change.
 
-## Legacy content import
+## Legacy source and content import
 
-The old Next.js repository is normalized into this repository's directory-based
+`legacy-site` is a source-preserving copy of
+[`Luodian/lmms-lab-website`](https://github.com/Luodian/lmms-lab-website) at
+commit `61adff1`. Its React components, routes, transitions, responsive styles,
+and public assets are built without an Angular reimplementation so the lab
+pages remain identical to the original site.
+
+The only local changes to that source are static-hosting and hydration fixes
+that preserve its rendered design: deterministic ordering for same-day notes,
+publishing note-local images, and full-document navigation for raw HTML pages.
+
+The same content is also normalized into the Angular blog's directory-based
 Markdown format by a resumable importer:
 
 ```bash
@@ -59,10 +78,9 @@ node scripts/vendor-legacy-media.mjs
 ```
 
 It converts supported MDX components, repairs the malformed multiline BibTeX
-found in historical front matter, converts web images to AVIF and GIFs to WebM,
-and imports only the homepage assets used by this implementation. The second,
-resumable pass vendors research figures from legacy third-party image hosts;
-dynamic Shields badges intentionally remain external.
+found in historical front matter, and converts web images to AVIF and GIFs to
+WebM. The second, resumable pass vendors research figures from legacy
+third-party image hosts; dynamic Shields badges intentionally remain external.
 
 ## Deployment
 

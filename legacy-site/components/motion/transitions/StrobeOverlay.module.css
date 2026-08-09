@@ -1,0 +1,60 @@
+/* =============================================================================
+ * Space-Time Rift Transition
+ * Canvas-rendered dithered data streams with central vertical beam
+ * ============================================================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  background: #000;
+  overflow: hidden;
+  animation: rift-reveal 180ms ease-out both;
+}
+
+.overlay.exiting {
+  animation: rift-fade-out 300ms ease forwards;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* =============================================================================
+ * Keyframes
+ * ============================================================================= */
+
+@keyframes rift-reveal {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes rift-fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* =============================================================================
+ * Accessibility
+ * ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none !important;
+    background: #000;
+  }
+
+  .canvas {
+    opacity: 0 !important;
+  }
+
+  .overlay.exiting {
+    opacity: 0;
+  }
+}

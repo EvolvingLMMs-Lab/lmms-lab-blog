@@ -1,0 +1,204 @@
+/* =============================================================================
+ * About Page - Clean layout with cyberpunk accents
+ * ============================================================================= */
+
+.container {
+  min-height: 100vh;
+  padding: var(--space-xl) 0;
+}
+
+.contentWrapper {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding: 0 var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .contentWrapper {
+    padding: 0 var(--space-md);
+  }
+}
+
+/* ── Section header (reusable label + line pattern) ── */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  white-space: nowrap;
+}
+
+.sectionLine {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.3;
+}
+
+.sectionCount {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  opacity: 0.4;
+  white-space: nowrap;
+}
+
+/* ── Description ── */
+.description {
+  font-size: 1rem;
+  line-height: 1.8;
+  opacity: 0.8;
+}
+
+/* ── Manifesto ── */
+.manifesto {
+  font-size: 1rem;
+  line-height: 1.8;
+  opacity: 0.8;
+}
+
+/* ── Origin (muted footer note) ── */
+.originNoteSection {
+  margin-top: calc(var(--space-lg) * 0.5);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(254, 215, 170, 0.14);
+}
+
+.originNote {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  opacity: 0.48;
+}
+
+.originLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+/* ── Board grid ── */
+.boardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+@media (max-width: 640px) {
+  .boardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.boardCard {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-md);
+  border: 1px solid rgba(254, 215, 170, 0.08);
+  transition: background 200ms ease;
+}
+
+.boardCard:hover {
+  background: rgba(254, 215, 170, 0.03);
+}
+
+.boardIndex {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  opacity: 0.3;
+  letter-spacing: 0.05em;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.boardName {
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.boardName:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+.boardAffiliation {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+/* ── Projects grid ── */
+.projectsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 640px) {
+  .projectsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .projectsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.projectCard {
+  padding: var(--space-md);
+  border: 1px solid rgba(254, 215, 170, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: rgba(254, 215, 170, 0.02);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.projectCard:hover {
+  border-color: rgba(254, 215, 170, 0.25);
+  background: rgba(254, 215, 170, 0.06);
+}
+
+.projectHeader {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.projectIndex {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  opacity: 0.25;
+  letter-spacing: 0.05em;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.projectTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}

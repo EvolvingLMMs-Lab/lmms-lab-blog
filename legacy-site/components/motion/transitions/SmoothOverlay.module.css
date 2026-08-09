@@ -1,0 +1,51 @@
+/* =============================================================================
+ * Frosted Glass Overlay
+ * Masks page swap with iOS-style backdrop blur to prevent color flash
+ * ============================================================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  background: var(--background);
+  opacity: 0;
+  animation: fade-enter 240ms ease-out forwards;
+}
+
+.overlay.exiting {
+  animation: fade-exit 280ms ease-in forwards;
+}
+
+/* =============================================================================
+ * Keyframes
+ * ============================================================================= */
+
+@keyframes fade-enter {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* =============================================================================
+ * Accessibility
+ * ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}

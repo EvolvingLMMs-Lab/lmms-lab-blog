@@ -22,6 +22,10 @@ Project guidance for agents working in this repository.
 ## Design
 
 - Follow the existing Catppuccin palette and reuse its CSS variables.
+- Treat `legacy-site` as the visual and behavioral source of truth for `/`,
+  `/about`, `/posts`, `/notes`, and `/onevision-encoder`; do not approximate
+  those pages in Angular. Angular owns only `/blog`, and cross-application
+  links must use full-document navigation rather than Angular `routerLink`.
 - Angular-authored images should use `app-image-lightbox`, which wraps
   `NgOptimizedImage` and `medium-zoom`.
 - Markdown-generated post images are hydrated into `app-image-lightbox`
