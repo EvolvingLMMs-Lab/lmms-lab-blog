@@ -478,6 +478,14 @@ HTML-first posts use the same asset normalization, native controller lifecycle,
 table of contents, image behavior, comments, and site shell as Markdown posts.
 Use `h2` and `h3` for headings that should appear in the table of contents.
 
+For a fidelity migration, retain the original visible prose, figure captions,
+table groups, footnotes, and reported values. Accessibility labels and live
+interaction status may be additive, but they must not replace a source caption.
+Keep grouped results in one semantic table with `rowspan`, `scope="rowgroup"`,
+or a `table-section-row` rather than splitting one source table into several
+visually similar tables. Give horizontally scrollable tables an accessible
+region label and `tabindex="0"` so keyboard users can reach them.
+
 When migrating a standalone HTML project page, copy the article body rather
 than its whole document shell. Remove `doctype`, `html`, `head`, duplicate site
 navigation, analytics, remote font loaders, and inline scripts. Move scoped CSS

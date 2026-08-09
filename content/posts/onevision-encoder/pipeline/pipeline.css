@@ -126,11 +126,21 @@
 }
 
 .ov-pipeline figcaption {
+  display: grid;
+  gap: 0.3rem;
   margin: 0.2rem auto 0;
   color: var(--text-secondary);
   font-size: 0.72rem;
   line-height: 1.5;
   text-align: center;
+}
+
+.ov-pipeline figcaption small {
+  color: var(--ctp-overlay2);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 640px) {

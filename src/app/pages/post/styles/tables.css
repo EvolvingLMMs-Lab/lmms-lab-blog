@@ -4,6 +4,11 @@
   margin: 1.5rem 0;
 }
 
+.post-body .table-wrapper[tabindex="0"]:focus-visible {
+  outline: 2px solid var(--line-accent);
+  outline-offset: 4px;
+}
+
 .post-body .table-wrapper::-webkit-scrollbar {
   height: 6px;
 }
@@ -47,6 +52,27 @@
 
 .post-body tbody tr:hover {
   background: var(--accent-bg);
+}
+
+.post-body tbody .table-section-row {
+  border-block: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--ctp-sapphire) 9%, var(--ctp-transparent));
+}
+
+.post-body tbody .table-section-row:hover {
+  background: color-mix(in srgb, var(--ctp-sapphire) 9%, var(--ctp-transparent));
+}
+
+.post-body tbody .table-section-row th {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.post-body th[scope="rowgroup"] {
+  vertical-align: top;
 }
 
 .post-body th {

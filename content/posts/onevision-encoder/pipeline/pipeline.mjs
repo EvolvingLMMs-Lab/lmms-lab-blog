@@ -5,11 +5,11 @@ const CHANGE_INTERVAL_MS = 5000;
 
 export function mount(host) {
   const video = host.querySelector('[data-pipeline-video]');
-  const caption = host.querySelector('[data-pipeline-caption]');
+  const status = host.querySelector('[data-pipeline-status]');
   const dots = host.querySelector('[data-pipeline-dots]');
   const previous = host.querySelector('[data-pipeline-previous]');
   const next = host.querySelector('[data-pipeline-next]');
-  if (!(video instanceof HTMLVideoElement) || !caption || !dots || !previous || !next) {
+  if (!(video instanceof HTMLVideoElement) || !status || !dots || !previous || !next) {
     throw new Error('OneVision pipeline fragment is incomplete');
   }
 
@@ -36,7 +36,7 @@ export function mount(host) {
         'aria-label',
         `OneVision Encoder video processing pipeline, case ${activeIndex + 1}`,
       );
-      caption.textContent = `Case ${activeIndex + 1} of ${CASE_COUNT} · Complete video processing pipeline from the original clip to a codec-style sparse representation.`;
+      status.textContent = `Case ${activeIndex + 1} of ${CASE_COUNT}.`;
       video.dataset.changing = 'false';
       void video.play().catch(() => {});
       transitionTimer = null;

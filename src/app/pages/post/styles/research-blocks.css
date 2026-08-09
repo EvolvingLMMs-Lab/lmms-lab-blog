@@ -42,9 +42,14 @@
   text-transform: uppercase;
 }
 
-.post-body .research-resource-header h3 {
+.post-body .research-resource-header h3,
+.post-body .research-resource-title {
   margin: 0;
+  color: var(--text-color);
+  font-family: var(--font-heading);
   font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.3;
 }
 
 .post-body .research-resource-header > p:last-child {
