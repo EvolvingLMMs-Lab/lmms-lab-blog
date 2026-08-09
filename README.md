@@ -1,24 +1,23 @@
 # LMMs-Lab Website
 
 The integrated [LMMs-Lab](https://www.lmms-lab.com) website and research blog,
-deployed as one static site on Cloudflare Workers. The original Next.js site is
-kept intact for the lab pages, while the Angular publishing system lives under
-`/blog`.
+implemented as one native Angular application and deployed as a static site on
+Cloudflare Workers. The lab pages and the publishing system share one router,
+while retaining distinct shells for their established visual identities.
 
 The public route layout is:
 
-- `/`: original lab homepage (`/home` redirects here);
-- `/about`: original lab About page;
-- `/posts` and `/posts/<slug>`: original publication archive and pages;
-- `/notes` and `/notes/<slug>`: original field-note archive and pages;
-- `/onevision-encoder`: original standalone research page;
+- `/` and `/home`: lab homepage;
+- `/about`: lab About page;
+- `/posts` and `/posts/<slug>`: publication archive and legacy article URLs;
+- `/notes` and `/notes/<slug>`: field-note archive and legacy note URLs;
+- `/onevision-encoder`: standalone research URL;
 - `/blog`: publication index;
 - `/blog/<slug>`: publication pages; and
 - `/blog/docs`: authoring documentation.
 
-The production build first builds both applications and then overlays the
-legacy static export from `legacy-site` at the root. It merges both sitemaps
-without replacing the Angular output under `/blog`.
+Every route above is rendered by Angular and prerendered by the same production
+build. There is no secondary React/Next.js runtime or composed static export.
 
 ## Development
 
@@ -33,10 +32,8 @@ pnpm install
 pnpm start
 ```
 
-`pnpm start` builds both applications and serves the exact composed site at
-<http://localhost:4200>. Use `pnpm start:blog` or `pnpm start:legacy` when
-working on one application with its framework development server, and use
-`pnpm preview` to serve an existing composed build without rebuilding it.
+`pnpm start` runs the Angular development server at <http://localhost:4200>.
+After `pnpm build`, use `pnpm preview` to serve the static Cloudflare output.
 
 Useful checks:
 
@@ -57,20 +54,12 @@ and the publishing checklist.
 Keep author-facing behavior in that guide rather than duplicating it here. Any
 publishing feature change must update the guide in the same change.
 
-## Legacy source and content import
+## Legacy content import
 
-`legacy-site` is a source-preserving copy of
-[`Luodian/lmms-lab-website`](https://github.com/Luodian/lmms-lab-website) at
-commit `61adff1`. Its React components, routes, transitions, responsive styles,
-and public assets are built without an Angular reimplementation so the lab
-pages remain identical to the original site.
-
-The only local changes to that source are static-hosting and hydration fixes
-that preserve its rendered design: deterministic ordering for same-day notes,
-publishing note-local images, and full-document navigation for raw HTML pages.
-
-The same content is also normalized into the Angular blog's directory-based
-Markdown format by a resumable importer:
+Historical content from
+[`Luodian/lmms-lab-website`](https://github.com/Luodian/lmms-lab-website) can be
+normalized into the Angular blog's directory-based Markdown format by the
+resumable importer:
 
 ```bash
 node scripts/import-legacy-site.mjs /path/to/lmms-lab-website

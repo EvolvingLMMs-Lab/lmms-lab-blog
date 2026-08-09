@@ -2,6 +2,7 @@
 
 # Compiled output
 /dist
+/legacy-site/
 /src/app/data/posts.ts
 /src/app/data/authoring-docs.ts
 /tmp

@@ -38,6 +38,7 @@ import { HeadingObserver } from '../../utils/heading-observer';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 import { replaceLocationHash } from '../../utils/location-hash';
 import { SeoService } from '../../services/seo.service';
+import { legacyArticlePath, normalizeLegacySlug } from '../../config/legacy-routes';
 
 const HEADING_SCROLL_OFFSET_PX = 20;
 
@@ -70,7 +71,19 @@ export class PostComponent implements OnDestroy {
   private readonly appRef = inject(ApplicationRef);
   private readonly environmentInjector = inject(EnvironmentInjector);
   private readonly seo = inject(SeoService);
-  private readonly slug = toSignal(this.route.paramMap.pipe(map((p) => p.get('slug'))));
+  private readonly rawSlug = toSignal(this.route.paramMap.pipe(map((p) => p.get('slug'))));
+  private readonly routeData = toSignal(this.route.data, {
+    initialValue: this.route.snapshot.data,
+  });
+  private readonly slug = computed(() => {
+    const configuredSlug = this.routeData()['articleSlug'];
+    if (typeof configuredSlug === 'string') {
+      return configuredSlug;
+    }
+
+    const routeSlug = this.rawSlug();
+    return routeSlug ? normalizeLegacySlug(routeSlug) : null;
+  });
   private readonly headingObserver = new HeadingObserver();
   private scrollHandle: SmoothScrollHandle | null = null;
 
@@ -89,12 +102,45 @@ export class PostComponent implements OnDestroy {
   readonly tocItems = computed(() => this.post()?.toc ?? []);
   readonly postPath = computed(() => {
     const post = this.post();
-    return post ? `/blog/${encodeURIComponent(post.slug)}` : '/blog';
+    if (!post) {
+      return this.backPath();
+    }
+
+    const canonicalPath = this.routeData()['canonicalPath'];
+    if (typeof canonicalPath === 'string' && canonicalPath.startsWith('/')) {
+      return canonicalPath;
+    }
+
+    const legacyKind = this.legacyKind();
+    return legacyKind
+      ? legacyArticlePath(post.slug, legacyKind)
+      : `/blog/${encodeURIComponent(post.slug)}`;
   });
 
-  readonly safeHtml = computed(() =>
-    this.sanitizer.bypassSecurityTrustHtml(this.post()?.contentHtml ?? ''),
-  );
+  readonly legacyKind = computed(() => {
+    const kind = this.routeData()['legacyKind'];
+    return kind === 'posts' || kind === 'notes' ? kind : null;
+  });
+
+  readonly backPath = computed(() => {
+    const kind = this.legacyKind();
+    return kind ? `/${kind}` : '/blog';
+  });
+
+  readonly safeHtml = computed(() => {
+    const post = this.post();
+    if (!post) {
+      return this.sanitizer.bypassSecurityTrustHtml('');
+    }
+
+    const blogPath = `/blog/${encodeURIComponent(post.slug)}`;
+    const currentPath = this.postPath();
+    const html =
+      currentPath === blogPath
+        ? post.contentHtml
+        : post.contentHtml.replaceAll(`href="${blogPath}#`, `href="${currentPath}#`);
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  });
 
   constructor() {
     this.setupToolbarExtension();
@@ -105,7 +151,7 @@ export class PostComponent implements OnDestroy {
         this.seo.setPage({
           title: post.title,
           description: post.description,
-          path: `/blog/${encodeURIComponent(post.slug)}`,
+          path: this.postPath(),
           type: 'article',
         });
       }

@@ -1,0 +1,104 @@
+/*
+ * The site uses a deliberately small subset of Phosphor's regular icon font.
+ * The font binary is registered by the early loader in index.html so Chromium
+ * never selects a failed CSS FontFace during a first direct navigation.
+ */
+
+.ph {
+  font-family: Phosphor !important;
+  speak: never;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: 0;
+  font-feature-settings: 'liga';
+  font-variant-ligatures: discretionary-ligatures;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ph.ph-angular-logo::before {
+  content: '\eb80';
+}
+
+.ph.ph-arrow-down::before {
+  content: '\e03e';
+}
+
+.ph.ph-arrow-left::before {
+  content: '\e058';
+}
+
+.ph.ph-arrow-line-up::before {
+  content: '\e066';
+}
+
+.ph.ph-arrow-right::before {
+  content: '\e06c';
+}
+
+.ph.ph-arrow-up-right::before {
+  content: '\e092';
+}
+
+.ph.ph-article::before {
+  content: '\e0a8';
+}
+
+.ph.ph-cloud::before {
+  content: '\e1aa';
+}
+
+.ph.ph-house::before {
+  content: '\e2c2';
+}
+
+.ph.ph-link::before {
+  content: '\e2e2';
+}
+
+.ph.ph-list::before {
+  content: '\e2f0';
+}
+
+.ph.ph-list-numbers::before {
+  content: '\e2f6';
+}
+
+.ph.ph-magic-wand::before {
+  content: '\e6b6';
+}
+
+.ph.ph-magnifying-glass::before {
+  content: '\e30c';
+}
+
+.ph.ph-pause::before {
+  content: '\e39e';
+}
+
+.ph.ph-play::before {
+  content: '\e3d0';
+}
+
+.ph.ph-printer::before {
+  content: '\e3dc';
+}
+
+.ph.ph-sparkle::before {
+  content: '\e6a2';
+}
+
+.ph.ph-warning::before {
+  content: '\e4e0';
+}
+
+.ph.ph-wave-sine::before {
+  content: '\ea9a';
+}
+
+.ph.ph-x::before {
+  content: '\e4f6';
+}

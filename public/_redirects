@@ -1,14 +1,6 @@
-# The legacy site's homepage is canonical at `/`.
-/home / 301
-/home/ / 301
-
-# Standalone Angular blog routes retained from before the site integration.
+# Short aliases retained from the standalone blog deployment.
 /docs /blog/docs 301
 /sample-blog /blog/sample-blog 301
-
-# Next static export stores this dotted route's RSC payload in a directory,
-# while the client prefetcher requests the flat `.txt` URL.
-/posts/llava_onevision_1.5_rl.txt /posts/llava_onevision_1.5_rl/index.txt 200
 
 # Clean article slugs used by the standalone Angular blog.
 /aero-audio /blog/aero-audio 301

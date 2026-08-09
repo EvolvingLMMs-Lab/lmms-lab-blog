@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.site-post-document {
+  --document-corner-color: rgb(var(--foreground-rgb) / 58%);
+  --document-corner-size: 1.8rem;
+  position: relative;
+  width: min(var(--page-width), calc(100% - 3rem));
+  min-height: 42rem;
+  margin: 3rem auto 0;
+  padding: 3.75rem 4.15rem 4.75rem;
+}
+
+.site-post-document::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) left top /
+      var(--document-corner-size) 1px no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) left top / 1px
+      var(--document-corner-size) no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) right top /
+      var(--document-corner-size) 1px no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) right top / 1px
+      var(--document-corner-size) no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) left bottom /
+      var(--document-corner-size) 1px no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) left bottom / 1px
+      var(--document-corner-size) no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) right bottom /
+      var(--document-corner-size) 1px no-repeat,
+    linear-gradient(var(--document-corner-color), var(--document-corner-color)) right bottom / 1px
+      var(--document-corner-size) no-repeat;
+  content: '';
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .site-post-document {
+    width: calc(100% - 1.35rem);
+    margin-top: 2rem;
+    padding-inline: clamp(1.25rem, 5vw, 2.4rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .site-post-document {
+    --document-corner-size: 1.2rem;
+    width: calc(100% - 1rem);
+    min-height: 0;
+    padding: 2.25rem 1.25rem 3.25rem;
+  }
+}
+
+@media print {
+  .site-post-document {
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-post-document::before {
+    display: none;
+  }
+}

@@ -12,6 +12,7 @@ import {
   MorphLexicon,
 } from '../../components/diffusion-text/diffusion-text';
 import { HackerTerminalComponent } from '../../components/hacker-terminal/hacker-terminal';
+import { legacyArticlePath } from '../../config/legacy-routes';
 import { SITE_DESCRIPTION, SITE_NAME } from '../../config/site';
 import { POSTS } from '../../data/posts';
 import { SeoService } from '../../services/seo.service';
@@ -65,6 +66,7 @@ export class LabHomeComponent {
     .map((slug) => POSTS.find((post) => post.slug === slug))
     .filter((post) => post !== undefined)
     .map((post) => ({ ...post, image: PUBLICATION_IMAGES[post.slug] }));
+  readonly featuredTitleParts = this.featured?.title.split(': ') ?? [];
 
   constructor() {
     inject(SeoService).setPage({ title: SITE_NAME, description: SITE_DESCRIPTION, path: '/' });
@@ -87,5 +89,9 @@ export class LabHomeComponent {
     })
       .format(new Date(`${date}T00:00:00Z`))
       .toUpperCase();
+  }
+
+  postHref(slug: string): string {
+    return legacyArticlePath(slug, 'posts');
   }
 }

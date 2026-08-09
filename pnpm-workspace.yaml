@@ -1,12 +1,10 @@
-packages:
-  - legacy-site
+packages: []
 
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   lmdb: true
   msgpackr-extract: true
-  unrs-resolver: true
   workerd: true
 overrides:
   '@hono/node-server': 1.19.13

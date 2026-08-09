@@ -42,6 +42,9 @@ function renderSitemap(posts) {
   const pages = [
     { path: '/' },
     { path: '/about' },
+    { path: '/posts', date: latestDate },
+    { path: '/notes', date: latestDate },
+    { path: '/onevision-encoder', date: '2026-01-15' },
     { path: '/blog', date: latestDate },
     { path: '/blog/docs' },
     ...posts.map((post) => ({ path: `/blog/${encodeURIComponent(post.slug)}`, date: post.date })),

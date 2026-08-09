@@ -1,21 +1,95 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>LMMs-Lab</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Open research on multimodal models, evaluation, benchmarks, and multimodal intelligence.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="LMMs-Lab">
-  <meta property="og:description" content="Open research on multimodal models, evaluation, benchmarks, and multimodal intelligence.">
-  <meta property="og:url" content="https://www.lmms-lab.com/">
-  <meta property="og:image" content="https://www.lmms-lab.com/site/home/llava-onevision-2.avif">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://www.lmms-lab.com/">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>LMMs-Lab</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Open research on multimodal models, evaluation, benchmarks, and multimodal intelligence."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LMMs-Lab" />
+    <meta
+      property="og:description"
+      content="Open research on multimodal models, evaluation, benchmarks, and multimodal intelligence."
+    />
+    <meta property="og:url" content="https://www.lmms-lab.com/" />
+    <meta property="og:image" content="https://www.lmms-lab.com/site/home/llava-onevision-2.avif" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://www.lmms-lab.com/" />
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/space-grotesk-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <!--
+      Register variable fonts after validating each binary. A Chromium first-
+      navigation bug can leave CSS-declared variable faces in an error state;
+      adding only successfully loaded faces preserves the fallback metrics and
+      prevents headings from briefly collapsing to zero width.
+    -->
+    <script>
+      (() => {
+        if (!('FontFace' in window) || !document.fonts) return;
+
+        const fonts = [
+          ['RobotoVariable', '/fonts/roboto-latin-wght-normal.woff2', { weight: '100 900' }],
+          [
+            'RobotoVariable',
+            '/fonts/roboto-latin-wght-italic.woff2',
+            { weight: '100 900', style: 'italic' },
+          ],
+          ['InterVariable', '/fonts/inter-latin-wght-normal.woff2', { weight: '100 900' }],
+          [
+            'InterVariable',
+            '/fonts/inter-latin-wght-italic.woff2',
+            { weight: '100 900', style: 'italic' },
+          ],
+          [
+            'SpaceGroteskVariable',
+            '/fonts/space-grotesk-latin-wght-normal.woff2',
+            { weight: '300 700' },
+          ],
+          [
+            'JetBrainsMonoVariable',
+            '/fonts/jetbrains-mono-latin-wght-normal.woff2',
+            { weight: '100 800' },
+          ],
+          [
+            'GoogleSansCodeVariable',
+            '/fonts/google-sans-code-latin-wght-normal.woff2',
+            { weight: '300 800' },
+          ],
+          ['Phosphor', '/fonts/Phosphor.woff2', { weight: '400' }],
+        ];
+
+        for (const [family, source, descriptors] of fonts) {
+          const face = new FontFace(family, `url('${source}') format('woff2')`, descriptors);
+          face.load().then((loadedFace) => document.fonts.add(loadedFace), () => undefined);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

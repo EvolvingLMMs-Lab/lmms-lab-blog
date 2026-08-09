@@ -3,8 +3,31 @@
 }
 
 .site-frame {
+  --background: #03639a;
+  --foreground: #fed7aa;
+  --background-rgb: 3 99 154;
+  --foreground-rgb: 254 215 170;
+  --font-sans:
+    InterVariable, 'Inter', system-ui, -apple-system, blinkmacsystemfont, 'Segoe UI', sans-serif;
+  --font-heading: SpaceGroteskVariable, 'Space Grotesk', InterVariable, system-ui, sans-serif;
+  --font-mono: JetBrainsMonoVariable, 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+  --text-display: 3rem;
+  --text-heading: 2rem;
+  --text-subheading: 1.5rem;
+  --text-body: 1.125rem;
+  --text-caption: 1rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+  --surface-1: rgb(var(--foreground-rgb) / 3%);
+  --surface-2: rgb(var(--foreground-rgb) / 6%);
   display: flex;
   min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
   flex-direction: column;
 }
 

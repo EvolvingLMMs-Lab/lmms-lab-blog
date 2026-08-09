@@ -27,11 +27,7 @@
                 "glob": "**/*",
                 "input": "content/posts",
                 "output": "posts",
-                "ignore": [
-                  "**/*.md",
-                  "**/*.html",
-                  "**/.gitkeep"
-                ]
+                "ignore": ["**/*.md", "**/*.html", "**/.gitkeep"]
               },
               {
                 "glob": "roboto-latin-wght-normal.woff2",
@@ -44,7 +40,22 @@
                 "output": "fonts"
               },
               {
+                "glob": "roboto-latin-ext-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/roboto/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "roboto-latin-ext-wght-italic.woff2",
+                "input": "node_modules/@fontsource-variable/roboto/files",
+                "output": "fonts"
+              },
+              {
                 "glob": "space-grotesk-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/space-grotesk/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "space-grotesk-latin-ext-wght-normal.woff2",
                 "input": "node_modules/@fontsource-variable/space-grotesk/files",
                 "output": "fonts"
               },
@@ -52,15 +63,51 @@
                 "glob": "google-sans-code-latin-wght-normal.woff2",
                 "input": "node_modules/@fontsource-variable/google-sans-code/files",
                 "output": "fonts"
+              },
+              {
+                "glob": "google-sans-code-latin-ext-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/google-sans-code/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "inter-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/inter/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "inter-latin-wght-italic.woff2",
+                "input": "node_modules/@fontsource-variable/inter/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "inter-latin-ext-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/inter/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "inter-latin-ext-wght-italic.woff2",
+                "input": "node_modules/@fontsource-variable/inter/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "jetbrains-mono-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/jetbrains-mono/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "jetbrains-mono-latin-ext-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/jetbrains-mono/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "Phosphor.woff2",
+                "input": "node_modules/@phosphor-icons/web/src/regular",
+                "output": "fonts"
               }
             ],
             "styles": [
               "node_modules/modern-normalize/modern-normalize.css",
-              "node_modules/@fontsource-variable/roboto/index.css",
-              "node_modules/@fontsource-variable/roboto/wght-italic.css",
-              "node_modules/@fontsource-variable/space-grotesk/index.css",
-              "node_modules/@fontsource-variable/google-sans-code/index.css",
-              "node_modules/@phosphor-icons/web/src/regular/style.css",
+              "src/styles/phosphor.css",
               "src/styles.css",
               "node_modules/vidstack/player/styles/default/theme.css",
               "node_modules/vidstack/player/styles/default/layouts/video.css"
@@ -72,7 +119,11 @@
             "production": {
               "optimization": {
                 "scripts": true,
-                "styles": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false,
+                  "removeSpecialComments": true
+                },
                 "fonts": {
                   "inline": false
                 }

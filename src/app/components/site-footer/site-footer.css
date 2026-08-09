@@ -1,22 +1,24 @@
 .site-footer {
-  padding: 2.25rem 0;
+  padding: var(--space-lg) 0;
 }
 
 .site-footer-inner {
   display: flex;
   width: min(80rem, 100%);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--space-lg);
   align-items: center;
   gap: 1.2rem;
-  color: var(--text-secondary);
+  color: inherit;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  opacity: 0.4;
 }
 
 .site-footer-inner > i {
   height: 1px;
-  background: var(--line-soft);
+  background: currentcolor;
+  opacity: 0.15;
   flex: 1;
 }
 
@@ -27,11 +29,18 @@
 
 .site-footer a {
   color: inherit;
+  opacity: 1;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 600px) {
   .site-footer-inner {
-    padding: 0 1.1rem;
+    padding: 0 var(--space-md);
   }
 
   .site-footer-inner > i {

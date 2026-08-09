@@ -29,8 +29,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html.lab-site-active {
+  font-size: 16px;
+}
+
 @media (max-width: 768px) {
-  html { font-size: 14px; }
+  html {
+    font-size: 14px;
+  }
 }
 
 body {
@@ -46,9 +52,39 @@ body {
       var(--ctp-transparent) 38rem
     ),
     var(--background);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: site-page-out;
+}
+
+::view-transition-new(root) {
+  animation-name: site-page-in;
+}
+
+@keyframes site-page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes site-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
 }
 
 button,
@@ -66,7 +102,9 @@ select {
 a {
   color: var(--link-color);
   text-decoration: none;
-  transition: color 0.2s ease-in-out, text-decoration-color 0.2s ease-in-out;
+  transition:
+    color 0.2s ease-in-out,
+    text-decoration-color 0.2s ease-in-out;
 }
 
 a:hover {
@@ -74,6 +112,13 @@ a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
 }
 
 .medium-zoom-overlay {
@@ -124,7 +169,12 @@ a:hover {
   }
 
   /* Prevent orphaned headings and widows */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     break-after: avoid;
     page-break-after: avoid;
   }

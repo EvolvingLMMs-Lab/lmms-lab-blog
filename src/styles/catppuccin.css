@@ -42,11 +42,13 @@
   --accent-bg: color-mix(in srgb, var(--ctp-peach) 10%, var(--ctp-transparent));
   --background: var(--ctp-base);
   --paper-bg: var(--ctp-base);
-  --font-body: "Roboto Variable", "Roboto", sans-serif;
-  --font-heading: "Space Grotesk Variable", "Space Grotesk", "Roboto Variable", "Roboto",
-    system-ui, -apple-system, sans-serif;
-  --font-mono: "Google Sans Code Variable", "Google Sans Code", ui-monospace, "SFMono-Regular",
-    "Menlo", "Consolas", "Liberation Mono", "Roboto Variable", "Roboto", monospace;
+  --font-body: RobotoVariable, 'Roboto', sans-serif;
+  --font-heading:
+    SpaceGroteskVariable, 'Space Grotesk', RobotoVariable, 'Roboto', system-ui, -apple-system,
+    sans-serif;
+  --font-mono:
+    GoogleSansCodeVariable, 'Google Sans Code', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas',
+    'Liberation Mono', RobotoVariable, 'Roboto', monospace;
   --code-header-bg: color-mix(in srgb, var(--border-color) 10%, var(--paper-bg));
   --page-width: 980px;
   --reading-width: 760px;
