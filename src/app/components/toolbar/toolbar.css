@@ -53,12 +53,6 @@
   text-decoration: none;
 }
 
-.toolbar-desktop button[aria-expanded='true'] {
-  border-color: var(--line-accent);
-  background: color-mix(in srgb, var(--ctp-sapphire) 12%, var(--paper-bg));
-  color: var(--text-color);
-}
-
 .toolbar-desktop button:focus-visible,
 .toolbar-desktop-btn:focus-visible {
   outline-offset: 2px;

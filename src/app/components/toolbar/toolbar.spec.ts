@@ -12,7 +12,7 @@ describe('ToolbarComponent', () => {
     }).compileComponents();
   });
 
-  it('exposes page actions in both desktop and mobile toolbars', () => {
+  it('keeps page-specific actions in the compact mobile toolbar', () => {
     const toolbarExtension = TestBed.inject(ToolbarExtensionService);
     const action = vi.fn();
     toolbarExtension.leadingButtons.set([
@@ -36,9 +36,8 @@ describe('ToolbarComponent', () => {
       'button[aria-controls="post-toc"]',
     );
 
-    expect(controls).toHaveLength(2);
-    expect(controls[0]?.closest('.toolbar-desktop')).not.toBeNull();
-    expect(controls[1]?.closest('.toolbar-mobile')).not.toBeNull();
+    expect(controls).toHaveLength(1);
+    expect(controls[0]?.closest('.toolbar-mobile')).not.toBeNull();
     expect(controls[0]?.getAttribute('aria-expanded')).toBe('true');
     expect(controls[0]?.querySelector('i')?.classList.contains('ph-x')).toBe(true);
 

@@ -26,22 +26,6 @@
   gap: 0.9rem;
 }
 
-.docs-contents-button {
-  display: none;
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 28%, var(--ctp-transparent));
-  background: var(--ctp-transparent);
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-}
-
-.docs-contents-button:hover {
-  border-color: var(--text-color);
-  color: var(--text-color);
-}
-
 .docs-meta a:hover {
   color: var(--text-color);
   text-decoration: none;
@@ -89,12 +73,6 @@
 
 .docs-body .table-wrapper {
   text-align: left;
-}
-
-@media (max-width: 1439px) {
-  .docs-contents-button {
-    display: inline-block;
-  }
 }
 
 @media (max-width: 600px) {

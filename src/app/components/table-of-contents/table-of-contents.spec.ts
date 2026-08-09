@@ -33,6 +33,23 @@ describe('TableOfContentsComponent', () => {
     );
   });
 
+  it('provides a dedicated desktop control beside the contents panel', () => {
+    const fixture = TestBed.createComponent(TableOfContentsComponent);
+    fixture.componentRef.setInput('items', items);
+    fixture.componentRef.setInput('postPath', '/example-post');
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const toggle = element.querySelector<HTMLButtonElement>('.toc-toggle');
+    expect(toggle?.getAttribute('aria-expanded')).toBe('false');
+
+    toggle?.click();
+    fixture.detectChanges();
+
+    expect(toggle?.getAttribute('aria-expanded')).toBe('true');
+    expect(toggle?.querySelector('i')?.classList.contains('ph-x')).toBe(true);
+  });
+
   it('marks the active child, preserves its parent context, and exposes reading progress', () => {
     const fixture = TestBed.createComponent(TableOfContentsComponent);
     fixture.componentRef.setInput('items', items);

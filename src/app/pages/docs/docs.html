@@ -18,17 +18,6 @@
       <i class="ph ph-arrow-left" aria-hidden="true"></i>
       All posts
     </a>
-    @if (tocItems.length) {
-      <button
-        class="docs-contents-button"
-        type="button"
-        (click)="toggleToc()"
-        [attr.aria-expanded]="tocOpen()"
-        aria-controls="docs-toc"
-      >
-        Contents
-      </button>
-    }
   </div>
   <span>Published from <code>docs/authoring.md</code></span>
 </header>

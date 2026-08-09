@@ -1,3 +1,19 @@
+<button
+  class="toc-toggle"
+  type="button"
+  (click)="toggle()"
+  [attr.aria-expanded]="open()"
+  [attr.aria-controls]="tocId()"
+  [attr.aria-label]="open() ? 'Close table of contents' : 'Open table of contents'"
+  title="Table of Contents"
+>
+  @if (open()) {
+    <i class="ph ph-x" aria-hidden="true"></i>
+  } @else {
+    <i class="ph ph-list" aria-hidden="true"></i>
+  }
+</button>
+
 <aside
   class="post-toc"
   [class.toc-visible]="open()"

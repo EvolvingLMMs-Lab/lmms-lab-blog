@@ -139,19 +139,22 @@ active entry is brought back into view without moving the article. The title,
 progress indicator, and four-corner frame remain fixed. Heading positions are
 remeasured after viewport, font, image, and math layout changes.
 
-The contents control lives with search and print in the unified reader toolbar,
-instead of occupying a separate floating position. On wide screens the contents
-panel uses the left reading gutter; closing it lets explicitly wide content use
-the released space. A fixed safety gap keeps the panel frame below the desktop
-toolbar at every supported root font size. The same control appears in the
-compact mobile toolbar.
+On desktop, the contents control stays on the left while search and print remain
+on the right. It sits beside Home and Blog while the contents use a drawer, then
+tracks the center of the left reading gutter when the persistent wide-screen
+panel appears. Closing the panel lets explicitly wide content use the released
+space. A fixed safety gap keeps the panel frame below the desktop control row at
+every supported root font size. The same contents action moves into the compact
+mobile toolbar.
 
 On narrow screens the panel opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or
-the Escape key. The drawer and its backdrop sit above the reader toolbar, so the
-drawer header supplies the visible close control without duplicating the toolbar
-across the panel. Selecting a heading moves keyboard focus to that heading; the
-responsive scroll margin keeps it below the mobile toolbar.
+the Escape key. The drawer and its backdrop sit above the reader toolbar, suppress
+its underlying controls, and let the drawer header supply the only visible close
+control. On phones the drawer fills the viewport width instead of leaving a
+clipped strip of toolbar controls visible. Selecting a heading moves keyboard
+focus to that heading; the responsive scroll margin keeps it below the mobile
+toolbar.
 
 Reader position is preserved across browser refreshes and back/forward
 navigation. A newly opened URL with a heading fragment still jumps to that
