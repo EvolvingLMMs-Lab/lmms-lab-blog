@@ -148,7 +148,9 @@ compact mobile toolbar.
 
 On narrow screens the panel opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or
-the Escape key. Selecting a heading moves keyboard focus to that heading; the
+the Escape key. The drawer and its backdrop sit above the reader toolbar, so the
+drawer header supplies the visible close control without duplicating the toolbar
+across the panel. Selecting a heading moves keyboard focus to that heading; the
 responsive scroll margin keeps it below the mobile toolbar.
 
 Reader position is preserved across browser refreshes and back/forward

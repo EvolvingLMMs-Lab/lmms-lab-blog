@@ -6,6 +6,8 @@
   --toc-paper-gap: 2rem;
   --toc-viewport-inset: 1rem;
   --toc-desktop-top: calc(1rem + 38px + 1.25rem);
+  --toc-backdrop-z-index: 1099;
+  --toc-drawer-z-index: 1100;
 }
 
 .post-toc {
@@ -266,7 +268,7 @@
 
 .toc-backdrop {
   position: fixed;
-  z-index: 999;
+  z-index: var(--toc-backdrop-z-index);
   inset: 0;
   visibility: hidden;
   opacity: 0;
@@ -318,17 +320,21 @@
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 1000;
+    z-index: var(--toc-drawer-z-index);
     width: min(326px, 88vw);
     height: 100vh;
     height: 100dvh;
-    padding: 4.1rem 0.95rem calc(0.95rem + env(safe-area-inset-bottom, 0px));
+    padding:
+      max(1rem, calc(0.75rem + env(safe-area-inset-top, 0px))) 0.95rem
+      calc(0.95rem + env(safe-area-inset-bottom, 0px));
     background: var(--paper-bg);
     transform: translateX(-100%);
   }
 
   .post-toc::before {
-    inset: 3.55rem 0.55rem 0.65rem;
+    inset:
+      max(0.55rem, calc(0.3rem + env(safe-area-inset-top, 0px))) 0.55rem
+      calc(0.65rem + env(safe-area-inset-bottom, 0px));
   }
 
   .post-toc.toc-visible {
@@ -337,16 +343,6 @@
 
   .toc-close {
     display: inline-flex;
-  }
-}
-
-@media (max-width: 768px) {
-  .post-toc {
-    padding-top: max(4.9rem, calc(4.15rem + env(safe-area-inset-top, 0px)));
-  }
-
-  .post-toc::before {
-    inset: max(4.35rem, calc(3.6rem + env(safe-area-inset-top, 0px))) 0.55rem 0.65rem;
   }
 }
 
