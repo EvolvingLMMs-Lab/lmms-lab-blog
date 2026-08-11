@@ -13,9 +13,16 @@
   transform: translateX(-50%);
 }
 
-@media (min-width: 1301px) {
-  app-post:not(:has(.post-toc.toc-visible)) .post-body .html-fragment--wide,
-  app-post:not(:has(.post-toc.toc-visible)) .post-body .post-wide {
+@media (min-width: 1301px) and (max-width: 1499px) {
+  .post-body .html-fragment--wide,
+  .post-body .post-wide {
+    width: min(1080px, calc(100vw - 3rem));
+  }
+}
+
+@media (min-width: 1500px) {
+  app-post:not(:has(.post-toc)) .post-body .html-fragment--wide,
+  app-post:not(:has(.post-toc)) .post-body .post-wide {
     width: min(1080px, calc(100vw - 3rem));
   }
 }

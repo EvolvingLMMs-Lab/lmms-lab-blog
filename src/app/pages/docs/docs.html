@@ -4,10 +4,8 @@
     [activeHeadingId]="activeHeadingId()"
     [postPath]="'/blog/docs'"
     [progress]="readingProgress()"
-    [open]="tocOpen()"
     tocId="docs-toc"
     label="Documentation table of contents"
-    (openChange)="tocOpen.set($event)"
     (headingSelected)="onTocHeadingSelected($event)"
   />
 }

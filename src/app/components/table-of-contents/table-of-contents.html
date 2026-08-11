@@ -1,31 +1,8 @@
-<button
-  class="toc-toggle"
-  [class.toc-site-shell]="shell() === 'site'"
-  type="button"
-  (click)="toggle()"
-  [attr.aria-expanded]="open()"
-  [attr.aria-controls]="tocId()"
-  [attr.aria-label]="open() ? 'Close table of contents' : 'Open table of contents'"
-  title="Table of Contents"
->
-  @if (open()) {
-    <i class="ph ph-x" aria-hidden="true"></i>
-  } @else {
-    <i class="ph ph-list-numbers" aria-hidden="true"></i>
-  }
-</button>
-
 <aside
   class="post-toc"
   [class.toc-site-shell]="shell() === 'site'"
-  [class.toc-visible]="open()"
   [id]="tocId()"
-  [attr.role]="isWide() ? null : 'dialog'"
-  [attr.aria-modal]="drawerOpen() ? 'true' : null"
-  [attr.aria-hidden]="open() ? null : 'true'"
   [attr.aria-labelledby]="titleId()"
-  [cdkTrapFocus]="drawerOpen()"
-  (keydown)="onPanelKeydown($event)"
 >
   <header class="toc-header">
     <span class="toc-heading" [id]="titleId()">
@@ -33,15 +10,6 @@
       <span>{{ title() }}</span>
     </span>
     <span class="toc-percentage" aria-hidden="true">{{ progressPercent() }}%</span>
-    <button
-      #closeButton
-      class="toc-close"
-      type="button"
-      (click)="close()"
-      aria-label="Close table of contents"
-    >
-      <i class="ph ph-x" aria-hidden="true"></i>
-    </button>
   </header>
 
   <div
@@ -101,12 +69,3 @@
     </ol>
   </nav>
 </aside>
-
-<button
-  class="toc-backdrop"
-  [class.toc-backdrop-visible]="drawerOpen()"
-  type="button"
-  (click)="close()"
-  aria-label="Close table of contents"
-  tabindex="-1"
-></button>

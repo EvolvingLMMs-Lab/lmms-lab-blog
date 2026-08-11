@@ -10,7 +10,6 @@ import {
   createComponent,
   effect,
   inject,
-  signal,
   viewChild,
   ChangeDetectionStrategy,
 } from '@angular/core';
@@ -91,7 +90,6 @@ export class PostComponent implements OnDestroy {
   private readonly giscus = viewChild(GiscusCommentsComponent);
   private readonly postBody = viewChild<ElementRef<HTMLElement>>('postBody');
 
-  readonly tocOpen = signal(false);
   readonly activeHeadingId = this.headingObserver.activeHeadingId;
   readonly readingProgress = this.headingObserver.readingProgress;
 
@@ -238,34 +236,13 @@ export class PostComponent implements OnDestroy {
     this.toolbarExt.reset();
   }
 
-  toggleToc(): void {
-    this.tocOpen.update((value) => !value);
-  }
-
   onTocHeadingSelected(id: string): void {
     this.scrollToHeading(id, true, true);
   }
 
   private setupToolbarExtension(): void {
     this.toolbarExt.mobileTitle.set('Reading');
-    effect(() => {
-      this.toolbarExt.leadingButtons.set(
-        this.tocItems().length
-          ? [
-              {
-                icon: 'ph-list-numbers',
-                toggleIcon: 'ph-x',
-                ariaLabel: 'Toggle table of contents',
-                title: 'Table of Contents',
-                action: () => this.toggleToc(),
-                isToggled: () => this.tocOpen(),
-                ariaControls: 'post-toc',
-                isExpanded: () => this.tocOpen(),
-              },
-            ]
-          : [],
-      );
-    });
+    this.toolbarExt.leadingButtons.set([]);
   }
 
   private setupHeadingObserver(postBody: HTMLElement): void {

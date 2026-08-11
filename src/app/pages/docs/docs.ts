@@ -6,7 +6,6 @@ import {
   OnDestroy,
   ViewEncapsulation,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -46,7 +45,6 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
   private scrollHandle: SmoothScrollHandle | null = null;
   private setupTimer: number | null = null;
 
-  readonly tocOpen = signal(false);
   readonly activeHeadingId = this.headingObserver.activeHeadingId;
   readonly readingProgress = this.headingObserver.readingProgress;
   readonly tocItems = AUTHORING_DOCS_TOC;
@@ -59,18 +57,7 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
       path: '/blog/docs',
     });
     this.toolbarExt.mobileTitle.set('Docs');
-    this.toolbarExt.leadingButtons.set([
-      {
-        icon: 'ph-list-numbers',
-        toggleIcon: 'ph-x',
-        ariaLabel: 'Toggle table of contents',
-        title: 'Table of Contents',
-        action: () => this.toggleToc(),
-        isToggled: () => this.tocOpen(),
-        ariaControls: 'docs-toc',
-        isExpanded: () => this.tocOpen(),
-      },
-    ]);
+    this.toolbarExt.leadingButtons.set([]);
   }
 
   ngAfterViewInit(): void {
@@ -95,10 +82,6 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
     this.headingObserver.disconnect();
     this.scrollHandle?.cancel();
     this.toolbarExt.reset();
-  }
-
-  toggleToc(): void {
-    this.tocOpen.update((value) => !value);
   }
 
   onTocHeadingSelected(id: string): void {

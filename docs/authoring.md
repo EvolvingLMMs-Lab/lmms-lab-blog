@@ -139,24 +139,15 @@ active entry is brought back into view without moving the article. The title,
 progress indicator, and four-corner frame remain fixed. Heading positions are
 remeasured after viewport, font, image, and math layout changes.
 
-On desktop, the contents control stays on the left while search and print remain
-on the right. In the publishing shell it sits beside Home and Blog while the
-contents use a drawer, then tracks the center of the left reading gutter when
-the persistent wide-screen panel has enough room for its full column. Legacy
-article routes use the native site masthead instead: their control and persistent
-panel clear the sticky masthead, and their compact masthead exposes the same
-contents action beside the navigation menu. Closing the panel lets explicitly
-wide content use the released space. Fixed safety gaps keep the controls and
-panel frame clear of the active shell at every supported root font size.
+The standard contents panel has no expand or collapse interaction. It appears as
+a persistent left-gutter column only when the viewport is at least `1500px` wide,
+which guarantees enough room for the complete column and its paper gap. Legacy
+article routes offset that column below their sticky site masthead. At narrower
+desktop, tablet, and phone widths the panel and its controls are omitted entirely;
+there is no toolbar action, drawer, backdrop, or alternate close control.
 
-On narrow screens the panel opens as an accessible drawer: focus remains inside
-the drawer until it is closed with a link, the close button, the backdrop, or
-the Escape key. The drawer and its backdrop sit above the reader toolbar, suppress
-its underlying controls, and let the drawer header supply the only visible close
-control. On phones the drawer fills the viewport width instead of leaving a
-clipped strip of toolbar controls visible. Selecting a heading moves keyboard
-focus to that heading; the responsive scroll margin keeps it below the mobile
-toolbar.
+Selecting a contents entry moves keyboard focus to that heading. The responsive
+scroll margin keeps the heading clear of whichever shell toolbar is active.
 
 Reader position is preserved across browser refreshes and back/forward
 navigation. A newly opened URL with a heading fragment still jumps to that
@@ -637,8 +628,8 @@ The screen layout is intentionally flat: the page and content canvas share one
 blue surface, with corner marks indicating the content boundary instead of a
 filled card, border, or drop shadow. The table of contents uses the same corner
 treatment and flat active-section markers. On wide screens, a dedicated gutter
-keeps its corner frame visually separate from the paper boundary; at the desktop
-breakpoint the contents column narrows before that gutter is allowed to collapse.
+keeps its full-width corner frame visually separate from the paper boundary; the
+panel is omitted before that gutter becomes too narrow.
 The Giscus discussion area uses the
 site-owned `public/giscus.css` theme within matching corner marks and is omitted
 from print output. Keep that stylesheet available at `/giscus.css` with its

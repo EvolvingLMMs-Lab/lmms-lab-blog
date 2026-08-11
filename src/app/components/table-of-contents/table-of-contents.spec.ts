@@ -33,24 +33,20 @@ describe('TableOfContentsComponent', () => {
     );
   });
 
-  it('provides a dedicated desktop control beside the contents panel', () => {
+  it('renders a persistent panel without expand or drawer controls', () => {
     const fixture = TestBed.createComponent(TableOfContentsComponent);
     fixture.componentRef.setInput('items', items);
     fixture.componentRef.setInput('postPath', '/example-post');
     fixture.detectChanges();
 
     const element = fixture.nativeElement as HTMLElement;
-    const toggle = element.querySelector<HTMLButtonElement>('.toc-toggle');
-    expect(toggle?.getAttribute('aria-expanded')).toBe('false');
-
-    toggle?.click();
-    fixture.detectChanges();
-
-    expect(toggle?.getAttribute('aria-expanded')).toBe('true');
-    expect(toggle?.querySelector('i')?.classList.contains('ph-x')).toBe(true);
+    expect(element.querySelector('.post-toc')).not.toBeNull();
+    expect(element.querySelector('.toc-toggle')).toBeNull();
+    expect(element.querySelector('.toc-close')).toBeNull();
+    expect(element.querySelector('.toc-backdrop')).toBeNull();
   });
 
-  it('marks controls that must clear the legacy site masthead', () => {
+  it('marks the persistent panel that must clear the legacy site masthead', () => {
     const fixture = TestBed.createComponent(TableOfContentsComponent);
     fixture.componentRef.setInput('items', items);
     fixture.componentRef.setInput('postPath', '/posts/example-post');
@@ -58,7 +54,6 @@ describe('TableOfContentsComponent', () => {
     fixture.detectChanges();
 
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelector('.toc-toggle')?.classList.contains('toc-site-shell')).toBe(true);
     expect(element.querySelector('.post-toc')?.classList.contains('toc-site-shell')).toBe(true);
   });
 

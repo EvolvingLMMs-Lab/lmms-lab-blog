@@ -4,8 +4,7 @@
 
 .site-frame {
   --site-masthead-height: 93px;
-  --site-toc-control-top: calc(var(--site-masthead-height) + 0.45rem);
-  --site-toc-panel-top: calc(var(--site-toc-control-top) + 38px + 1rem);
+  --site-toc-panel-top: calc(var(--site-masthead-height) + 3rem);
   --background: #03639a;
   --foreground: #fed7aa;
   --background-rgb: 3 99 154;

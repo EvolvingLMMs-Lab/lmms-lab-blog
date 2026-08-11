@@ -6,8 +6,6 @@
       [activeHeadingId]="activeHeadingId()"
       [progress]="readingProgress()"
       [shell]="legacyKind() ? 'site' : 'blog'"
-      [open]="tocOpen()"
-      (openChange)="tocOpen.set($event)"
       (headingSelected)="onTocHeadingSelected($event)"
     />
   }

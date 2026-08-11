@@ -113,7 +113,6 @@
 
 @media print {
   .post-toc,
-  .toc-backdrop,
   .giscus-wrapper {
     display: none;
   }
