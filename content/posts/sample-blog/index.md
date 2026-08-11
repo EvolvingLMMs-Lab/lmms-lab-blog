@@ -64,7 +64,8 @@ $$
 ## Local images
 
 Images live beside the post under a slug-specific asset directory. The build
-rewrites this relative path for production and preserves its intrinsic size.
+rewrites this relative path for production, records its intrinsic dimensions,
+and fits the rendered image to the article reading column.
 
 ![Abstract multimodal inputs merging into a shared representation.](./multimodal-flow.avif)
 

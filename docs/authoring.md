@@ -288,7 +288,11 @@ Markdown with a relative path:
 The generator publishes this as `/posts/<slug>/result.avif`. Static post images
 receive lazy loading, asynchronous decoding, and click-to-zoom behavior. When
 ImageMagick is available during generation, intrinsic width and height are
-added to reduce layout shift.
+added to reduce layout shift. Ordinary top-level images and figures fill the
+article reading column while preserving their aspect ratio. Use a sufficiently
+large source to avoid visible upscaling; badge rows and images owned by an
+interactive fragment keep their component-defined size. Add `post-wide` to a
+native figure only when it should intentionally break out of the reading column.
 
 Use meaningful alternative text. Prefer AVIF for committed article images
 unless the source format has a specific technical purpose.

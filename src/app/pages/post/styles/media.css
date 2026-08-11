@@ -18,6 +18,18 @@
   margin-right: auto;
 }
 
+.post-body:not(.post-body-showcase)
+  > :is(p, figure)
+  > :is(img, app-image-lightbox),
+.post-body:not(.post-body-showcase)
+  > :is(p, figure)
+  > app-image-lightbox
+  > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 .post-body video {
   display: block;
   width: 100%;
