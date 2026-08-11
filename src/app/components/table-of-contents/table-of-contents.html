@@ -1,5 +1,6 @@
 <button
   class="toc-toggle"
+  [class.toc-site-shell]="shell() === 'site'"
   type="button"
   (click)="toggle()"
   [attr.aria-expanded]="open()"
@@ -10,12 +11,13 @@
   @if (open()) {
     <i class="ph ph-x" aria-hidden="true"></i>
   } @else {
-    <i class="ph ph-list" aria-hidden="true"></i>
+    <i class="ph ph-list-numbers" aria-hidden="true"></i>
   }
 </button>
 
 <aside
   class="post-toc"
+  [class.toc-site-shell]="shell() === 'site'"
   [class.toc-visible]="open()"
   [id]="tocId()"
   [attr.role]="isWide() ? null : 'dialog'"

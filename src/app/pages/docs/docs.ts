@@ -61,7 +61,7 @@ export class DocsComponent implements AfterViewInit, OnDestroy {
     this.toolbarExt.mobileTitle.set('Docs');
     this.toolbarExt.leadingButtons.set([
       {
-        icon: 'ph-list',
+        icon: 'ph-list-numbers',
         toggleIcon: 'ph-x',
         ariaLabel: 'Toggle table of contents',
         title: 'Table of Contents',

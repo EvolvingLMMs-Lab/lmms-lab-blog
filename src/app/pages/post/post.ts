@@ -253,7 +253,7 @@ export class PostComponent implements OnDestroy {
         this.tocItems().length
           ? [
               {
-                icon: 'ph-list',
+                icon: 'ph-list-numbers',
                 toggleIcon: 'ph-x',
                 ariaLabel: 'Toggle table of contents',
                 title: 'Table of Contents',

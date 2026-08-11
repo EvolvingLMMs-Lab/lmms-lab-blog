@@ -39,9 +39,16 @@ html.lab-site-active {
   }
 }
 
-@media (max-width: 1439px) {
+@media (max-width: 1499px) {
   body:has(.toc-backdrop-visible) app-toolbar .toolbar,
   body:has(.toc-backdrop-visible) app-toolbar .toolbar-nav {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 800px) {
+  body:has(.toc-backdrop-visible) app-site-header .mobile-header-actions {
     opacity: 0;
     pointer-events: none;
   }

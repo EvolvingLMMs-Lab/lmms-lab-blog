@@ -3,6 +3,9 @@
 }
 
 .site-frame {
+  --site-masthead-height: 93px;
+  --site-toc-control-top: calc(var(--site-masthead-height) + 0.45rem);
+  --site-toc-panel-top: calc(var(--site-toc-control-top) + 38px + 1rem);
   --background: #03639a;
   --foreground: #fed7aa;
   --background-rgb: 3 99 154;
@@ -29,6 +32,12 @@
   color: var(--foreground);
   font-family: var(--font-sans);
   flex-direction: column;
+}
+
+@media (max-width: 800px) {
+  .site-frame {
+    --site-masthead-height: 77px;
+  }
 }
 
 .site-main {

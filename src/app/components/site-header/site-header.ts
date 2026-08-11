@@ -13,6 +13,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
+import { ToolbarExtensionService } from '../../services/toolbar-extension.service';
 
 interface LmmsRenderer {
   pal(theme: string): unknown;
@@ -77,6 +78,7 @@ export class SiteHeaderComponent {
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
+  readonly toolbarExt = inject(ToolbarExtensionService);
   private readonly logoCanvas = viewChild<ElementRef<HTMLCanvasElement>>('logoCanvas');
   private readonly mobileMenu = viewChild<ElementRef<HTMLElement>>('mobileMenu');
   private readonly menuButton = viewChild<ElementRef<HTMLButtonElement>>('menuButton');

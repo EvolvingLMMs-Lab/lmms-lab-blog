@@ -223,13 +223,32 @@
   opacity: 0.72;
 }
 
-.mobile-menu-button {
+.mobile-header-actions {
   display: none;
+}
+
+.mobile-menu-button,
+.mobile-page-action {
   padding: 0.5rem;
   border: 0;
   background: transparent;
   color: var(--foreground);
   cursor: pointer;
+}
+
+.mobile-page-action {
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.mobile-menu-button:hover,
+.mobile-page-action:hover,
+.mobile-menu-button:active,
+.mobile-page-action:active,
+.mobile-page-action[aria-expanded='true'] {
+  background: rgb(var(--foreground-rgb) / 8%);
 }
 
 .mobile-navigation-overlay {
@@ -307,13 +326,21 @@
   text-decoration: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .desktop-navigation {
     display: none;
   }
 
-  .mobile-menu-button {
-    display: block;
+  .mobile-header-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .mobile-menu-button,
+  .mobile-page-action {
+    display: inline-flex;
   }
 
   .masthead {
@@ -323,10 +350,26 @@
   .masthead-inner {
     padding-inline: var(--space-md);
   }
+
+  .masthead-inner.has-page-actions .masthead-brand {
+    min-width: 0;
+  }
+
+  .masthead-inner.has-page-actions .brand-link,
+  .masthead-inner.has-page-actions .logo-wrap {
+    max-width: 100%;
+  }
+
+  .masthead-inner.has-page-actions .logo-canvas {
+    width: clamp(12rem, 60vw, 14.625rem);
+    height: auto;
+    margin-top: 0;
+    align-self: center;
+  }
 }
 
 @media (max-width: 380px) {
-  .logo-canvas {
+  .masthead-inner:not(.has-page-actions) .logo-canvas {
     height: 38px;
     margin-top: 0.7px;
   }

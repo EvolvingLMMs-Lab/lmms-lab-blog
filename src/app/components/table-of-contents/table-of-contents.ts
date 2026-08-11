@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import { TocItem } from '../../models/post.model';
 
-const WIDE_QUERY = '(min-width: 1440px)';
+const WIDE_QUERY = '(min-width: 1500px)';
 const ACTIVE_LINK_PADDING_PX = 8;
 
 @Component({
@@ -47,6 +47,7 @@ export class TableOfContentsComponent implements OnInit, OnDestroy {
   readonly tocId = input('post-toc');
   readonly label = input('Table of contents');
   readonly title = input('Contents');
+  readonly shell = input<'blog' | 'site'>('blog');
   readonly open = model(false);
   readonly headingSelected = output<string>();
 

@@ -50,6 +50,18 @@ describe('TableOfContentsComponent', () => {
     expect(toggle?.querySelector('i')?.classList.contains('ph-x')).toBe(true);
   });
 
+  it('marks controls that must clear the legacy site masthead', () => {
+    const fixture = TestBed.createComponent(TableOfContentsComponent);
+    fixture.componentRef.setInput('items', items);
+    fixture.componentRef.setInput('postPath', '/posts/example-post');
+    fixture.componentRef.setInput('shell', 'site');
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('.toc-toggle')?.classList.contains('toc-site-shell')).toBe(true);
+    expect(element.querySelector('.post-toc')?.classList.contains('toc-site-shell')).toBe(true);
+  });
+
   it('marks the active child, preserves its parent context, and exposes reading progress', () => {
     const fixture = TestBed.createComponent(TableOfContentsComponent);
     fixture.componentRef.setInput('items', items);

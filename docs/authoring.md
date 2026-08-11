@@ -140,12 +140,14 @@ progress indicator, and four-corner frame remain fixed. Heading positions are
 remeasured after viewport, font, image, and math layout changes.
 
 On desktop, the contents control stays on the left while search and print remain
-on the right. It sits beside Home and Blog while the contents use a drawer, then
-tracks the center of the left reading gutter when the persistent wide-screen
-panel appears. Closing the panel lets explicitly wide content use the released
-space. A fixed safety gap keeps the panel frame below the desktop control row at
-every supported root font size. The same contents action moves into the compact
-mobile toolbar.
+on the right. In the publishing shell it sits beside Home and Blog while the
+contents use a drawer, then tracks the center of the left reading gutter when
+the persistent wide-screen panel has enough room for its full column. Legacy
+article routes use the native site masthead instead: their control and persistent
+panel clear the sticky masthead, and their compact masthead exposes the same
+contents action beside the navigation menu. Closing the panel lets explicitly
+wide content use the released space. Fixed safety gaps keep the controls and
+panel frame clear of the active shell at every supported root font size.
 
 On narrow screens the panel opens as an accessible drawer: focus remains inside
 the drawer until it is closed with a link, the close button, the backdrop, or
