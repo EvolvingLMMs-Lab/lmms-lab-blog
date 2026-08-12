@@ -1,4 +1,22 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, type RedirectFunction, type Routes } from '@angular/router';
+import { legacyBlogPath } from './config/legacy-routes';
+
+const redirectToBlog: RedirectFunction = ({ queryParams, fragment }) =>
+  inject(Router).createUrlTree(['/blog'], { queryParams, fragment: fragment ?? undefined });
+
+const redirectLegacyArticle: RedirectFunction = ({ data, params, queryParams, fragment }) => {
+  const kind = data['legacyKind'];
+  const slug = params['slug'];
+  const path =
+    (kind === 'posts' || kind === 'notes') && typeof slug === 'string'
+      ? legacyBlogPath(slug, kind)
+      : '/blog';
+  return inject(Router).createUrlTree([path], {
+    queryParams,
+    fragment: fragment ?? undefined,
+  });
+};
 
 export const routes: Routes = [
   {
@@ -43,27 +61,21 @@ export const routes: Routes = [
       },
       {
         path: 'posts',
-        data: { kind: 'posts' },
-        loadComponent: () =>
-          import('./pages/archive/archive').then((module) => module.ArchiveComponent),
+        redirectTo: redirectToBlog,
       },
       {
         path: 'notes',
-        data: { kind: 'notes' },
-        loadComponent: () =>
-          import('./pages/archive/archive').then((module) => module.ArchiveComponent),
+        redirectTo: redirectToBlog,
       },
       {
         path: 'posts/:slug',
         data: { legacyKind: 'posts' },
-        loadComponent: () =>
-          import('./pages/site-post/site-post').then((module) => module.SitePostComponent),
+        redirectTo: redirectLegacyArticle,
       },
       {
         path: 'notes/:slug',
         data: { legacyKind: 'notes' },
-        loadComponent: () =>
-          import('./pages/site-post/site-post').then((module) => module.SitePostComponent),
+        redirectTo: redirectLegacyArticle,
       },
       {
         path: 'onevision-encoder',

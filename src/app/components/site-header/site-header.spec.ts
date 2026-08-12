@@ -45,4 +45,18 @@ describe('SiteHeaderComponent', () => {
     pageAction?.click();
     expect(action).toHaveBeenCalledOnce();
   });
+
+  it('uses one Blog destination instead of separate Posts and Notes links', () => {
+    const fixture = TestBed.createComponent(SiteHeaderComponent);
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const desktopLinks = Array.from(
+      element.querySelectorAll<HTMLAnchorElement>('.desktop-navigation > a'),
+    );
+
+    expect(desktopLinks.some((link) => link.textContent?.trim() === 'Blog')).toBe(true);
+    expect(desktopLinks.some((link) => link.textContent?.trim() === 'Posts')).toBe(false);
+    expect(desktopLinks.some((link) => link.textContent?.trim() === 'Notes')).toBe(false);
+  });
 });

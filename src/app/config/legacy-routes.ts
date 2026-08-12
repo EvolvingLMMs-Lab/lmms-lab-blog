@@ -2,7 +2,6 @@ export interface LegacyArticleRoute {
   legacySlug: string;
   blogSlug: string;
   tag?: string;
-  standalonePath?: string;
 }
 
 export const LEGACY_POST_ROUTES: readonly LegacyArticleRoute[] = [
@@ -10,7 +9,6 @@ export const LEGACY_POST_ROUTES: readonly LegacyArticleRoute[] = [
     legacySlug: 'onevision_encoder',
     blogSlug: 'onevision-encoder',
     tag: 'models',
-    standalonePath: '/onevision-encoder',
   },
   { legacySlug: 'llava_onevision_2', blogSlug: 'llava-onevision-2', tag: 'models' },
   { legacySlug: 'llava_onevision_1.5_rl', blogSlug: 'llava-onevision-1-5-rl', tag: 'models' },
@@ -49,16 +47,15 @@ const BLOG_SLUG_BY_LEGACY_SLUG = new Map(
   LEGACY_ROUTES.map((route) => [route.legacySlug, route.blogSlug]),
 );
 
-export function normalizeLegacySlug(slug: string): string {
-  return BLOG_SLUG_BY_LEGACY_SLUG.get(slug) ?? slug;
+export type LegacyArticleKind = 'posts' | 'notes';
+
+export function legacyBlogPath(slug: string, kind: LegacyArticleKind): string {
+  const routes = kind === 'posts' ? LEGACY_POST_ROUTES : LEGACY_NOTE_ROUTES;
+  const route = routes.find((candidate) => candidate.legacySlug === slug);
+  const blogSlug = route?.blogSlug ?? slug;
+  return `/blog/${encodeURIComponent(blogSlug)}`;
 }
 
-export function legacyArticlePath(blogSlug: string, kind: 'posts' | 'notes'): string {
-  const routes = kind === 'posts' ? LEGACY_POST_ROUTES : LEGACY_NOTE_ROUTES;
-  const route = routes.find((candidate) => candidate.blogSlug === blogSlug);
-  if (!route) {
-    return `/blog/${encodeURIComponent(blogSlug)}`;
-  }
-
-  return route.standalonePath ?? `/${kind}/${encodeURIComponent(route.legacySlug)}`;
+export function normalizeLegacySlug(slug: string): string {
+  return BLOG_SLUG_BY_LEGACY_SLUG.get(slug) ?? slug;
 }

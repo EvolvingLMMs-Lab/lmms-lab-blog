@@ -42,8 +42,6 @@ function renderSitemap(posts) {
   const pages = [
     { path: '/' },
     { path: '/about' },
-    { path: '/posts', date: latestDate },
-    { path: '/notes', date: latestDate },
     { path: '/onevision-encoder', date: '2026-01-15' },
     { path: '/blog', date: latestDate },
     { path: '/blog/docs' },

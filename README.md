@@ -9,12 +9,14 @@ The public route layout is:
 
 - `/` and `/home`: lab homepage;
 - `/about`: lab About page;
-- `/posts` and `/posts/<slug>`: publication archive and legacy article URLs;
-- `/notes` and `/notes/<slug>`: field-note archive and legacy note URLs;
 - `/onevision-encoder`: standalone research URL;
-- `/blog`: publication index;
+- `/blog`: unified publication and field-note index;
 - `/blog/<slug>`: publication pages; and
 - `/blog/docs`: authoring documentation.
+
+Historical `/posts`, `/notes`, `/posts/<slug>`, and `/notes/<slug>` URLs are
+permanent redirects to their canonical `/blog` destinations. Query strings and
+fragments are preserved.
 
 Every route above is rendered by Angular and prerendered by the same production
 build. There is no secondary React/Next.js runtime or composed static export.

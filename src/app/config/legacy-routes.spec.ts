@@ -3,7 +3,7 @@ import { POSTS } from '../data/posts';
 import {
   LEGACY_NOTE_ROUTES,
   LEGACY_POST_ROUTES,
-  legacyArticlePath,
+  legacyBlogPath,
   normalizeLegacySlug,
 } from './legacy-routes';
 
@@ -27,8 +27,14 @@ describe('legacy Angular routes', () => {
     );
   });
 
-  it('preserves the standalone OneVision Encoder URL', () => {
-    expect(legacyArticlePath('onevision-encoder', 'posts')).toBe('/onevision-encoder');
-    expect(legacyArticlePath('diffusion-language-models', 'notes')).toBe('/notes/dllm');
+  it('redirects historical article slugs to canonical blog URLs', () => {
+    expect(legacyBlogPath('onevision_encoder', 'posts')).toBe('/blog/onevision-encoder');
+    expect(legacyBlogPath('llava_critic_r1', 'posts')).toBe('/blog/llava-critic-r1');
+    expect(legacyBlogPath('dllm', 'notes')).toBe('/blog/diffusion-language-models');
+    expect(legacyBlogPath('wake-up', 'notes')).toBe('/blog/digital-tide');
+  });
+
+  it('keeps unknown legacy slugs under the canonical blog namespace', () => {
+    expect(legacyBlogPath('future_article', 'posts')).toBe('/blog/future_article');
   });
 });

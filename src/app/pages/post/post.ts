@@ -37,7 +37,7 @@ import { HeadingObserver } from '../../utils/heading-observer';
 import { TableOfContentsComponent } from '../../components/table-of-contents/table-of-contents';
 import { replaceLocationHash } from '../../utils/location-hash';
 import { SeoService } from '../../services/seo.service';
-import { legacyArticlePath, normalizeLegacySlug } from '../../config/legacy-routes';
+import { normalizeLegacySlug } from '../../config/legacy-routes';
 
 const HEADING_SCROLL_OFFSET_PX = 20;
 
@@ -110,10 +110,7 @@ export class PostComponent implements OnDestroy {
       return canonicalPath;
     }
 
-    const legacyKind = this.legacyKind();
-    return legacyKind
-      ? legacyArticlePath(post.slug, legacyKind)
-      : `/blog/${encodeURIComponent(post.slug)}`;
+    return `/blog/${encodeURIComponent(post.slug)}`;
   });
 
   readonly legacyKind = computed(() => {
@@ -122,8 +119,7 @@ export class PostComponent implements OnDestroy {
   });
 
   readonly backPath = computed(() => {
-    const kind = this.legacyKind();
-    return kind ? `/${kind}` : '/blog';
+    return '/blog';
   });
 
   readonly safeHtml = computed(() => {
@@ -132,13 +128,7 @@ export class PostComponent implements OnDestroy {
       return this.sanitizer.bypassSecurityTrustHtml('');
     }
 
-    const blogPath = `/blog/${encodeURIComponent(post.slug)}`;
-    const currentPath = this.postPath();
-    const html =
-      currentPath === blogPath
-        ? post.contentHtml
-        : post.contentHtml.replaceAll(`href="${blogPath}#`, `href="${currentPath}#`);
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    return this.sanitizer.bypassSecurityTrustHtml(post.contentHtml);
   });
 
   constructor() {

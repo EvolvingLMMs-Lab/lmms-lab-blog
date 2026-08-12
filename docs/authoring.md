@@ -39,6 +39,11 @@ pnpm start
 
 The post is available at `http://localhost:4200/blog/<slug>`.
 
+`/blog` is the single public index for both publications and field notes.
+Historical `/posts`, `/notes`, `/posts/<slug>`, and `/notes/<slug>` URLs remain
+permanent redirects to their canonical `/blog` destinations; do not use them
+for new links.
+
 ## Blog-specific syntax at a glance
 
 Most articles only need ordinary Markdown. These are the blog's compact

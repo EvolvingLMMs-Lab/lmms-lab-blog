@@ -76,8 +76,7 @@
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
         >Home</a
       >
-      <a routerLink="/posts" routerLinkActive="active">Posts</a>
-      <a routerLink="/notes" routerLinkActive="active">Notes</a>
+      <a routerLink="/blog" routerLinkActive="active">Blog</a>
       <div
         #gallery
         class="gallery"
@@ -151,17 +150,10 @@
         >
         <a
           class="mobile-navigation-link"
-          routerLink="/posts"
+          routerLink="/blog"
           routerLinkActive="active"
           (click)="closeMenu()"
-          >Posts</a
-        >
-        <a
-          class="mobile-navigation-link"
-          routerLink="/notes"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Notes</a
+          >Blog</a
         >
         <div class="mobile-gallery-group">
           <div class="mobile-gallery-title">Gallery</div>

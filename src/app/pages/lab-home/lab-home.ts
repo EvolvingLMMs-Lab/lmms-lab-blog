@@ -12,7 +12,6 @@ import {
   MorphLexicon,
 } from '../../components/diffusion-text/diffusion-text';
 import { HackerTerminalComponent } from '../../components/hacker-terminal/hacker-terminal';
-import { legacyArticlePath } from '../../config/legacy-routes';
 import { SITE_DESCRIPTION, SITE_NAME } from '../../config/site';
 import { POSTS } from '../../data/posts';
 import { SeoService } from '../../services/seo.service';
@@ -92,6 +91,6 @@ export class LabHomeComponent {
   }
 
   postHref(slug: string): string {
-    return legacyArticlePath(slug, 'posts');
+    return `/blog/${encodeURIComponent(slug)}`;
   }
 }
