@@ -47,7 +47,7 @@ test('preserves the OneVision Encoder source copy and result-table groups', () =
   );
 
   for (const wrapper of article.querySelectorAll('.table-wrapper')) {
-    assert.ok(wrapper.classList.contains('post-wide'));
+    assert.ok(!wrapper.classList.contains('post-wide'));
     assert.equal(wrapper.getAttribute('role'), 'region');
     assert.ok(wrapper.getAttribute('aria-label'));
     assert.equal(wrapper.getAttribute('tabindex'), '0');
@@ -55,14 +55,15 @@ test('preserves the OneVision Encoder source copy and result-table groups', () =
 
   const resources = article.querySelector('.research-resource-card');
   assert.ok(resources?.classList.contains('research-resource-card--compact'));
-  assert.ok(resources?.classList.contains('post-wide'));
-  assert.equal(article.querySelectorAll('html-fragment[wide]').length, 3);
+  assert.ok(!resources?.classList.contains('post-wide'));
+  assert.equal(article.querySelectorAll('html-fragment[wide]').length, 0);
   const methodFigure = article.querySelector(
     'figure.media-figure > img[alt*="method overview"]',
   )?.parentElement;
   assert.ok(methodFigure);
   assert.ok(!methodFigure.classList.contains('post-wide'));
-  assert.ok(article.querySelector('.post-wide > video[aria-label*="Global contrastive"]'));
+  assert.ok(article.querySelector('video[aria-label*="Global contrastive"]'));
+  assert.equal(article.querySelectorAll('.post-wide').length, 0);
 });
 
 test('keeps the complete OneVision Encoder patch and pipeline assets', () => {

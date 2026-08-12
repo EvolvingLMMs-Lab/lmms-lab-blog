@@ -5,26 +5,12 @@
   hyphens: none;
 }
 
-.post-body .html-fragment--wide,
-.post-body .post-wide {
-  width: min(920px, calc(100vw - 3rem));
-  max-width: none;
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
-
-@media (min-width: 1301px) and (max-width: 1499px) {
-  .post-body .html-fragment--wide,
-  .post-body .post-wide {
-    width: min(1080px, calc(100vw - 3rem));
-  }
-}
-
-@media (min-width: 1500px) {
-  app-post:not(:has(.post-toc)) .post-body .html-fragment--wide,
-  app-post:not(:has(.post-toc)) .post-body .post-wide {
-    width: min(1080px, calc(100vw - 3rem));
-  }
+.post-body:not(.post-body-showcase) .html-fragment--wide,
+.post-body:not(.post-body-showcase) .post-wide {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  transform: none;
 }
 
 .post-body [data-blog-controller][data-blog-controller-state="loading"] {
@@ -42,22 +28,6 @@
   color: var(--ctp-red);
   font-family: var(--font-heading);
   font-size: 0.82rem;
-}
-
-@media (max-width: 720px) {
-  .post-body .html-fragment--wide,
-  .post-body .post-wide {
-    width: calc(100vw - 1.25rem);
-  }
-}
-
-/* Static article figures always share the prose edges. */
-.post-body:not(.post-body-showcase)
-  > figure.post-wide:has(> :is(img, app-image-lightbox)) {
-  width: 100%;
-  max-width: 100%;
-  margin-left: 0;
-  transform: none;
 }
 
 @media print {

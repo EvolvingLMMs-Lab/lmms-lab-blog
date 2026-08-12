@@ -54,8 +54,8 @@ extensions for richer content:
 | `<ai-img>./summary.avif</ai-img>` | Add an AI-summary image button beside a heading. |
 | `<blog-video src="./demo.m3u8"></blog-video>` | Add a Vidstack-enhanced video with sensible defaults. |
 | `<html-fragment src="./demo.html"></html-fragment>` | Insert a post-local native HTML fragment into the Markdown flow. |
-| `<html-fragment src="./demo.html" wide></html-fragment>` | Let a genuinely wide fragment break out of the reading column. |
-| `class="post-wide"` | Give a native video wrapper or table the same responsive wide layout. |
+| `<html-fragment src="./demo.html" wide></html-fragment>` | Preserve a legacy wide-fragment wrapper without widening a standard article. |
+| `class="post-wide"` | Preserve legacy wide-content markup without widening a standard article. |
 | `data-blog-controller="./demo.mjs"` | Progressively enhance native HTML with a local controller module. |
 | `$...$` and `$$...$$` | Typeset inline and display mathematics. |
 
@@ -207,11 +207,11 @@ are preserved. For a native HTML table, add the same wrapper explicitly:
 </div>
 ```
 
-For a genuinely column-heavy results table, combine the wrapper with
-`post-wide`. It remains locally scrollable on narrow screens:
+For a genuinely column-heavy results table, keep the same wrapper. It remains
+locally scrollable instead of widening the article:
 
 ```html
-<div class="table-wrapper post-wide" role="region" aria-label="Benchmark results" tabindex="0">
+<div class="table-wrapper" role="region" aria-label="Benchmark results" tabindex="0">
   <table>...</table>
 </div>
 ```
@@ -296,10 +296,9 @@ ImageMagick is available during generation, intrinsic width and height are
 added to reduce layout shift. Ordinary top-level images and figures fill the
 article reading column while preserving their aspect ratio. Use a sufficiently
 large source to avoid visible upscaling; badge rows and images owned by an
-interactive fragment keep their component-defined size. Do not add `post-wide`
-merely to expose a static image's intrinsic width: standard article figures
-should share the prose edges. Reserve the wide utility for media whose meaning
-genuinely depends on additional horizontal space.
+interactive fragment keep their component-defined size. Standard article
+figures should share the prose edges; do not add `post-wide` merely to expose a
+static image's intrinsic width.
 
 Use meaningful alternative text. Prefer AVIF for committed article images
 unless the source format has a specific technical purpose.
@@ -480,25 +479,21 @@ Fragment paths must:
 - resolve to a local `.html` file; and
 - remain inside `content/posts/<slug>/`.
 
-### Wide fragments
+### Legacy wide fragments
 
-Add `wide` only when a visualization genuinely needs more horizontal room:
+The `wide` attribute remains accepted for migrated content:
 
 ```html
 <html-fragment src="./wide-comparison.html" wide></html-fragment>
 ```
 
-Unlike a default fragment, a wide fragment keeps one transparent layout wrapper
-so it can break out of the reading column responsively. It still uses the same
-document, styles, theme, and JavaScript lifecycle. Wide content automatically
-leaves room for the desktop table of contents and returns to the viewport width
-on small screens.
+Unlike a default fragment, this form keeps one transparent layout wrapper. In a
+standard article the wrapper is constrained to the same reading column as the
+prose. A showcase layout may still assign it a wider project-page canvas.
 
-### Wide native content
+### Legacy wide native content
 
-Use `post-wide` when ordinary native content—not a fragment—needs the same
-responsive breakout. Typical cases are Vidstack video wrappers and result
-tables:
+The `post-wide` class is also retained for migrated native content:
 
 ```html
 <div class="post-wide">
@@ -506,11 +501,10 @@ tables:
 </div>
 ```
 
-Keep prose, code, and static figures in the reading column. In a standard post,
-an image-bearing figure remains aligned with the prose even if it accidentally
-receives `post-wide`. Other wide content is centered within the paper, reserves
-the table-of-contents gutter while that panel is open, expands when it closes,
-and resets to normal document flow in print output.
+In a standard post, `post-wide` no longer creates a breakout: prose, code,
+figures, interactive fragments, videos, resource cards, and table wrappers all
+share the reading-column edges. Wide tables scroll inside that column. Showcase
+layouts retain their purpose-built project-page width.
 
 ### HTML-first posts
 
@@ -649,12 +643,12 @@ so `blog.lmms-lab.com` previews and the final `www.lmms-lab.com` deployment use
 the same typography and styling. Local HTTP development falls back to the HTTPS
 preview asset because Giscus loads the stylesheet cross-origin.
 
-Article text sits in a stable reading column, uses left-aligned paragraphs, and
-widens only for explicitly marked wide fragments or native content. Major headings, quotations,
-tables, code, search, and navigation controls use fine rules and warm corner or
-baseline accents instead of rounded cards. On small screens the reading column
-fills the available canvas without forcing justification, which avoids uneven
-word spacing in narrow paragraphs.
+Article text and standard article content sit in one stable reading column with
+left-aligned paragraphs. Major headings, quotations, tables, code, search, and
+navigation controls use fine rules and warm corner or baseline accents instead
+of rounded cards. On small screens the reading column fills the available canvas
+without forcing justification, which avoids uneven word spacing in narrow
+paragraphs.
 
 ```css
 .demo {
