@@ -51,6 +51,15 @@
   }
 }
 
+/* Static article figures always share the prose edges. */
+.post-body:not(.post-body-showcase)
+  > figure.post-wide:has(> :is(img, app-image-lightbox)) {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  transform: none;
+}
+
 @media print {
   .post-body .html-fragment,
   .post-body .html-fragment--wide,

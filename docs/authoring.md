@@ -55,7 +55,7 @@ extensions for richer content:
 | `<blog-video src="./demo.m3u8"></blog-video>` | Add a Vidstack-enhanced video with sensible defaults. |
 | `<html-fragment src="./demo.html"></html-fragment>` | Insert a post-local native HTML fragment into the Markdown flow. |
 | `<html-fragment src="./demo.html" wide></html-fragment>` | Let a genuinely wide fragment break out of the reading column. |
-| `class="post-wide"` | Give a native figure, video wrapper, or table the same responsive wide layout. |
+| `class="post-wide"` | Give a native video wrapper or table the same responsive wide layout. |
 | `data-blog-controller="./demo.mjs"` | Progressively enhance native HTML with a local controller module. |
 | `$...$` and `$$...$$` | Typeset inline and display mathematics. |
 
@@ -296,8 +296,10 @@ ImageMagick is available during generation, intrinsic width and height are
 added to reduce layout shift. Ordinary top-level images and figures fill the
 article reading column while preserving their aspect ratio. Use a sufficiently
 large source to avoid visible upscaling; badge rows and images owned by an
-interactive fragment keep their component-defined size. Add `post-wide` to a
-native figure only when it should intentionally break out of the reading column.
+interactive fragment keep their component-defined size. Do not add `post-wide`
+merely to expose a static image's intrinsic width: standard article figures
+should share the prose edges. Reserve the wide utility for media whose meaning
+genuinely depends on additional horizontal space.
 
 Use meaningful alternative text. Prefer AVIF for committed article images
 unless the source format has a specific technical purpose.
@@ -495,23 +497,20 @@ on small screens.
 ### Wide native content
 
 Use `post-wide` when ordinary native content—not a fragment—needs the same
-responsive breakout. Typical cases are research figures, Vidstack video
-wrappers, and result tables:
+responsive breakout. Typical cases are Vidstack video wrappers and result
+tables:
 
 ```html
-<figure class="media-figure post-wide">
-  <img src="./architecture.avif" alt="Architecture overview">
-</figure>
-
 <div class="post-wide">
   <blog-video src="./comparison.m3u8"></blog-video>
 </div>
 ```
 
-Keep prose, code, and ordinary figures in the reading column. The wide utility
-is centered within the paper, reserves the table-of-contents gutter while that
-panel is open, expands when it closes, and resets to normal document flow in
-print output.
+Keep prose, code, and static figures in the reading column. In a standard post,
+an image-bearing figure remains aligned with the prose even if it accidentally
+receives `post-wide`. Other wide content is centered within the paper, reserves
+the table-of-contents gutter while that panel is open, expands when it closes,
+and resets to normal document flow in print output.
 
 ### HTML-first posts
 

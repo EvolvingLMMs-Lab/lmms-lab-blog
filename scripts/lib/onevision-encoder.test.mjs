@@ -57,7 +57,11 @@ test('preserves the OneVision Encoder source copy and result-table groups', () =
   assert.ok(resources?.classList.contains('research-resource-card--compact'));
   assert.ok(resources?.classList.contains('post-wide'));
   assert.equal(article.querySelectorAll('html-fragment[wide]').length, 3);
-  assert.ok(article.querySelector('figure.media-figure.post-wide > img[alt*="method overview"]'));
+  const methodFigure = article.querySelector(
+    'figure.media-figure > img[alt*="method overview"]',
+  )?.parentElement;
+  assert.ok(methodFigure);
+  assert.ok(!methodFigure.classList.contains('post-wide'));
   assert.ok(article.querySelector('.post-wide > video[aria-label*="Global contrastive"]'));
 });
 
