@@ -3,6 +3,7 @@ import { isHLSProvider, type MediaProviderChangeEvent } from 'vidstack';
 import 'vidstack/player';
 import 'vidstack/player/layouts/default';
 import 'vidstack/player/ui';
+import { getVideoAspectRatio } from './video-aspect-ratio';
 
 const PLAYER_CLASS = 'blog-video-player';
 
@@ -19,12 +20,6 @@ function copyBooleanAttribute(source: HTMLElement, target: HTMLElement, name: st
   }
 }
 
-function getAspectRatio(video: HTMLVideoElement): string {
-  const width = video.videoWidth || Number(video.getAttribute('width'));
-  const height = video.videoHeight || Number(video.getAttribute('height'));
-  return width > 0 && height > 0 ? `${width}/${height}` : '16/9';
-}
-
 function appendMediaSources(video: HTMLVideoElement, outlet: HTMLElement): void {
   for (const child of video.querySelectorAll('source, track')) {
     outlet.append(child.cloneNode(true));
@@ -37,6 +32,14 @@ function useLocalHlsLibrary(event: MediaProviderChangeEvent): void {
   }
 }
 
+function getProviderVideo(provider: MediaProviderChangeEvent['detail']): HTMLVideoElement | null {
+  if (!provider || !('video' in provider)) {
+    return null;
+  }
+
+  return provider.video instanceof HTMLVideoElement ? provider.video : null;
+}
+
 export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   if (!video.parentNode) {
     return () => {};
@@ -47,6 +50,26 @@ export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   const layout = document.createElement('media-video-layout');
   const label = video.getAttribute('aria-label') ?? video.getAttribute('title') ?? 'Article video';
   const posterUrl = video.getAttribute('poster');
+  let providerVideo: HTMLVideoElement | null = null;
+
+  const syncIntrinsicAspectRatio = () => {
+    if (!providerVideo) {
+      return;
+    }
+
+    const aspectRatio = getVideoAspectRatio(providerVideo);
+    if (aspectRatio) {
+      player.style.aspectRatio = aspectRatio;
+    }
+  };
+
+  const handleProviderChange = (event: MediaProviderChangeEvent) => {
+    useLocalHlsLibrary(event);
+    providerVideo?.removeEventListener('loadedmetadata', syncIntrinsicAspectRatio);
+    providerVideo = getProviderVideo(event.detail);
+    providerVideo?.addEventListener('loadedmetadata', syncIntrinsicAspectRatio);
+    syncIntrinsicAspectRatio();
+  };
 
   player.className = PLAYER_CLASS;
   player.dataset['videoPlayerState'] = 'ready';
@@ -54,9 +77,11 @@ export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   player.setAttribute('aria-label', label);
   player.setAttribute('view-type', 'video');
   player.setAttribute('stream-type', 'on-demand');
-  player.setAttribute('load', 'visible');
-  player.style.aspectRatio = getAspectRatio(video);
-  player.addEventListener('provider-change', useLocalHlsLibrary);
+  // Metadata must load even when no provisional aspect ratio is available;
+  // `preload="metadata"` still prevents eager full-media downloads.
+  player.setAttribute('load', 'eager');
+  player.style.aspectRatio = getVideoAspectRatio(video) ?? 'auto';
+  player.addEventListener('provider-change', handleProviderChange);
 
   copyAttribute(video, player, 'src');
   copyAttribute(video, player, 'poster');
@@ -83,7 +108,9 @@ export function mountContentVideoPlayer(video: HTMLVideoElement): () => void {
   player.muted = muted;
 
   return () => {
-    player.removeEventListener('provider-change', useLocalHlsLibrary);
+    player.removeEventListener('provider-change', handleProviderChange);
+    providerVideo?.removeEventListener('loadedmetadata', syncIntrinsicAspectRatio);
+    providerVideo = null;
     void player.pause().catch(() => {});
     if (player.parentNode) {
       player.replaceWith(video);

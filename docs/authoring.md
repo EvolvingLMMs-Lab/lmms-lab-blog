@@ -343,9 +343,13 @@ For a normal article video, one line is enough:
 
 `src` is the only required attribute. The generator expands `<blog-video>` into
 a semantic figure and native `<video>` fallback with controls, `playsinline`,
-`preload="metadata"`, and a default 1280-by-720 aspect ratio. It infers common
-media types, including HLS from `.m3u8`, and then progressively enhances the
-native element with Vidstack in the browser.
+and `preload="metadata"`. It does not assume a global 16:9 ratio: after metadata
+loads, the native fallback and enhanced player use the video's intrinsic
+`videoWidth` and `videoHeight`. An explicitly authored `width` and `height` pair
+provides the initial ratio while metadata is loading, then the intrinsic ratio
+takes precedence. The generator infers common media types, including HLS from
+`.m3u8`, and progressively enhances the native element with Vidstack in the
+browser.
 
 A recommended authored video adds a poster and visible caption:
 

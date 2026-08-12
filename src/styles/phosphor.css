@@ -47,6 +47,14 @@
   content: '\e0a8';
 }
 
+.ph.ph-caret-left::before {
+  content: '\e138';
+}
+
+.ph.ph-caret-right::before {
+  content: '\e13a';
+}
+
 .ph.ph-cloud::before {
   content: '\e1aa';
 }

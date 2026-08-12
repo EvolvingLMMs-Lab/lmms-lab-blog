@@ -33,8 +33,8 @@ test('expands the minimal blog video syntax into a Vidstack-ready native fallbac
   assert.ok(video?.hasAttribute('controls'));
   assert.ok(video?.hasAttribute('playsinline'));
   assert.equal(video?.getAttribute('preload'), 'metadata');
-  assert.equal(video?.getAttribute('width'), '1280');
-  assert.equal(video?.getAttribute('height'), '720');
+  assert.equal(video?.getAttribute('width'), null);
+  assert.equal(video?.getAttribute('height'), null);
   assert.equal(video?.getAttribute('aria-label'), 'Article video');
   assert.equal(source?.getAttribute('src'), '/posts/example/demo.m3u8');
   assert.equal(source?.getAttribute('type'), 'application/vnd.apple.mpegurl');

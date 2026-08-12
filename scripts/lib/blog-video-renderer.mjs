@@ -1,6 +1,3 @@
-const DEFAULT_VIDEO_WIDTH = '1280';
-const DEFAULT_VIDEO_HEIGHT = '720';
-
 const VIDEO_MIME_TYPES = new Map([
   ['.m3u8', 'application/vnd.apple.mpegurl'],
   ['.mpd', 'application/dash+xml'],
@@ -102,11 +99,6 @@ export function renderBlogVideos(document) {
     if (!video.hasAttribute('preload')) {
       video.setAttribute('preload', 'metadata');
     }
-    if (!video.hasAttribute('width') && !video.hasAttribute('height')) {
-      video.setAttribute('width', DEFAULT_VIDEO_WIDTH);
-      video.setAttribute('height', DEFAULT_VIDEO_HEIGHT);
-    }
-
     const primarySource = document.createElement('source');
     primarySource.setAttribute('src', sourceHref);
     const sourceType = node.getAttribute('type')?.trim() || inferVideoMimeType(sourceHref);

@@ -24,6 +24,20 @@ body.site-menu-open {
   padding: 0;
 }
 
+/*
+ * Vidstack supplies 16:9 as a generic fallback for dimensionless videos. Native
+ * article and fragment videos should instead use the ratio reported by their
+ * own metadata; videos inside a Vidstack provider inherit the ratio that the
+ * player synchronizes after metadata loads.
+ */
+video:not([width]):not([height]) {
+  aspect-ratio: auto;
+}
+
+[data-media-provider] video:not([width]):not([height]) {
+  aspect-ratio: inherit;
+}
+
 html {
   font-size: 15px;
   scroll-behavior: smooth;

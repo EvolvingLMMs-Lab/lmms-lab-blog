@@ -84,5 +84,27 @@ test('keeps the complete OneVision Encoder patch and pipeline assets', () => {
 
   const pipeline = readFileSync(`${postDir}/pipeline/pipeline.mjs`, 'utf8');
   assert.match(pipeline, /const CASE_COUNT = 7;/);
+
+  const pipelineFragment = JSDOM.fragment(
+    readFileSync(`${postDir}/pipeline/pipeline.html`, 'utf8'),
+  );
+  assert.deepEqual(
+    Array.from(pipelineFragment.querySelectorAll('.ov-pipeline__labels span'), (label) =>
+      label.textContent.trim(),
+    ),
+    [
+      'Original Video',
+      'Uniform Frame Sampling',
+      'Temporal Saliency Detection',
+      'Codec-Style Patch Extraction',
+    ],
+  );
+  const pipelineFigure = pipelineFragment.querySelector('.ov-pipeline');
+  assert.equal(pipelineFigure?.children[0]?.className, 'ov-pipeline__panel');
+  assert.equal(pipelineFigure?.children[1]?.tagName, 'FIGCAPTION');
+  assert.ok(pipelineFigure?.children[2]?.classList.contains('ov-pipeline__navigation'));
+
+  const pipelineStyles = readFileSync(`${postDir}/pipeline/pipeline.css`, 'utf8');
+  assert.match(pipelineStyles, /\.ov-pipeline__viewport video\s*\{[\s\S]*aspect-ratio: auto;/);
   assert.ok(!existsSync(`${postDir}/codec-structure.avif`));
 });

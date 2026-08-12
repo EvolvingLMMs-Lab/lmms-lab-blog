@@ -1,29 +1,37 @@
 <link rel="stylesheet" href="./pipeline.css">
 
 <figure class="ov-pipeline" data-blog-controller="./pipeline.mjs">
-  <div class="ov-pipeline__labels" aria-hidden="true">
-    <span>Original video</span>
-    <span>Uniform sampling</span>
-    <span>Temporal saliency</span>
-    <span>Codec patches</span>
+  <div class="ov-pipeline__panel">
+    <div class="ov-pipeline__labels" aria-hidden="true">
+      <span>Original Video</span>
+      <span>Uniform Frame Sampling</span>
+      <span>Temporal Saliency Detection</span>
+      <span>Codec-Style Patch Extraction</span>
+    </div>
+
+    <div class="ov-pipeline__viewport">
+      <video
+        data-pipeline-video
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="metadata"
+        aria-label="OneVision Encoder video processing pipeline, case 1"
+      >
+        <source
+          src="https://wqrxkrduisy4rnf0.public.blob.vercel-storage.com/onevision-encoder/images/case1.webm"
+          type="video/webm"
+        >
+      </video>
+    </div>
   </div>
 
-  <div class="ov-pipeline__viewport">
-    <video
-      data-pipeline-video
-      autoplay
-      loop
-      muted
-      playsinline
-      preload="metadata"
-      aria-label="OneVision Encoder video processing pipeline, case 1"
-    >
-      <source
-        src="https://wqrxkrduisy4rnf0.public.blob.vercel-storage.com/onevision-encoder/images/case1.webm"
-        type="video/webm"
-      >
-    </video>
-  </div>
+  <figcaption>
+    Complete video processing pipeline showing the four stages from original video to codec-style
+    compressed representation. Each stage demonstrates how our approach progressively identifies
+    and extracts temporally-salient patches while maintaining rich motion information.
+  </figcaption>
 
   <div class="ov-pipeline__navigation" aria-label="Pipeline examples">
     <button type="button" data-pipeline-previous aria-label="Previous pipeline example">
@@ -34,14 +42,5 @@
       <i class="ph ph-caret-right" aria-hidden="true"></i>
     </button>
   </div>
-
-  <figcaption>
-    <span>
-      Complete video processing pipeline showing the four stages from original video to
-      codec-style compressed representation. Each stage demonstrates how our approach
-      progressively identifies and extracts temporally-salient patches while maintaining rich
-      motion information.
-    </span>
-    <small data-pipeline-status aria-live="polite">Case 1 of 7.</small>
-  </figcaption>
+  <span class="ov-pipeline__status" data-pipeline-status aria-live="polite">Case 1 of 7.</span>
 </figure>
